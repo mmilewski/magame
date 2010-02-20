@@ -1,0 +1,10 @@
+lukasz 10000
+marcin 7400
+lukasz 6200
+marcin 4800
+mar 4200
+lukasz 4100
+lukasz 4000
+lu 3700
+marcin 3600
+lukasz 3500
