@@ -1,0 +1,10 @@
+j 1065353216
+lukasz 10000
+marcin 7400
+lukasz 6200
+sssssss 4900
+marcin 4800
+m 4300
+mar 4200
+marcin 4200
+lukasz 4100
