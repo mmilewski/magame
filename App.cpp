@@ -4,6 +4,7 @@
 #include "Engine.h"
 #include "MainMenu.h"
 #include "HallOfFame.h"
+#include "LandChoiceScreen.h"
 
 void App::ProcessEvents() {
     // przyjrzyj zdarzenia
@@ -38,7 +39,8 @@ void App::Run() {
     const std::string atlas_filename = "data/tex.bmp";
     Engine::Get().Renderer()->LoadTexture(atlas_filename);
 
-    m_app_state.reset(new MainMenu);
+//    m_app_state.reset(new MainMenu);
+    m_app_state.reset(new LandChoiceScreen);
     m_app_state->Init();
     m_app_state->Start();
 

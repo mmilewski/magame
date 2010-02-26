@@ -22,7 +22,6 @@ void MainMenu::Draw() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
-
     Text t(0.1, 0.1);
     t.DrawText("menu", 0.3, 0.8);
     

@@ -55,7 +55,6 @@ void Renderer::LoadTexture(const std::string & filename) {
 
 }
 
-
 void Renderer::DrawSprite(double tex_x, double tex_y, double tex_w, double tex_h,
                           double pos_x, double pos_y, double width, double height, 
                           DL::DisplayLayer layer) {
