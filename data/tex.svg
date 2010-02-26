@@ -21,6 +21,17 @@
    inkscape:export-ydpi="90">
   <defs
      id="defs4">
+    <linearGradient
+       id="linearGradient3668">
+      <stop
+         style="stop-color:#ffffb2;stop-opacity:1;"
+         offset="0"
+         id="stop3670" />
+      <stop
+         style="stop-color:#ffff00;stop-opacity:0.06722689;"
+         offset="1"
+         id="stop3672" />
+    </linearGradient>
     <inkscape:perspective
        sodipodi:type="inkscape:persp3d"
        inkscape:vp_x="0 : 526.18109 : 1"
@@ -35,6 +46,32 @@
        inkscape:vp_y="0 : 1000 : 0"
        inkscape:vp_x="0 : 0.5 : 1"
        sodipodi:type="inkscape:persp3d" />
+    <filter
+       inkscape:collect="always"
+       id="filter3652">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.14347621"
+         id="feGaussianBlur3654" />
+    </filter>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3668"
+       id="radialGradient3676"
+       cx="270.95096"
+       cy="1446.0011"
+       fx="270.95096"
+       fy="1446.0011"
+       r="6.0490384"
+       gradientTransform="matrix(1,0,0,0.66144004,0,489.55807)"
+       gradientUnits="userSpaceOnUse" />
+    <inkscape:perspective
+       id="perspective3887"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -43,9 +80,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.67737334"
-     inkscape:cx="316.70578"
-     inkscape:cy="-340.85138"
+     inkscape:zoom="0.67737335"
+     inkscape:cx="217.36075"
+     inkscape:cy="-546.84275"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -103,6 +140,10 @@
        orientation="1,0"
        position="256,-422"
        id="guide2982" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="288,-412"
+       id="guide2851" />
   </sodipodi:namedview>
   <metadata
      id="metadata7">
@@ -132,6 +173,16 @@
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
        style="fill:#000000;fill-opacity:0" />
+    <image
+       y="1052.3622"
+       x="0"
+       id="image3889"
+       height="1024"
+       width="1024"
+       xlink:href="file:///home/mmi/krainy/data/tex.svg_bitmapa.bmp"
+       inkscape:export-filename="/home/mmi/krainy/data/tex.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <rect
        style="fill:#ff8c00;fill-opacity:1;fill-rule:nonzero;stroke:none"
        id="rect2913"
@@ -268,6 +319,67 @@
        id="path2986"
        style="fill:#deb887;fill-opacity:1;fill-rule:nonzero;stroke:none"
        sodipodi:type="arc"
+       inkscape:export-filename="/home/mmi/krainy/data/tex.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#000000;fill-opacity:0;fill-rule:nonzero;stroke:none"
+       id="path2856"
+       sodipodi:cx="276.22833"
+       sodipodi:cy="1460.4778"
+       sodipodi:rx="3.7716756"
+       sodipodi:ry="3.5222316"
+       d="m 280.00001,1460.4778 c 0,1.9453 -1.68864,3.5222 -3.77168,3.5222 -2.08304,0 -3.77167,-1.5769 -3.77167,-3.5222 0,-1.9453 1.68863,-3.5222 3.77167,-3.5222 2.08304,0 3.77168,1.5769 3.77168,3.5222 z"
+       transform="translate(0,28.362183)"
+       inkscape:export-filename="/home/mmi/krainy/data/tex.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#ffff00;fill-opacity:1;fill-rule:nonzero;stroke:#ffd700;stroke-width:1.16440260000000007;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;filter:url(#filter3652)"
+       id="path3634"
+       sodipodi:cx="272.65237"
+       sodipodi:cy="1457.0861"
+       sodipodi:rx="14.347621"
+       sodipodi:ry="14.347621"
+       d="m 287,1457.0861 c 0,7.9239 -6.42365,14.3476 -14.34763,14.3476 -7.92397,0 -14.34762,-6.4237 -14.34762,-14.3476 0,-7.924 6.42365,-14.3477 14.34762,-14.3477 7.92398,0 14.34763,6.4237 14.34763,14.3477 z"
+       transform="matrix(0.88184509,0,0,0.83637556,31.215223,265.69101)"
+       inkscape:export-filename="/home/mmi/krainy/data/tex.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:type="arc"
+       style="fill:url(#radialGradient3676);fill-opacity:1;fill-rule:nonzero;stroke:#ffd700;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="path3666"
+       sodipodi:cx="270.95096"
+       sodipodi:cy="1446.0011"
+       sodipodi:rx="6.0490384"
+       sodipodi:ry="4.0010762"
+       d="m 277,1446.0011 c 0,2.2097 -2.70825,4.0011 -6.04904,4.0011 -3.34079,0 -6.04904,-1.7914 -6.04904,-4.0011 0,-2.2097 2.70825,-4.0011 6.04904,-4.0011 3.34079,0 6.04904,1.7914 6.04904,4.0011 z"
+       transform="matrix(0.87873914,-0.71153809,0.72410522,0.86348827,-1020.0493,424.004)"
+       inkscape:export-filename="/home/mmi/krainy/data/tex.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 265.97924,1482.3622 c 1.63007,0 3.26014,0 4.89021,0"
+       id="path3656"
+       inkscape:export-filename="/home/mmi/krainy/data/tex.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 274.03647,1482.3622 c 1.44554,0 2.89107,0 4.33661,0"
+       id="path3658"
+       inkscape:export-filename="/home/mmi/krainy/data/tex.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 267,1462 c 0,0 3,6 10,0"
+       id="path3664"
+       transform="translate(0,28.362183)"
        inkscape:export-filename="/home/mmi/krainy/data/tex.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
