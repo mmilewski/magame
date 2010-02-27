@@ -18,12 +18,23 @@ public:
     boost::shared_ptr<AppState> NextAppState() const;
 
 private:
-//    struct FS {
-//        enum FaceState {
-//            WALK, STAND,
-//        };
-//    };
-    int next_node(int node) const;
+
+    int NextNode(int node) const;
+
+    // Zmienia kierunek ruchu na 'idź w lewo' i zwraca true. Jeżeli zmiana nie była możliwa, zwraca false.
+    bool GoLeft();
+
+    // Zmienia kierunek ruchu na 'idź w prawo' i zwraca true. Jeżeli zmiana nie była możliwa, zwraca false.
+    bool GoRight();
+
+    // Zmienia kierunek ruchu na 'idź w górę' i zwraca true. Jeżeli zmiana nie była możliwa, zwraca false.
+    bool GoUpward();
+
+    // Zmienia kierunek ruchu na 'idź w dół' i zwraca true. Jeżeli zmiana nie była możliwa, zwraca false.
+    bool GoDown();
+
+    // Uruchamia konkretny poziom na podstawie węzła, w którym stoi postać. Jeżeli postać nie stoi, to nie robi nic.
+    void RunLevelFromNode();
 
     struct Point {
         Point(float x, float y) : x(x), y(y) {}
@@ -45,6 +56,8 @@ private:
     int to_node;            // numer węzła docelowego
 
     SpritePtr m_sprite;
+
+    boost::shared_ptr<AppState> m_next_app_state;
 };
 
 #endif
