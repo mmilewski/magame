@@ -19,7 +19,8 @@ public:
 
 private:
 
-    int NextNode(int node) const;
+    // następny węzeł (dowolny, z którym jest połączenie). Lub node, jeżeli nie ma połączeń
+    int NextNode(size_t node) const;
 
     // Zmienia kierunek ruchu na 'idź w lewo' i zwraca true. Jeżeli zmiana nie była możliwa, zwraca false.
     bool GoLeft();
@@ -36,6 +37,9 @@ private:
     // Uruchamia konkretny poziom na podstawie węzła, w którym stoi postać. Jeżeli postać nie stoi, to nie robi nic.
     void RunLevelFromNode();
 
+    // rysuje drogę z punktu from do punktu to
+    void DrawRoad(size_t from, size_t to) const;
+
     struct Point {
         Point(float x, float y) : x(x), y(y) {}
         float operator[](int idx) const { return (idx==0?x:y); }
@@ -46,16 +50,16 @@ private:
     typedef std::vector<bool> BoolVector;
     typedef std::vector<int> IntVector;
 
-    std::vector<BoolVector> moves;
-    std::vector<IntVector> connections;
-    std::vector<Point> m_positions;     // pozycje punktów
+    std::vector<IntVector> m_connections;  // połączenia między węzłami
+    std::vector<Point> m_positions;        // pozycje punktów
 
-    float face_pos_x;       // położenie bohatera na ekranie
-    float face_pos_y;
-    int from_node;          // numer węzła początkowego
-    int to_node;            // numer węzła docelowego
+    Point face_pos;                 // położenie bohatera na ekranie
+    int current_from_node;          // numer węzła początkowego
+    int current_to_node;            // numer węzła docelowego
 
-    SpritePtr m_sprite;
+    SpritePtr m_sprite;             // klatki z polami (droga, węzły, postać)
+    float m_tile_width;             // szerokość kafla na ekranie
+    float m_tile_height;            // wysokość kafla na ekranie
 
     boost::shared_ptr<AppState> m_next_app_state;
 };

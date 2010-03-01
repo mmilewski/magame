@@ -72,6 +72,13 @@
        inkscape:vp_y="0 : 1000 : 0"
        inkscape:vp_x="0 : 0.5 : 1"
        sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2934"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -80,9 +87,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.67737335"
-     inkscape:cx="217.36075"
-     inkscape:cy="-546.84275"
+     inkscape:zoom="1.9159012"
+     inkscape:cx="-23.686555"
+     inkscape:cy="-398.68957"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -153,7 +160,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -162,33 +169,12 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-28.362183)">
-    <image
-       id="image2889"
-       height="1024"
-       width="1024"
-       xlink:href="file:///home/mmi/krainy/data/tex.bmp"
-       x="0"
-       y="1052.3622"
-       inkscape:export-filename="/home/mmi/krainy/data/tex.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90"
-       style="fill:#000000;fill-opacity:0" />
-    <image
-       y="1052.3622"
-       x="0"
-       id="image3889"
-       height="1024"
-       width="1024"
-       xlink:href="file:///home/mmi/krainy/data/tex.svg_bitmapa.bmp"
-       inkscape:export-filename="/home/mmi/krainy/data/tex.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
     <rect
        style="fill:#ff8c00;fill-opacity:1;fill-rule:nonzero;stroke:none"
        id="rect2913"
        width="8"
        height="32"
-       x="14"
+       x="11"
        y="1468.3622"
        inkscape:export-filename="/home/mmi/krainy/data/tex.png"
        inkscape:export-xdpi="90"
@@ -383,5 +369,12 @@
        inkscape:export-filename="/home/mmi/krainy/data/tex.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
+    <image
+       y="1052.3622"
+       x="0"
+       id="image2936"
+       height="416"
+       width="312"
+       xlink:href="file:///home/mmi/krainy/data/tex.svg_bitmapa.bmp" />
   </g>
 </svg>
