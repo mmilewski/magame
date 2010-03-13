@@ -1,12 +1,18 @@
 #ifndef __LANDCHOICESCREEN_H_INCLUDED__
 #define __LANDCHOICESCREEN_H_INCLUDED__
 
+#include <map>
+#include <boost/shared_ptr.hpp>
+
 #include "AppState.h"
 #include "Sprite.h"
 
+class Player;
+typedef boost::shared_ptr<Player> PlayerPtr;
+
 class LandChoiceScreen: public AppState {
 public:
-    LandChoiceScreen();
+    explicit LandChoiceScreen(PlayerPtr player);
     virtual ~LandChoiceScreen();
     void Init();
     void Start();
@@ -21,6 +27,9 @@ private:
 
     // następny węzeł (dowolny, z którym jest połączenie). Lub node, jeżeli nie ma połączeń
     int NextNode(size_t node) const;
+
+    // zwraca nazwę poziomu dla wskazanego węzła
+    std::string NodeToLevelName(int node);
 
     // Zmienia kierunek ruchu na 'idź w lewo' i zwraca true. Jeżeli zmiana nie była możliwa, zwraca false.
     bool GoLeft();
@@ -50,8 +59,9 @@ private:
     typedef std::vector<bool> BoolVector;
     typedef std::vector<int> IntVector;
 
-    std::vector<IntVector> m_connections;  // połączenia między węzłami
-    std::vector<Point> m_positions;        // pozycje punktów
+    std::vector<IntVector> m_connections;              // połączenia między węzłami
+    std::vector<Point> m_positions;                    // pozycje punktów
+    std::map<int, std::string> m_node_to_level_name;   // mapowanie węzeł -> nazwa poziomu
 
     Point face_pos;                 // położenie bohatera na ekranie
     int current_from_node;          // numer węzła początkowego
@@ -61,6 +71,7 @@ private:
     float m_tile_width;             // szerokość kafla na ekranie
     float m_tile_height;            // wysokość kafla na ekranie
 
+    PlayerPtr m_player;             // wskaźnik na gracza, który przekażemy do instancji gry
     boost::shared_ptr<AppState> m_next_app_state;
 };
 

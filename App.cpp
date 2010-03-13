@@ -40,7 +40,7 @@ void App::Run() {
     Engine::Get().Renderer()->LoadTexture(atlas_filename);
 
 //    m_app_state.reset(new MainMenu);
-    m_app_state.reset(new LandChoiceScreen);
+    m_app_state.reset(new LandChoiceScreen(PlayerPtr()));
     m_app_state->Init();
     m_app_state->Start();
 

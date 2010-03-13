@@ -1,6 +1,7 @@
 #include <SDL/SDL_opengl.h>
-#include <boost/assign/std/vector.hpp>  // 'operator+=()'
-#include <cmath>  // fabs
+#include <boost/assign/std/vector.hpp>     // operator+=()
+#include <boost/assign/list_inserter.hpp>  // insert()
+#include <cmath>      // fabs
 #include <algorithm>  // find
 #include <iostream>
 
@@ -11,13 +12,14 @@
 #include "Sprite.h"
 #include "SpriteConfig.h"
 
-LandChoiceScreen::LandChoiceScreen() :
+LandChoiceScreen::LandChoiceScreen(PlayerPtr player) :
     face_pos(0, 0),
     current_from_node(0),
     current_to_node(0),
     m_sprite(),
     m_tile_width(1.0 / 10),
     m_tile_height(1.0 / 10),
+    m_player(player),
     m_next_app_state() {
 
     srand(time(0));
@@ -31,6 +33,10 @@ LandChoiceScreen::LandChoiceScreen() :
 //	           |
 //	           4
 
+//
+//    boost assignment lbrary
+//    http://www.boost.org/doc/libs/1_35_0/libs/assign/doc/index.html
+//
     using namespace boost::assign;
     m_connections += IntVector(), IntVector(), IntVector(), IntVector(), IntVector();
     m_connections.at(0) += 1;
@@ -38,6 +44,9 @@ LandChoiceScreen::LandChoiceScreen() :
     m_connections.at(2) += 3, 4, 1;
     m_connections.at(3) += 2;
     m_connections.at(4) += 2;
+
+    // zdefiniuj odwzorowanie (aka mapowanie)  węzeł->nazwa poziomu
+    insert(m_node_to_level_name)(0, "1")(1, "2")(2, "2")(3, "1")(4, "2");
 
 //
 //    http://en.wikipedia.org/wiki/C%2B%2B0x#Initializer_lists
@@ -95,7 +104,6 @@ void LandChoiceScreen::DrawRoad(size_t from, size_t to) const {
 void LandChoiceScreen::Draw() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-
 
     // DZIAŁANIE
     // dla każdego węzła i
@@ -315,17 +323,23 @@ bool LandChoiceScreen::GoRight() {
     return false;
 }
 
+std::string LandChoiceScreen::NodeToLevelName(int node) {
+    if (m_node_to_level_name.find(node)!=m_node_to_level_name.end()) {
+        return m_node_to_level_name.at(node);
+    }
+    return "";
+}
+
 void LandChoiceScreen::RunLevelFromNode() {
+    // jeżeli postać jest w drodze (nie stoi w węźle), to nie pozwalamy włączyć poziomu
+    // (można zmienić wedle uznania)
     if (current_from_node != current_to_node) {
         return;
     }
 
-    //
-    // TODO: wybrać poziom z STL mapy
-    //
-
-//    m_next_app_state = boost::shared_ptr<AppState>(new Game("1", PlayerPtr()));
-    m_next_app_state = boost::shared_ptr<AppState>(new Game("1"));
+    const std::string level_name = NodeToLevelName(current_to_node);
+//    m_next_app_state = boost::shared_ptr<AppState>(new Game(level_name, PlayerPtr()));
+    m_next_app_state.reset(new Game(level_name));
     SetDone();
 }
 
