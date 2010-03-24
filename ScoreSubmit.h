@@ -1,5 +1,6 @@
 #ifndef __SCORE_SUBMIT_H__
 #define __SCORE_SUBMIT_H__
+#include "StdAfx.h"
 
 #include <utility>
 #include <boost/shared_ptr.hpp>

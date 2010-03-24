@@ -1,7 +1,4 @@
-#include <SDL/SDL.h>
-#include <SDL/SDL_opengl.h>
-
-#include <string>
+#include "StdAfx.h"
 
 #include "MainMenu.h"
 #include "Text.h"
@@ -15,7 +12,7 @@ void MainMenu::Init() {
 }
 
 void MainMenu::Start() {
-    Engine::Get().Sound()->PlayMusic("menu");
+    Engine::Get().GetSound()->PlayMusic("menu");
 }
 
 void MainMenu::Draw() {
@@ -27,13 +24,13 @@ void MainMenu::Draw() {
     t.DrawText("menu", 0.3, 0.8);
     
     if (m_selection == Sel::NewGame) {
-        Engine::Get().Renderer()->DrawQuad(0.3, 0.59, 0.72, 0.66, 0, 0.7, 0.7, 1);
+        Engine::Get().GetRenderer()->DrawQuad(0.3, 0.59, 0.72, 0.66, 0, 0.7, 0.7, 1);
     }
     else if (m_selection == Sel::HallOfFame) {
-        Engine::Get().Renderer()->DrawQuad(0.2, 0.49, 0.82, 0.56, 0, 0.7, 0.7, 1);
+        Engine::Get().GetRenderer()->DrawQuad(0.2, 0.49, 0.82, 0.56, 0, 0.7, 0.7, 1);
     }
     else if (m_selection == Sel::Quit) {
-        Engine::Get().Renderer()->DrawQuad(0.325, 0.39, 0.695, 0.46, 0, 0.7, 0.7, 1);
+        Engine::Get().GetRenderer()->DrawQuad(0.325, 0.39, 0.695, 0.46, 0, 0.7, 0.7, 1);
     }
 
     t.SetSize(0.05, 0.05);

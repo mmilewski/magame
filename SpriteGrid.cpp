@@ -1,10 +1,12 @@
+#include "StdAfx.h"
+
 #include "SpriteGrid.h"
 #include "Engine.h"
 
 
 SpriteGrid::SpriteGrid() {
-    size_t height = Engine::Get().Renderer()->GetVerticalTilesOnScreenCount();
-    size_t width  = Engine::Get().Renderer()->GetHorizontalTilesOnScreenCount();
+    size_t height = Engine::Get().GetRenderer()->GetVerticalTilesOnScreenCount();
+    size_t width  = Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount();
     width++; // siatka pamięta o jeden kafel więcej, bo czasami plansza jest ustawiona w połowie kafla
     m_grid.resize(height);
     for (size_t i = 0; i < height; ++i) {
@@ -34,15 +36,16 @@ void SpriteGrid::SetLevel(const LevelPtr lvl, double dx) {
 }
 
 void SpriteGrid::Draw(double dx) const {
-    const double tile_width  = Engine::Get().Renderer()->GetTileWidth();
-    const double tile_height = Engine::Get().Renderer()->GetTileHeight();
+    const double tile_width  = Engine::Get().GetRenderer()->GetTileWidth();
+    const double tile_height = Engine::Get().GetRenderer()->GetTileHeight();
 
     glPushMatrix();
     {
-        glTranslatef(dx*tile_width-0.45, 0, 0);
+        const double sprite_pos_x = dx * tile_width - 0.45;
+        glTranslated(sprite_pos_x, 0, 0);
 
-        double offset = dx - static_cast<int>(dx);
-        glTranslatef(-offset * tile_width, 0, 0);
+        const double offset = dx - static_cast<int>(dx);
+        glTranslated(-offset * tile_width, 0, 0);
         for (size_t y = 0; y < m_grid.size(); ++y) {
             const std::vector<SpritePtr>& row = m_grid.at(y);
             for (size_t x = 0; x < row.size(); ++x) {

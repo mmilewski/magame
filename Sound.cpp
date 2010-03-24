@@ -1,9 +1,4 @@
-#include <algorithm>
-#include <iostream> 
-#include <fstream>
-
-#include <SDL/SDL_mixer.h>
-#include <SDL/SDL.h>
+#include "StdAfx.h"
 
 #include "Sound.h"
 

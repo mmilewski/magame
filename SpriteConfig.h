@@ -1,5 +1,6 @@
 #ifndef SPRITECONFIG_H_
 #define SPRITECONFIG_H_
+#include "StdAfx.h"
 
 #include <map>
 #include <string>

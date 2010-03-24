@@ -1,5 +1,6 @@
 #ifndef __PLAYERBULLET_ENTITY_H__
 #define __PLAYERBULLET_ENTITY_H__
+#include "StdAfx.h"
 
 #include "Entity.h"
 #include <iostream>

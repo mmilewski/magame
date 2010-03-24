@@ -1,7 +1,5 @@
-#include <fstream>
-#include <iostream> 
-#include <sstream>   // istringstream
-#include <algorithm>  // sort
+#include "StdAfx.h"
+
 #include "Engine.h"
 #include "Level.h"
 
@@ -81,9 +79,9 @@ FT::FieldType Level::Field(size_t x, size_t y) const {
 
 
 Aabb Level::GetFieldAabb(size_t x, size_t y) const {
-//    const double tile_width = Engine::Get().Renderer()->GetTileWidth();
-//    const double tile_height = Engine::Get().Renderer()->GetTileHeight();
-    RendererPtr renderer = Engine::Get().Renderer();
+//    const double tile_width = Engine::Get().GetRenderer()->GetTileWidth();
+//    const double tile_height = Engine::Get().GetRenderer()->GetTileHeight();
+    RendererPtr renderer = Engine::Get().GetRenderer();
     const size_t v_tiles_count = renderer->GetVerticalTilesOnScreenCount();
     y = v_tiles_count - y;  // odbij y w pionie (y=0 będzie na dole)
 

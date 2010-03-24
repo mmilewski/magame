@@ -1,5 +1,6 @@
 #ifndef __SPRITE_GRID_H__
 #define __SPRITE_GRID_H__
+#include "StdAfx.h"
 
 #include <vector> 
 #include "Sprite.h"

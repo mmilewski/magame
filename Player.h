@@ -1,5 +1,6 @@
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
+#include "StdAfx.h"
 
 #include <stdexcept>  // logic_error
 #include "Entity.h"
@@ -75,7 +76,7 @@ public:
     bool IsTwinShotEnabled() const { return m_twin_shot_enabled; }
 
     bool MoveMap() {
-        const size_t screen_tiles_count = Engine::Get().Renderer()->GetHorizontalTilesOnScreenCount();
+        const size_t screen_tiles_count = Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount();
         const size_t half_screen_tiles_count = screen_tiles_count/2;
         return 
             GetX() >= m_max_x_pos

@@ -1,4 +1,4 @@
-#include <iostream>
+#include "StdAfx.h"
 
 #include "App.h"
 #include "Engine.h"
@@ -12,9 +12,10 @@ int main(int argc, char *argv[]) {
 
     Engine::Get().Load();
 
-    size_t width = 600;
-    size_t height = 400;
-    Engine::Get().Window()->SetSize(width, height);
+    size_t width = 800;
+    size_t height = 600;
+    Engine::Get().GetWindow()->SetSize(width, height);
+    Engine::Get().GetWindow()->SetFullscreen(false);
     App app(false);
 
     app.Run();

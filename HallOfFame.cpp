@@ -1,8 +1,4 @@
-#include <SDL/SDL.h>
-#include <SDL/SDL_opengl.h>
-
-#include <fstream>
-#include <iostream>
+#include "StdAfx.h"
 
 #include "HallOfFame.h"
 #include "Text.h"

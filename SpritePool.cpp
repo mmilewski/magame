@@ -1,3 +1,5 @@
+#include "StdAfx.h"
+
 #include "SpritePool.h"
 
 void SpritePool::SetSprite(FT::FieldType type, SpritePtr sprite) {

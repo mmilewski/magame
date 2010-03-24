@@ -1,5 +1,4 @@
-#include <cmath>
-#include <algorithm>
+#include "StdAfx.h"
 
 #include "PlayerBulletCreator.h"
 #include "Utils.h"
@@ -29,7 +28,7 @@ void Player::Jump(double y_velocity) {
         // początkowa prędkość i przyspieszenie
         SetYVelocity(y_velocity);
         SetYAcceleration(DefaultYAcceleration);
-        Engine::Get().Sound()->PlaySfx("jump");
+        Engine::Get().GetSound()->PlaySfx("jump");
     }
 }
 
@@ -103,7 +102,7 @@ void Player::Update(double dt, LevelPtr level) {
     if (m_x > m_max_x_pos) {
         m_max_x_pos = m_x;
     }
-    const size_t half_screen_tiles_count = (Engine::Get().Renderer()->GetHorizontalTilesOnScreenCount()-1)/2;
+    const size_t half_screen_tiles_count = (Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount()-1)/2;
     if (m_x < m_max_x_pos - half_screen_tiles_count) {
         m_x = m_max_x_pos - half_screen_tiles_count; // można się wrócić tylko do tych części mapy, które się już widziało
     } 
@@ -153,7 +152,7 @@ void Player::Draw() const {
     }
 
     // pobierz szerokość i wysokość kafla na ekranie
-    RendererPtr renderer = Engine::Get().Renderer();
+    RendererPtr renderer = Engine::Get().GetRenderer();
     const double tile_width = renderer->GetTileWidth();
     const double tile_height = renderer->GetTileHeight();
 

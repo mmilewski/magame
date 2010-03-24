@@ -1,5 +1,5 @@
-#include <SDL/SDL.h>
-#include <vector>
+#include "StdAfx.h"
+
 #include "Game.h"
 
 class App {

@@ -1,5 +1,6 @@
 #ifndef __HALL_OF_FAME_H__
 #define __HALL_OF_FAME_H__
+#include "StdAfx.h"
 
 #include <string>
 #include <vector> 

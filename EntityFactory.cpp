@@ -1,4 +1,5 @@
-#include <iostream>
+#include "StdAfx.h"
+
 #include "Engine.h"
 #include "MushEntity.h"
 #include "PlayerBulletEntity.h"
@@ -10,7 +11,7 @@ EntityFactory::EntityFactory() {
 }
 
 SpritePtr GetSpriteByName(const std::string& name) {
-    return SpritePtr(new Sprite(Engine::Get().SpriteConfig()->Get(name)));
+    return SpritePtr(new Sprite(Engine::Get().GetSpriteConfig()->Get(name)));
 }
 
 EntityPtr EntityFactory::CreateEntity(ET::EntityType type, double x, double y) {

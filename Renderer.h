@@ -1,5 +1,6 @@
 #ifndef RENDERER_H_
 #define RENDERER_H_
+#include "StdAfx.h"
 
 #include <SDL/SDL_opengl.h>
 #include <boost/shared_ptr.hpp>
@@ -16,8 +17,8 @@ public:
 
     double GetTileWidth() const { return m_tile_width; }
     double GetTileHeight() const { return m_tile_height; }
-    size_t GetHorizontalTilesOnScreenCount() const { return 1.0 / m_tile_width  + 0.5; }
-    size_t GetVerticalTilesOnScreenCount()   const { return 1.0 / m_tile_height + 0.5; }
+    size_t GetHorizontalTilesOnScreenCount() const { return static_cast<size_t>(1.0 / m_tile_width  + 0.5); }
+    size_t GetVerticalTilesOnScreenCount()   const { return static_cast<size_t>(1.0 / m_tile_height + 0.5); }
 
     void SetTileSize(double width, double height);
 

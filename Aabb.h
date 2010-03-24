@@ -1,7 +1,8 @@
 #ifndef __AABB_H__
 #define __AABB_H__
+#include "StdAfx.h"
 
-#include <boost/shared_ptr.hpp> 
+//#include <boost/shared_ptr.hpp>
 #include <cassert>
 #include <ostream>
 
@@ -48,7 +49,7 @@ private:
     double m_max_y;
 };
 
-typedef boost::shared_ptr<Aabb> AabbPtr;
+//typedef boost::shared_ptr<Aabb> AabbPtr;
 
 #endif
 

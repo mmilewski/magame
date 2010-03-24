@@ -1,3 +1,5 @@
+#include "StdAfx.h"
+
 #include "Aabb.h"
 
 // czy prostokąty się przecinają

@@ -1,5 +1,6 @@
 #ifndef __ENTITY_FACTORY_H__
 #define __ENTITY_FACTORY_H__
+#include "StdAfx.h"
 
 #include <boost/shared_ptr.hpp>
 

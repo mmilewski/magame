@@ -1,5 +1,6 @@
 #ifndef __TYPES_H__
 #define __TYPES_H__
+#include "StdAfx.h"
 
 namespace PS {
     enum PlayerState {

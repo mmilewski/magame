@@ -1,5 +1,6 @@
 #ifndef __SOUND_H__
 #define __SOUND_H__
+#include "StdAfx.h"
 
 #include <string>
 #include <map>

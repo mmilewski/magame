@@ -1,5 +1,7 @@
 #ifndef __CREATOR_PRODUCER_H_INCLUDED__
 #define __CREATOR_PRODUCER_H_INCLUDED__
+#include "StdAfx.h"
+
 #include <list>
 #include "Creator.h"
 

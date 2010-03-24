@@ -1,4 +1,4 @@
-#include <cassert>
+#include "StdAfx.h"
 
 #include "App.h"
 #include "Engine.h"
@@ -20,11 +20,11 @@ void App::ProcessEvents() {
 void App::Run() {
     // inicjalizacja okna
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
-    Resize(Engine::Get().Window()->GetWidth(),
-           Engine::Get().Window()->GetHeight());
+    Resize(Engine::Get().GetWindow()->GetWidth(),
+           Engine::Get().GetWindow()->GetHeight());
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); // podwójne buforowanie
 
-    Engine::Get().Sound()->LoadSounds();
+    Engine::Get().GetSound()->LoadSounds();
 
     // inicjalizacja OpenGL
     glClearColor(0, 0, 0, 0);
@@ -32,11 +32,11 @@ void App::Run() {
     glDepthFunc(GL_LEQUAL);
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_ALPHA_TEST); // niewyświetlanie przezroczystych fragmentów sprite'a
-    glAlphaFunc(GL_GEQUAL, 0.1);
+    glAlphaFunc(GL_GEQUAL, 0.1f);
 
     // ładowanie atlasu
     const std::string atlas_filename = "data/tex.bmp";
-    Engine::Get().Renderer()->LoadTexture(atlas_filename);
+    Engine::Get().GetRenderer()->LoadTexture(atlas_filename);
 
     m_app_state.reset(new MainMenu);
     m_app_state->Init();
@@ -80,10 +80,12 @@ void App::Draw() {
 }
 
 void App::Resize(size_t width, size_t height) {
-    m_screen = SDL_SetVideoMode(width, height, 32, SDL_OPENGL | SDL_RESIZABLE | SDL_HWSURFACE);
+    const bool is_fullscreen = Engine::Get().GetWindow()->IsFullscreen();
+    const int fullscreen_flag = is_fullscreen ? SDL_FULLSCREEN : 0;
+
+    m_screen = SDL_SetVideoMode(width, height, 32, SDL_OPENGL | SDL_RESIZABLE | SDL_HWSURFACE | fullscreen_flag);
     assert(m_screen && "problem z ustawieniem wideo");
 
-    Engine::Get().Window()->SetSize(width, height);
-
-    Engine::Get().Renderer()->SetProjection(width, height);
+    Engine::Get().GetWindow()->SetSize(width, height);
+    Engine::Get().GetRenderer()->SetProjection(width, height);
 }

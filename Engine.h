@@ -1,5 +1,7 @@
 #ifndef ENGINE_H_
 #define ENGINE_H_
+#include "StdAfx.h"
+
 #include "SpriteConfig.h"
 #include "Renderer.h"
 #include "EntityFactory.h"
@@ -13,19 +15,20 @@ public:
         return engine;
     }
 
+	//void Load();
     void Load() {
-        m_sprite_config.reset(new SpriteConfig::SpriteConfig());
-        m_renderer.reset(new Renderer::Renderer());
-        m_entity_factory.reset(new EntityFactory::EntityFactory());
-        m_sound.reset(new Sound::Sound());
-        m_window.reset(new Window::Window());
+        m_sprite_config.reset(new SpriteConfig());
+        m_renderer.reset(new Renderer());
+        m_entity_factory.reset(new EntityFactory());
+        m_sound.reset(new Sound());
+        m_window.reset(new Window());
     }
 
-    EntityFactoryPtr EntityFactory() { return m_entity_factory; }
-    SpriteConfigPtr SpriteConfig()   { return m_sprite_config; }
-    RendererPtr Renderer()           { return m_renderer; }
-    SoundPtr Sound() { return m_sound; }
-    WindowPtr Window() { return m_window; }
+    EntityFactoryPtr GetEntityFactory() { return m_entity_factory; }
+    SpriteConfigPtr GetSpriteConfig()   { return m_sprite_config; }
+    RendererPtr GetRenderer()           { return m_renderer; }
+    SoundPtr GetSound()                 { return m_sound; }
+    WindowPtr GetWindow()               { return m_window; }
 
 private:
     EntityFactoryPtr m_entity_factory;

@@ -1,10 +1,4 @@
-#include <SDL/SDL.h>
-#include <SDL/SDL_opengl.h>
-
-#include <vector> 
-#include <string>
-#include <fstream>
-#include <iostream>
+#include "StdAfx.h"
 
 #include "ScoreSubmit.h"
 #include "Text.h"
@@ -40,7 +34,7 @@ void ScoreSubmit::Draw() {
     for (char ch = 'a'; ch <= 'z'; ++ch) {
         std::pair<double, double> pos = LetterPosition(ch);
         if (ch == m_highlighted_char) {
-            Engine::Get().Renderer()->DrawQuad(pos.first - 0.005, pos.second - 0.005, 
+            Engine::Get().GetRenderer()->DrawQuad(pos.first - 0.005, pos.second - 0.005, 
                                                pos.first + 0.055, pos.second + 0.055, 
                                                1,0,0,1);
         }
@@ -142,7 +136,7 @@ void ScoreSubmit::Init() {
 }
 
 void ScoreSubmit::Start() {
-    Engine::Get().Sound()->PlayMusic("ss");
+    Engine::Get().GetSound()->PlayMusic("ss");
 }
 
 AppStatePtr ScoreSubmit::NextAppState() const {

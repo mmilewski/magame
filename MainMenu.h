@@ -1,5 +1,6 @@
 #ifndef __MAIN_MENU_H__
 #define __MAIN_MENU_H__
+#include "StdAfx.h"
 
 #include "AppState.h"
 
