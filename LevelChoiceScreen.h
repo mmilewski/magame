@@ -4,6 +4,7 @@
 #include <map>
 #include <vector>
 #include <boost/shared_ptr.hpp>
+#include <boost/enable_shared_from_this.hpp>
 
 #include "AppState.h"
 #include "Sprite.h"
@@ -13,7 +14,7 @@ class Player;
 typedef boost::shared_ptr<Player> PlayerPtr;
 
 
-class LevelChoiceScreen: public AppState {
+class LevelChoiceScreen: public AppState, public boost::enable_shared_from_this<LevelChoiceScreen> {
 public:
     explicit LevelChoiceScreen(PlayerPtr player);
     virtual ~LevelChoiceScreen();
@@ -25,6 +26,8 @@ public:
     void ProcessEvents(const SDL_Event& event);
 
     boost::shared_ptr<AppState> NextAppState() const;
+
+    void SetPlayer(PlayerPtr player);
 
 private:
 

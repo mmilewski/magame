@@ -39,8 +39,7 @@ void App::Run() {
     const std::string atlas_filename = "data/tex.bmp";
     Engine::Get().Renderer()->LoadTexture(atlas_filename);
 
-//    m_app_state.reset(new MainMenu);
-    m_app_state.reset(new LevelChoiceScreen(PlayerPtr()));
+    m_app_state.reset(new MainMenu);
     m_app_state->Init();
     m_app_state->Start();
 

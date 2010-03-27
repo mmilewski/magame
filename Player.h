@@ -84,12 +84,16 @@ public:
     }
 
     void NewLevelReset(LevelPtr level) {
+        LevelEntityData player_data = level->GetPlayerData();
         SetDefaultMovement();
+        SetPosition(player_data.x, player_data.y);
+        SetVelocity(0, 0);
+        m_state = PS::Stand;
+        m_running_factor = 1;
+
         m_max_x_pos = 9;
         m_level_width = level->GetWidth();
         m_is_level_completed = false;
-        LevelEntityData player_data = level->GetPlayerData();
-        SetPosition(player_data.x, player_data.y);
     }
 
 private:

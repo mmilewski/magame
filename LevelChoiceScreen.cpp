@@ -11,14 +11,16 @@
 #include "Game.h"
 #include "Sprite.h"
 #include "SpriteConfig.h"
+#include "Text.h"
+
 
 LevelChoiceScreen::LevelChoiceScreen(PlayerPtr player) :
     m_face_pos(0, 0),
     m_current_from_node(0),
     m_current_to_node(0),
     m_sprite(),
-    m_tile_width(1.0 / 20),
-    m_tile_height(1.0 / 20),
+    m_tile_width(1.0 / 15),
+    m_tile_height(1.0 / 15),
     m_player(player),
     m_next_app_state() {
 
@@ -65,6 +67,8 @@ LevelChoiceScreen::~LevelChoiceScreen() {
 }
 
 void LevelChoiceScreen::Init() {
+    m_next_app_state.reset();
+    SetDone(false);
 }
 
 void LevelChoiceScreen::Start() {
@@ -152,6 +156,13 @@ void LevelChoiceScreen::Draw() {
     m_sprite->DrawCurrentFrame(m_face_pos[0] - m_tile_width / 2, m_face_pos[1]
             - m_tile_height / 2, m_tile_width, m_tile_height);
 
+
+    // tekst na górze ekranu
+    Text t;
+    t.SetSize(.05, .06);
+    t.DrawText("WYBIERZ POZIOM", .2, .85);
+
+    //
     SDL_GL_SwapBuffers();
 }
 
@@ -181,8 +192,8 @@ bool LevelChoiceScreen::Update(double dt) {
     const Point to_node_pos = m_positions.at(m_current_to_node);
     const float dist_x = to_node_pos.x - m_face_pos[0];
     const float dist_y = to_node_pos.y - m_face_pos[1];
-    float vel_x = .3 * sgn(dist_x);
-    float vel_y = .2 * sgn(dist_y);
+    float vel_x = .5 * sgn(dist_x);
+    float vel_y = .4 * sgn(dist_y);
 
     if (fabs(dist_x) < .01 && fabs(dist_y) < .01) {
         m_current_from_node = m_current_to_node;
@@ -338,8 +349,11 @@ void LevelChoiceScreen::RunLevelFromNode() {
     }
 
     const std::string level_name = NodeToLevelName(m_current_to_node);
-    m_next_app_state.reset(new Game(level_name, PlayerPtr()));
-//    m_next_app_state.reset(new Game(level_name));
+    boost::shared_ptr<LevelChoiceScreen> m_level_choice_screen(shared_from_this());
+    Game* game_state = new Game(level_name, m_player);
+    game_state->BindLevelChoiceScreen(m_level_choice_screen);
+    m_next_app_state.reset(game_state);
+
     SetDone();
 }
 
@@ -351,6 +365,7 @@ void LevelChoiceScreen::ProcessEvents(const SDL_Event & event) {
     if (event.type == SDL_KEYDOWN) {
         SDLKey key = event.key.keysym.sym;
         if (key == SDLK_ESCAPE) {
+            m_next_app_state = AppStatePtr(new MainMenu());
             SetDone();
         } else if (key == SDLK_LEFT) {
             GoLeft();
@@ -368,4 +383,8 @@ void LevelChoiceScreen::ProcessEvents(const SDL_Event & event) {
 
 boost::shared_ptr<AppState> LevelChoiceScreen::NextAppState() const {
     return m_next_app_state;
+}
+
+void LevelChoiceScreen::SetPlayer(PlayerPtr player) {
+    m_player = player;
 }

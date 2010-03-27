@@ -3,7 +3,6 @@
 #include "App.h"
 #include "Engine.h"
 
-
 int main(int argc, char *argv[]) {
     std::cout << "      strzałki lewo/prawo  -  poruszanie się postacią\n"
               << "         strzałka do góry  -  skok\n"

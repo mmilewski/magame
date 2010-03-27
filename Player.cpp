@@ -181,15 +181,15 @@ void Player::Draw() const {
     }
 }
 
-void Player::CollisionOnRight(EntityPtr entity) {
+void Player::CollisionOnRight(EntityPtr /* entity */) {
     LooseLife();
 }
 
-void Player::CollisionOnLeft(EntityPtr entity) {
+void Player::CollisionOnLeft(EntityPtr /* entity */) {
     LooseLife();
 }
 
-void Player::CollisionOverPlayer(EntityPtr entity) {
+void Player::CollisionOverPlayer(EntityPtr /* entity */) {
     LooseLife();
 }
 

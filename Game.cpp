@@ -8,6 +8,7 @@
 #include "Text.h"
 #include "HallOfFame.h"
 #include "ScoreSubmit.h"
+#include "LevelChoiceScreen.h"
 #include "Creator.h"
 
 
@@ -20,6 +21,8 @@ void Game::ProcessEvents(const SDL_Event& event) {
     if (event.type == SDL_QUIT) {
         SetDone();
     } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
+        m_next_app_state = m_level_choice_screen;
+        m_next_app_state->Init();
         SetDone();
     } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_d) {
         m_player->Run();
@@ -53,7 +56,6 @@ void Game::Init() {
     if (!m_level->GetLoaded()) {
         m_level_name = "1";
         m_level->LoadFromFile("data/" + m_level_name + ".lvl");
-        SetNextLevelName();
     }
 
     // załaduj jednostki do poziomu
@@ -81,6 +83,7 @@ void Game::Init() {
     else {
         m_stored_player_pos_x = 9;
         m_player->NewLevelReset(m_level);
+
     }
 }
 
@@ -106,7 +109,7 @@ void Game::CheckPlayerEntitiesCollisions(double dt) {
         }
 
         // nieśmiertelna postać nie koliduje z innymi jednostkami,
-        // ale może zbierać np. upgrady (patrz wyżej)
+        // ale może zbierać np. upgrade'y (patrz wyżej)
         if (m_player->IsImmortal()) {
             continue;
         }
@@ -223,7 +226,7 @@ void Game::ExecuteCreators() {
     }
 }
 
-void Game::SeepAndAddEntities(double dt) {
+void Game::SeepAndAddEntities(double /* dt */) {
     // oznacz jednostki, które są za lewą krawędzią ekranu jako martwe
     const double distance_of_deletion = Engine::Get().Renderer()->GetHorizontalTilesOnScreenCount();
     for (std::vector<EntityPtr>::iterator it = m_entities.begin(); it != m_entities.end(); ++it) {
@@ -258,12 +261,16 @@ void Game::SeepAndAddEntities(double dt) {
     }
 }
 
+void Game::BindLevelChoiceScreen(const boost::shared_ptr<LevelChoiceScreen>& screen) {
+    m_level_choice_screen = screen;
+}
+
 bool Game::Update(double dt) {
     // czy gracz zakończył aktualny poziom
     if (m_player->HasCompletedCurrentLevel()) {
-        // GamePtr g(new Game(m_next_level_name, m_player->GetLifesCount(), m_player->GetScores()));
-        GamePtr g(new Game(m_next_level_name, m_player));
-        m_next_app_state = g;
+        m_level_choice_screen->SetPlayer(m_player);
+        m_next_app_state = m_level_choice_screen;
+        // m_next_app_state->Init();      // ważne!!
 
         SetDone();
         return IsDone();
@@ -289,7 +296,7 @@ bool Game::Update(double dt) {
     CheckPlayerEntitiesCollisions(dt);
     CheckEntityEntityCollisions(dt);
 
-    // uaktualnij obiekt reprezentującego gracza
+    // uaktualnij obiekt reprezentujący gracza
     m_player->Update(dt, m_level);
 
     // uaktualnij stan jednostek
