@@ -4,7 +4,7 @@
 #include "Engine.h"
 #include "MainMenu.h"
 #include "HallOfFame.h"
-#include "LandChoiceScreen.h"
+#include "LevelChoiceScreen.h"
 
 void App::ProcessEvents() {
     // przyjrzyj zdarzenia
@@ -40,7 +40,7 @@ void App::Run() {
     Engine::Get().Renderer()->LoadTexture(atlas_filename);
 
 //    m_app_state.reset(new MainMenu);
-    m_app_state.reset(new LandChoiceScreen(PlayerPtr()));
+    m_app_state.reset(new LevelChoiceScreen(PlayerPtr()));
     m_app_state->Init();
     m_app_state->Start();
 

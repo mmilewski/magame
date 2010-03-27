@@ -6,19 +6,19 @@
 #include <iostream>
 
 #include "Engine.h"
-#include "LandChoiceScreen.h"
+#include "LevelChoiceScreen.h"
 #include "MainMenu.h"
 #include "Game.h"
 #include "Sprite.h"
 #include "SpriteConfig.h"
 
-LandChoiceScreen::LandChoiceScreen(PlayerPtr player) :
-    face_pos(0, 0),
-    current_from_node(0),
-    current_to_node(0),
+LevelChoiceScreen::LevelChoiceScreen(PlayerPtr player) :
+    m_face_pos(0, 0),
+    m_current_from_node(0),
+    m_current_to_node(0),
     m_sprite(),
-    m_tile_width(1.0 / 10),
-    m_tile_height(1.0 / 10),
+    m_tile_width(1.0 / 20),
+    m_tile_height(1.0 / 20),
     m_player(player),
     m_next_app_state() {
 
@@ -53,24 +53,24 @@ LandChoiceScreen::LandChoiceScreen(PlayerPtr player) :
 //    std::vector<int> hello = {1,2,3,4};
 //
     m_positions += Point(.1, .7), Point(.7, .7), Point(.7, .4), Point(.3, .4), Point(.7, .1);
-    face_pos = m_positions.at(0);
+    m_face_pos = m_positions.at(0);
 
     const SpriteConfigData land_choice_sprite_data( DL::Foreground, 8, 0,
                                                     0, 14 * 32, 32, 32, false );
     m_sprite.reset(new Sprite(land_choice_sprite_data));
 }
 
-LandChoiceScreen::~LandChoiceScreen() {
+LevelChoiceScreen::~LevelChoiceScreen() {
 
 }
 
-void LandChoiceScreen::Init() {
+void LevelChoiceScreen::Init() {
 }
 
-void LandChoiceScreen::Start() {
+void LevelChoiceScreen::Start() {
 }
 
-void LandChoiceScreen::DrawRoad(size_t from, size_t to) const {
+void LevelChoiceScreen::DrawRoad(size_t from, size_t to) const {
     //    fun narysuj_drogę( a, b ):
     //      d = długość drogi
     //      v = czy pozioma
@@ -101,7 +101,7 @@ void LandChoiceScreen::DrawRoad(size_t from, size_t to) const {
     }
 }
 
-void LandChoiceScreen::Draw() {
+void LevelChoiceScreen::Draw() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
@@ -149,7 +149,7 @@ void LandChoiceScreen::Draw() {
 
     // narysuj postać
     m_sprite->SetCurrentFrame(8);
-    m_sprite->DrawCurrentFrame(face_pos[0] - m_tile_width / 2, face_pos[1]
+    m_sprite->DrawCurrentFrame(m_face_pos[0] - m_tile_width / 2, m_face_pos[1]
             - m_tile_height / 2, m_tile_width, m_tile_height);
 
     SDL_GL_SwapBuffers();
@@ -163,41 +163,41 @@ int sgn(float x) {
 //    return 0;
 }
 
-int LandChoiceScreen::NextNode(size_t node) const {
+int LevelChoiceScreen::NextNode(size_t node) const {
     if (false == m_connections.at(node).empty()) {
         return m_connections.at(node).at(rand() % m_connections.at(node).size());
     }
     return node;
 }
 
-bool LandChoiceScreen::Update(double dt) {
+bool LevelChoiceScreen::Update(double dt) {
 //    if (from_node == to_node) {
 //        to_node = NextNode(to_node);
 //    }
 //    assert(from_node!=to_node && "from == to :/");
 //    std::cout << from_node << " " << to_node << std::endl;
 
-    const Point from_node_pos = m_positions.at(current_from_node);
-    const Point to_node_pos = m_positions.at(current_to_node);
-    const float dist_x = to_node_pos.x - face_pos[0];
-    const float dist_y = to_node_pos.y - face_pos[1];
+    const Point from_node_pos = m_positions.at(m_current_from_node);
+    const Point to_node_pos = m_positions.at(m_current_to_node);
+    const float dist_x = to_node_pos.x - m_face_pos[0];
+    const float dist_y = to_node_pos.y - m_face_pos[1];
     float vel_x = .3 * sgn(dist_x);
     float vel_y = .2 * sgn(dist_y);
 
     if (fabs(dist_x) < .01 && fabs(dist_y) < .01) {
-        current_from_node = current_to_node;
+        m_current_from_node = m_current_to_node;
         vel_x = vel_y = 0;
-        face_pos[0] = to_node_pos.x;
-        face_pos[1] = to_node_pos.y;
+        m_face_pos[0] = to_node_pos.x;
+        m_face_pos[1] = to_node_pos.y;
     }
 
-    face_pos[0] += vel_x * dt;
-    face_pos[1] += vel_y * dt;
+    m_face_pos[0] += vel_x * dt;
+    m_face_pos[1] += vel_y * dt;
 
     return !IsDone();
 }
 
-bool LandChoiceScreen::GoLeft() {
+bool LevelChoiceScreen::GoLeft() {
     // DZIAŁANIE
     //    jeżeli postać stoi w węźle
     //        sprawdź czy istnieje droga w lewo
@@ -212,19 +212,19 @@ bool LandChoiceScreen::GoLeft() {
     //    return false
     //
 
-    const Point from_node_pos = m_positions.at(current_from_node);
-    const Point to_node_pos = m_positions.at(current_to_node);
+    const Point from_node_pos = m_positions.at(m_current_from_node);
+    const Point to_node_pos = m_positions.at(m_current_to_node);
 
     // czy postać stoi w węźle
-    if (current_from_node == current_to_node) {
+    if (m_current_from_node == m_current_to_node) {
         // czy istnieje droga w lewo
-        IntVector dst_nodes = m_connections.at(current_from_node); // połączenia z from_node
+        IntVector dst_nodes = m_connections.at(m_current_from_node); // połączenia z from_node
         for (IntVector::const_iterator it = dst_nodes.begin(); it
                 != dst_nodes.end(); ++it) {
             Point connection_node_pos = m_positions.at(*it);
             if (connection_node_pos[0] - from_node_pos[0] < 0) {
                 // istnieje droga, którą można iść
-                current_to_node = *it;
+                m_current_to_node = *it;
                 return true;
             }
         }
@@ -233,26 +233,26 @@ bool LandChoiceScreen::GoLeft() {
 
     // czy postać idzie w prawo
     if (to_node_pos[0] - from_node_pos[0] > 0) {
-        std::swap(current_from_node, current_to_node);
+        std::swap(m_current_from_node, m_current_to_node);
         return true;
     }
     return false;
 }
 
-bool LandChoiceScreen::GoUpward() {
-    const Point from_node_pos = m_positions.at(current_from_node);
-    const Point to_node_pos = m_positions.at(current_to_node);
+bool LevelChoiceScreen::GoUpward() {
+    const Point from_node_pos = m_positions.at(m_current_from_node);
+    const Point to_node_pos = m_positions.at(m_current_to_node);
 
     // czy postać stoi w węźle
-    if (current_from_node == current_to_node) {
+    if (m_current_from_node == m_current_to_node) {
         // czy istnieje droga w lewo
-        IntVector dst_nodes = m_connections.at(current_from_node); // połączenia z from_node
+        IntVector dst_nodes = m_connections.at(m_current_from_node); // połączenia z from_node
         for (IntVector::const_iterator it = dst_nodes.begin(); it
                 != dst_nodes.end(); ++it) {
             Point connection_node_pos = m_positions.at(*it);
             if (connection_node_pos[1] - from_node_pos[1] > 0) {
                 // istnieje droga, którą można iść
-                current_to_node = *it;
+                m_current_to_node = *it;
                 return true;
             }
         }
@@ -261,26 +261,26 @@ bool LandChoiceScreen::GoUpward() {
 
     // czy postać idzie w lewo
     if (to_node_pos[1] - from_node_pos[1] < 0) {
-        std::swap(current_from_node, current_to_node);
+        std::swap(m_current_from_node, m_current_to_node);
         return true;
     }
     return false;
 }
 
-bool LandChoiceScreen::GoDown() {
-    const Point from_node_pos = m_positions.at(current_from_node);
-    const Point to_node_pos = m_positions.at(current_to_node);
+bool LevelChoiceScreen::GoDown() {
+    const Point from_node_pos = m_positions.at(m_current_from_node);
+    const Point to_node_pos = m_positions.at(m_current_to_node);
 
     // czy postać stoi w węźle
-    if (current_from_node == current_to_node) {
+    if (m_current_from_node == m_current_to_node) {
         // czy istnieje droga w lewo
-        IntVector dst_nodes = m_connections.at(current_from_node); // połączenia z from_node
+        IntVector dst_nodes = m_connections.at(m_current_from_node); // połączenia z from_node
         for (IntVector::const_iterator it = dst_nodes.begin(); it
                 != dst_nodes.end(); ++it) {
             Point connection_node_pos = m_positions.at(*it);
             if (connection_node_pos[1] - from_node_pos[1] < 0) {
                 // istnieje droga, którą można iść
-                current_to_node = *it;
+                m_current_to_node = *it;
                 return true;
             }
         }
@@ -289,26 +289,26 @@ bool LandChoiceScreen::GoDown() {
 
     // czy postać idzie w prawo
     if (to_node_pos[1] - from_node_pos[1] > 0) {
-        std::swap(current_from_node, current_to_node);
+        std::swap(m_current_from_node, m_current_to_node);
         return true;
     }
     return false;
 }
 
-bool LandChoiceScreen::GoRight() {
-    const Point from_node_pos = m_positions.at(current_from_node);
-    const Point to_node_pos = m_positions.at(current_to_node);
+bool LevelChoiceScreen::GoRight() {
+    const Point from_node_pos = m_positions.at(m_current_from_node);
+    const Point to_node_pos = m_positions.at(m_current_to_node);
 
     // czy postać stoi w węźle
-    if (current_from_node == current_to_node) {
+    if (m_current_from_node == m_current_to_node) {
         // czy istnieje droga w lewo
-        IntVector dst_nodes = m_connections.at(current_from_node); // połączenia z from_node
+        IntVector dst_nodes = m_connections.at(m_current_from_node); // połączenia z from_node
         for (IntVector::const_iterator it = dst_nodes.begin(); it
                 != dst_nodes.end(); ++it) {
             Point connection_node_pos = m_positions.at(*it);
             if (connection_node_pos[0] - from_node_pos[0] > 0) {
                 // istnieje droga, którą można iść
-                current_to_node = *it;
+                m_current_to_node = *it;
                 return true;
             }
         }
@@ -317,33 +317,33 @@ bool LandChoiceScreen::GoRight() {
 
     // czy postać idzie w lewo
     if (to_node_pos[0] - from_node_pos[0] < 0) {
-        std::swap(current_from_node, current_to_node);
+        std::swap(m_current_from_node, m_current_to_node);
         return true;
     }
     return false;
 }
 
-std::string LandChoiceScreen::NodeToLevelName(int node) {
+std::string LevelChoiceScreen::NodeToLevelName(int node) {
     if (m_node_to_level_name.find(node)!=m_node_to_level_name.end()) {
         return m_node_to_level_name.at(node);
     }
     return "";
 }
 
-void LandChoiceScreen::RunLevelFromNode() {
+void LevelChoiceScreen::RunLevelFromNode() {
     // jeżeli postać jest w drodze (nie stoi w węźle), to nie pozwalamy włączyć poziomu
     // (można zmienić wedle uznania)
-    if (current_from_node != current_to_node) {
+    if (m_current_from_node != m_current_to_node) {
         return;
     }
 
-    const std::string level_name = NodeToLevelName(current_to_node);
-//    m_next_app_state = boost::shared_ptr<AppState>(new Game(level_name, PlayerPtr()));
-    m_next_app_state.reset(new Game(level_name));
+    const std::string level_name = NodeToLevelName(m_current_to_node);
+    m_next_app_state.reset(new Game(level_name, PlayerPtr()));
+//    m_next_app_state.reset(new Game(level_name));
     SetDone();
 }
 
-void LandChoiceScreen::ProcessEvents(const SDL_Event & event) {
+void LevelChoiceScreen::ProcessEvents(const SDL_Event & event) {
     if (event.type == SDL_QUIT) {
         SetDone();
     }
@@ -366,6 +366,6 @@ void LandChoiceScreen::ProcessEvents(const SDL_Event & event) {
     }
 }
 
-boost::shared_ptr<AppState> LandChoiceScreen::NextAppState() const {
+boost::shared_ptr<AppState> LevelChoiceScreen::NextAppState() const {
     return m_next_app_state;
 }

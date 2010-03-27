@@ -1,19 +1,22 @@
-#ifndef __LANDCHOICESCREEN_H_INCLUDED__
-#define __LANDCHOICESCREEN_H_INCLUDED__
+#ifndef __LEVELCHOICESCREEN_H_INCLUDED__
+#define __LEVELCHOICESCREEN_H_INCLUDED__
 
 #include <map>
+#include <vector>
 #include <boost/shared_ptr.hpp>
 
 #include "AppState.h"
 #include "Sprite.h"
 
+// zapowiedź klasy (forward declaration)
 class Player;
 typedef boost::shared_ptr<Player> PlayerPtr;
 
-class LandChoiceScreen: public AppState {
+
+class LevelChoiceScreen: public AppState {
 public:
-    explicit LandChoiceScreen(PlayerPtr player);
-    virtual ~LandChoiceScreen();
+    explicit LevelChoiceScreen(PlayerPtr player);
+    virtual ~LevelChoiceScreen();
     void Init();
     void Start();
 
@@ -63,9 +66,9 @@ private:
     std::vector<Point> m_positions;                    // pozycje punktów
     std::map<int, std::string> m_node_to_level_name;   // mapowanie węzeł -> nazwa poziomu
 
-    Point face_pos;                 // położenie bohatera na ekranie
-    int current_from_node;          // numer węzła początkowego
-    int current_to_node;            // numer węzła docelowego
+    Point m_face_pos;               // położenie bohatera na ekranie
+    int m_current_from_node;        // numer węzła początkowego
+    int m_current_to_node;          // numer węzła docelowego
 
     SpritePtr m_sprite;             // klatki z polami (droga, węzły, postać)
     float m_tile_width;             // szerokość kafla na ekranie

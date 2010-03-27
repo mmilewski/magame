@@ -14,13 +14,15 @@
 
 class Game : public AppState {
 public:
-    explicit Game(const std::string& level_name, 
-                  size_t player_lifes = 2, 
-                  size_t player_total_score = 0) 
-        : m_stored_player_pos_x(9.0),
-          m_level_name(level_name),
-          m_player_lifes(player_lifes),
-          m_player_total_score(player_total_score) {
+    explicit Game(const std::string& level_name, PlayerPtr player) 
+    // explicit Game(const std::string& level_name, 
+    //               size_t player_lifes = 3,         // ?!
+    //               size_t player_total_score = 0) 
+        : m_player(player),
+          m_stored_player_pos_x(9.0),
+          m_level_name(level_name) {
+          // m_player_lifes(player_lifes),
+          // m_player_total_score(player_total_score) {
 
         SetNextLevelName();
     }

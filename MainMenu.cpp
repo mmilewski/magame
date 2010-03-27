@@ -66,7 +66,7 @@ void MainMenu::ProcessEvents(const SDL_Event& event) {
         }
         else if (event.key.keysym.sym == SDLK_RETURN) {
             if (m_selection == Sel::NewGame) {
-                m_next_app_state.reset(new Game("1"));
+                m_next_app_state.reset(new Game("1", PlayerPtr()) );
             }
             else if (m_selection == Sel::HallOfFame) {
                 m_next_app_state.reset(new HallOfFame);

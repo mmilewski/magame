@@ -64,7 +64,7 @@ void Level::LoadEntitiesFromFile(const std::string& filename) {
             m_entities_to_create.push_back(data);
         }
 
-//         std::cout << "[LoadEntityFromFile] " << data.name << ", " << data.x << ", " << data.y << std::endl;
+        // std::cout << "[LoadEntityFromFile] " << data.name << ", " << data.x << ", " << data.y << std::endl;
     }
 
     // posortuj wczytane rekordy
