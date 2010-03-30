@@ -73,7 +73,12 @@ private:
     int m_current_from_node;        // numer węzła początkowego
     int m_current_to_node;          // numer węzła docelowego
 
-    SpritePtr m_sprite;             // klatki z polami (droga, węzły, postać)
+    SpritePtr m_horizontal_road_sprite;  // animacja drogi w poziomie
+    SpritePtr m_vertical_road_sprite;    // animacja drogi w pionie
+    SpritePtr m_entry_enabled_sprite;    // animacja aktywnego wejścia
+    SpritePtr m_entry_disabled_sprite;   // animacja nieaktywnego wejścia
+    SpritePtr m_face_sprite;             // animacja sprite'a bohatera
+
     float m_tile_width;             // szerokość kafla na ekranie
     float m_tile_height;            // wysokość kafla na ekranie
 

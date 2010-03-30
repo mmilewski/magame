@@ -12,8 +12,8 @@ int main(int argc, char *argv[]) {
 
     Engine::Get().Load();
 
-    size_t width = 600;
-    size_t height = 400;
+    size_t width = 640;
+    size_t height = 420;
     Engine::Get().Window()->SetSize(width, height);
     App app(false);
 
