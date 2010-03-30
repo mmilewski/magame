@@ -1,0 +1,10 @@
+lukasz 10000
+marcin 9000
+marcin 8000
+lukasz 7000
+marcin 6000
+marcin 5000
+mar 4000
+lukasz 3000
+lukasz 2000
+marcin 1000
