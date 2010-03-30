@@ -3,7 +3,8 @@
 #include "MainMenu.h"
 #include "Text.h"
 #include "Engine.h"
-#include "Game.h"
+//#include "Game.h"
+#include "LevelChoiceScreen.h"
 #include "HallOfFame.h"
 
 
@@ -18,7 +19,6 @@ void MainMenu::Start() {
 void MainMenu::Draw() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-
 
     Text t(0.1, 0.1);
     t.DrawText("menu", 0.3, 0.8);
@@ -64,7 +64,8 @@ void MainMenu::ProcessEvents(const SDL_Event& event) {
         }
         else if (event.key.keysym.sym == SDLK_RETURN) {
             if (m_selection == Sel::NewGame) {
-                m_next_app_state.reset(new Game("1"));
+//                m_next_app_state.reset(new Game("1", PlayerPtr()) );
+                m_next_app_state.reset(new LevelChoiceScreen(PlayerPtr()));
             }
             else if (m_selection == Sel::HallOfFame) {
                 m_next_app_state.reset(new HallOfFame);

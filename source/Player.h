@@ -84,10 +84,23 @@ public:
             GetX() < (m_level_width - 1) - half_screen_tiles_count;
     }
 
+    void NewLevelReset(LevelPtr level) {
+        LevelEntityData player_data = level->GetPlayerData();
+        SetDefaultMovement();
+        SetPosition(player_data.x, player_data.y);
+        SetVelocity(0, 0);
+        m_state = PS::Stand;
+        m_running_factor = 1;
+
+        m_max_x_pos = 9;
+        m_level_width = level->GetWidth();
+        m_is_level_completed = false;
+    }
+
 private:
     enum { DefaultXVelocity = 4, DefaultYVelocity = 20,
            DefaultXAcceleration = 0, DefaultYAcceleration = -60,
-           DefaultLifesCount = 2 };
+           DefaultLifesCount = 3 };
     
     PS::PlayerState m_state;  // stan, w którym znajduje się postać
     double m_running_factor;  // współczynnik biegania. >1.0 => biegnie, <1.0 => spowolnienie

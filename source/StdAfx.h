@@ -18,6 +18,8 @@
 
 #include <cassert>
 #include <cmath>
+#include <ctime>
+#include <cstdlib>
 #include <cctype>
 
 #include <SDL/SDL.h>

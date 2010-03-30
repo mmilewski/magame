@@ -15,7 +15,6 @@ public:
         return engine;
     }
 
-	//void Load();
     void Load() {
         m_sprite_config.reset(new SpriteConfig());
         m_renderer.reset(new Renderer());

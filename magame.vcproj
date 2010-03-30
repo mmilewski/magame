@@ -41,6 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)\..\externals\SDL-devel-1.2.14-VC8\SDL-1.2.14\SDL&quot;;&quot;$(ProjectDir)\..\externals\SDL-devel-1.2.14-VC8\SDL-1.2.14&quot;;&quot;$(ProjectDir)\..\externals\SDL_mixer-devel-1.2.11-VC\SDL_mixer-1.2.11&quot;;&quot;$(ProjectDir)\..\externals\boost_1_42_0&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -60,7 +61,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="Opengl32.lib SDLmain.lib SDL.lib SDL_mixer.lib"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="&quot;$(ProjectDir)\..\externals\SDL-devel-1.2.14-VC8\SDL-1.2.14\lib&quot;;&quot;$(ProjectDir)\..\externals\SDL_mixer-devel-1.2.11-VC\SDL_mixer-1.2.11\lib&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -171,24 +174,88 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\stdafx.cpp"
+				RelativePath=".\source\Aabb.cpp"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\source\App.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Engine.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Entity.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\EntityFactory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Game.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\HallOfFame.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Level.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\LevelChoiceScreen.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\main.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\MainMenu.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Player.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Renderer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\ScoreSubmit.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Sound.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Sprite.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\SpriteConfig.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\SpriteGrid.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\SpritePool.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Text.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Utils.cpp"
+				>
 			</File>
 		</Filter>
 		<Filter
@@ -197,11 +264,123 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\stdafx.h"
+				RelativePath=".\source\Aabb.h"
 				>
 			</File>
 			<File
-				RelativePath=".\targetver.h"
+				RelativePath=".\source\App.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\AppState.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Creator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\CreatorProducer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Engine.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Entity.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\EntityFactory.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Game.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\HallOfFame.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Level.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\LevelChoiceScreen.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\MainMenu.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\MushEntity.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Player.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\PlayerBulletCreator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\PlayerBulletEntity.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Renderer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\ScoreSubmit.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Sound.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Sprite.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\SpriteConfig.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\SpriteGrid.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\SpritePool.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\StdAfx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Text.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\TwinShotUpgrade.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Types.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Utils.h"
+				>
+			</File>
+			<File
+				RelativePath=".\source\Window.h"
 				>
 			</File>
 		</Filter>

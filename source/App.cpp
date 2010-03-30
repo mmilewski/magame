@@ -4,6 +4,7 @@
 #include "Engine.h"
 #include "MainMenu.h"
 #include "HallOfFame.h"
+#include "LevelChoiceScreen.h"
 
 void App::ProcessEvents() {
     // przyjrzyj zdarzenia
