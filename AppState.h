@@ -23,8 +23,8 @@ public:
         return m_is_done;
     }
 
-    void SetDone() {
-        m_is_done = true;
+    void SetDone(bool value=true) {
+        m_is_done = value;
     }
 
 private:

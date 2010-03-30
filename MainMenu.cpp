@@ -6,7 +6,8 @@
 #include "MainMenu.h"
 #include "Text.h"
 #include "Engine.h"
-#include "Game.h"
+//#include "Game.h"
+#include "LevelChoiceScreen.h"
 #include "HallOfFame.h"
 
 
@@ -15,25 +16,24 @@ void MainMenu::Init() {
 }
 
 void MainMenu::Start() {
-    Engine::Get().Sound()->PlayMusic("menu");
+    Engine::Get().GetSound()->PlayMusic("menu");
 }
 
 void MainMenu::Draw() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
-
     Text t(0.1, 0.1);
     t.DrawText("menu", 0.3, 0.8);
     
     if (m_selection == Sel::NewGame) {
-        Engine::Get().Renderer()->DrawQuad(0.3, 0.59, 0.72, 0.66, 0, 0.7, 0.7, 1);
+        Engine::Get().GetRenderer()->DrawQuad(0.3, 0.59, 0.72, 0.66,  .3, 0.8, 0.2, .5);
     }
     else if (m_selection == Sel::HallOfFame) {
-        Engine::Get().Renderer()->DrawQuad(0.2, 0.49, 0.82, 0.56, 0, 0.7, 0.7, 1);
+        Engine::Get().GetRenderer()->DrawQuad(0.2, 0.49, 0.82, 0.56,  .3, 0.8, 0.2, .5);
     }
     else if (m_selection == Sel::Quit) {
-        Engine::Get().Renderer()->DrawQuad(0.325, 0.39, 0.695, 0.46, 0, 0.7, 0.7, 1);
+        Engine::Get().GetRenderer()->DrawQuad(0.325, 0.39, 0.695, 0.46,  .3, 0.8, 0.2, .5);
     }
 
     t.SetSize(0.05, 0.05);
@@ -67,7 +67,8 @@ void MainMenu::ProcessEvents(const SDL_Event& event) {
         }
         else if (event.key.keysym.sym == SDLK_RETURN) {
             if (m_selection == Sel::NewGame) {
-                m_next_app_state.reset(new Game("1"));
+//                m_next_app_state.reset(new Game("1", PlayerPtr()) );
+                m_next_app_state.reset(new LevelChoiceScreen(PlayerPtr()));
             }
             else if (m_selection == Sel::HallOfFame) {
                 m_next_app_state.reset(new HallOfFame);

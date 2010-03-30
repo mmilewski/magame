@@ -64,7 +64,7 @@ void Level::LoadEntitiesFromFile(const std::string& filename) {
             m_entities_to_create.push_back(data);
         }
 
-        std::cout << "[LoadEntityFromFile] " << data.name << ", " << data.x << ", " << data.y << std::endl;
+        // std::cout << "[LoadEntityFromFile] " << data.name << ", " << data.x << ", " << data.y << std::endl;
     }
 
     // posortuj wczytane rekordy
@@ -83,7 +83,7 @@ FT::FieldType Level::Field(size_t x, size_t y) const {
 Aabb Level::GetFieldAabb(size_t x, size_t y) const {
 //    const double tile_width = Engine::Get().Renderer()->GetTileWidth();
 //    const double tile_height = Engine::Get().Renderer()->GetTileHeight();
-    RendererPtr renderer = Engine::Get().Renderer();
+    RendererPtr renderer = Engine::Get().GetRenderer();
     const size_t v_tiles_count = renderer->GetVerticalTilesOnScreenCount();
     y = v_tiles_count - y;  // odbij y w pionie (y=0 będzie na dole)
 

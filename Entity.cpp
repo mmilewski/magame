@@ -190,8 +190,8 @@ void Entity::Update(double dt, LevelPtr level) {
 }
 
 void Entity::Draw() const {
-    const double tile_width = Engine::Get().Renderer()->GetTileWidth();
-    const double tile_height = Engine::Get().Renderer()->GetTileHeight();
+    const double tile_width = Engine::Get().GetRenderer()->GetTileWidth();
+    const double tile_height = Engine::Get().GetRenderer()->GetTileHeight();
 
     // wylicz pozycję gracza na ekranie
     const double pos_x = m_x * tile_width;
@@ -244,10 +244,10 @@ void Entity::Draw() const {
 
 void Entity::KilledByPlayer() {
     SetIsDead(true);
-    std::cout << "[Entity] Killed by player" << std::endl;
+    // std::cout << "[Entity] Killed by player" << std::endl;
 }
 
 void Entity::KilledWithBullet() {
     SetIsDead(true);
-    std::cout << "[Entity] Killed by bullet" << std::endl;
+    // std::cout << "[Entity] Killed by bullet" << std::endl;
 }

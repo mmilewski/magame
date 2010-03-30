@@ -3,8 +3,8 @@
 
 
 SpriteGrid::SpriteGrid() {
-    size_t height = Engine::Get().Renderer()->GetVerticalTilesOnScreenCount();
-    size_t width  = Engine::Get().Renderer()->GetHorizontalTilesOnScreenCount();
+    size_t height = Engine::Get().GetRenderer()->GetVerticalTilesOnScreenCount();
+    size_t width  = Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount();
     width++; // siatka pamięta o jeden kafel więcej, bo czasami plansza jest ustawiona w połowie kafla
     m_grid.resize(height);
     for (size_t i = 0; i < height; ++i) {
@@ -34,8 +34,8 @@ void SpriteGrid::SetLevel(const LevelPtr lvl, double dx) {
 }
 
 void SpriteGrid::Draw(double dx) const {
-    const double tile_width  = Engine::Get().Renderer()->GetTileWidth();
-    const double tile_height = Engine::Get().Renderer()->GetTileHeight();
+    const double tile_width  = Engine::Get().GetRenderer()->GetTileWidth();
+    const double tile_height = Engine::Get().GetRenderer()->GetTileHeight();
 
     glPushMatrix();
     {

@@ -8,6 +8,7 @@
 #include "Text.h"
 #include "HallOfFame.h"
 #include "ScoreSubmit.h"
+#include "LevelChoiceScreen.h"
 #include "Creator.h"
 
 
@@ -20,6 +21,8 @@ void Game::ProcessEvents(const SDL_Event& event) {
     if (event.type == SDL_QUIT) {
         SetDone();
     } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
+        m_next_app_state = m_level_choice_screen;
+        m_next_app_state->Init();
         SetDone();
     } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_d) {
         m_player->Run();
@@ -41,7 +44,7 @@ void Game::ProcessEvents(const SDL_Event& event) {
 }
 
 void Game::Start() {
-    Engine::Get().Sound()->PlayMusic("game");
+    Engine::Get().GetSound()->PlayMusic("game");
 }
 
 void Game::Init() {
@@ -53,27 +56,34 @@ void Game::Init() {
     if (!m_level->GetLoaded()) {
         m_level_name = "1";
         m_level->LoadFromFile("data/" + m_level_name + ".lvl");
-        SetNextLevelName();
     }
 
+    // załaduj jednostki do poziomu
     m_level->LoadEntitiesFromFile("data/" + m_level_name + ".ents");
     m_entities_to_create = m_level->GetAllEntitiesToCreate();
 
-    m_level_view.StoreSprite(FT::PlatformLeftEnd,  SpritePtr(new Sprite(engine.SpriteConfig()->Get("platform_left"))));
-    m_level_view.StoreSprite(FT::PlatformMidPart,  SpritePtr(new Sprite(engine.SpriteConfig()->Get("platform_mid"))));
-    m_level_view.StoreSprite(FT::PlatformRightEnd, SpritePtr(new Sprite(engine.SpriteConfig()->Get("platform_right"))));
-    m_level_view.StoreSprite(FT::EndOfLevel,       SpritePtr(new Sprite(engine.SpriteConfig()->Get("end_of_level"))));
+    m_level_view.StoreSprite(FT::PlatformLeftEnd,  SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("platform_left"))));
+    m_level_view.StoreSprite(FT::PlatformMidPart,  SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("platform_mid"))));
+    m_level_view.StoreSprite(FT::PlatformRightEnd, SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("platform_right"))));
+    m_level_view.StoreSprite(FT::EndOfLevel,       SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("end_of_level"))));
 
     // utwórz postać gracza
     const LevelEntityData player_data = m_level->GetPlayerData();
-    if (player_data.name == "player") {
-        m_player.reset(new Player(player_data.x, player_data.y, m_level->GetWidth(), 
-                                  m_player_lifes, m_player_total_score));
-        m_player->SetSprites(SpritePtr(new Sprite(engine.SpriteConfig()->Get("player_left"))),
-                             SpritePtr(new Sprite(engine.SpriteConfig()->Get("player_right"))),
-                             SpritePtr(new Sprite(engine.SpriteConfig()->Get("player_stop"))) );
-    } else {
-        std::cerr << "brak informacji o postaci gracza w pliku z poziomem" << std::endl;
+    if(!m_player) {
+        if (player_data.name == "player") {
+            m_player.reset(new Player(player_data.x, player_data.y, m_level->GetWidth(), 
+                                      3, 0));
+            m_player->SetSprites(SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_left"))),
+                                 SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_right"))),
+                                 SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_stop"))) );
+        } else {
+            std::cerr << "brak informacji o postaci gracza w pliku z poziomem" << std::endl;
+        }
+    }
+    else {
+        m_stored_player_pos_x = 9;
+        m_player->NewLevelReset(m_level);
+
     }
 }
 
@@ -99,7 +109,7 @@ void Game::CheckPlayerEntitiesCollisions(double dt) {
         }
 
         // nieśmiertelna postać nie koliduje z innymi jednostkami,
-        // ale może zbierać np. upgrady (patrz wyżej)
+        // ale może zbierać np. upgrade'y (patrz wyżej)
         if (m_player->IsImmortal()) {
             continue;
         }
@@ -216,9 +226,9 @@ void Game::ExecuteCreators() {
     }
 }
 
-void Game::SeepAndAddEntities(double dt) {
+void Game::SeepAndAddEntities(double /* dt */) {
     // oznacz jednostki, które są za lewą krawędzią ekranu jako martwe
-    const double distance_of_deletion = Engine::Get().Renderer()->GetHorizontalTilesOnScreenCount();
+    const double distance_of_deletion = Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount();
     for (std::vector<EntityPtr>::iterator it = m_entities.begin(); it != m_entities.end(); ++it) {
         EntityPtr e = *it;
         if (e->GetX() + distance_of_deletion < m_player->GetX()) {
@@ -238,12 +248,12 @@ void Game::SeepAndAddEntities(double dt) {
     }
 
     // dodaj kolejne jednostki z listy do gry
-    const double distance_of_creation = Engine::Get().Renderer()->GetHorizontalTilesOnScreenCount();
+    const double distance_of_creation = Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount();
     while (m_entities_to_create.empty() == false) {
         if (m_entities_to_create.front().x - m_player->GetX() < distance_of_creation) {
             LevelEntityData data = m_entities_to_create.front();
             m_entities_to_create.pop_front();
-            EntityPtr e = Engine::Get().EntityFactory()->CreateEntity(data.name, data.x, data.y);
+            EntityPtr e = Engine::Get().GetEntityFactory()->CreateEntity(data.name, data.x, data.y);
             m_entities.push_back(e);
         } else {
             break;
@@ -251,11 +261,16 @@ void Game::SeepAndAddEntities(double dt) {
     }
 }
 
+void Game::BindLevelChoiceScreen(const boost::shared_ptr<LevelChoiceScreen>& screen) {
+    m_level_choice_screen = screen;
+}
+
 bool Game::Update(double dt) {
     // czy gracz zakończył aktualny poziom
     if (m_player->HasCompletedCurrentLevel()) {
-        GamePtr g(new Game(m_next_level_name, m_player->GetLifesCount(), m_player->GetScores()));
-        m_next_app_state = g;
+        m_level_choice_screen->SetPlayer(m_player);
+        m_next_app_state = m_level_choice_screen;
+        // m_next_app_state->Init();      // ważne!!
 
         SetDone();
         return IsDone();
@@ -281,7 +296,7 @@ bool Game::Update(double dt) {
     CheckPlayerEntitiesCollisions(dt);
     CheckEntityEntityCollisions(dt);
 
-    // uaktualnij obiekt reprezentującego gracza
+    // uaktualnij obiekt reprezentujący gracza
     m_player->Update(dt, m_level);
 
     // uaktualnij stan jednostek
@@ -310,7 +325,7 @@ void Game::Draw() {
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     {
-        glTranslatef(-(m_stored_player_pos_x * Engine::Get().Renderer()->GetTileWidth() - 0.45), 0, 0);
+        glTranslatef(-(m_stored_player_pos_x * Engine::Get().GetRenderer()->GetTileWidth() - 0.45), 0, 0);
         glMatrixMode(GL_MODELVIEW);
     
         m_level_view.SetLevel(m_level, m_stored_player_pos_x);

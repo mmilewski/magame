@@ -5,6 +5,7 @@
 #include "Utils.h"
 #include "Engine.h"
 #include "Player.h"
+#include "Text.h"
 
 Player::Player(double x, double y, size_t level_width, size_t lifes = DefaultLifesCount, size_t score = 0)
     : Entity(x, y, DefaultXVelocity, DefaultYVelocity, DefaultXAcceleration, DefaultYAcceleration),
@@ -29,7 +30,7 @@ void Player::Jump(double y_velocity) {
         // początkowa prędkość i przyspieszenie
         SetYVelocity(y_velocity);
         SetYAcceleration(DefaultYAcceleration);
-        Engine::Get().Sound()->PlaySfx("jump");
+        Engine::Get().GetSound()->PlaySfx("jump");
     }
 }
 
@@ -103,7 +104,7 @@ void Player::Update(double dt, LevelPtr level) {
     if (m_x > m_max_x_pos) {
         m_max_x_pos = m_x;
     }
-    const size_t half_screen_tiles_count = (Engine::Get().Renderer()->GetHorizontalTilesOnScreenCount()-1)/2;
+    const size_t half_screen_tiles_count = (Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount()-1)/2;
     if (m_x < m_max_x_pos - half_screen_tiles_count) {
         m_x = m_max_x_pos - half_screen_tiles_count; // można się wrócić tylko do tych części mapy, które się już widziało
     } 
@@ -138,8 +139,6 @@ void Player::Update(double dt, LevelPtr level) {
     }
 }
 
-#include "Text.h"
-
 void Player::Draw() const {
     // wypisz informację o liczbie punktów zdobytych przez gracza
     Text scores_text;
@@ -153,7 +152,7 @@ void Player::Draw() const {
     }
 
     // pobierz szerokość i wysokość kafla na ekranie
-    RendererPtr renderer = Engine::Get().Renderer();
+    RendererPtr renderer = Engine::Get().GetRenderer();
     const double tile_width = renderer->GetTileWidth();
     const double tile_height = renderer->GetTileHeight();
 
@@ -182,15 +181,15 @@ void Player::Draw() const {
     }
 }
 
-void Player::CollisionOnRight(EntityPtr entity) {
+void Player::CollisionOnRight(EntityPtr /* entity */) {
     LooseLife();
 }
 
-void Player::CollisionOnLeft(EntityPtr entity) {
+void Player::CollisionOnLeft(EntityPtr /* entity */) {
     LooseLife();
 }
 
-void Player::CollisionOverPlayer(EntityPtr entity) {
+void Player::CollisionOverPlayer(EntityPtr /* entity */) {
     LooseLife();
 }
 

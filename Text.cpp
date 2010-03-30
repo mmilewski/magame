@@ -77,10 +77,10 @@ void Text::Draw(int tex_x, int tex_y, double pos_x, double pos_y) {
         glMatrixMode(GL_PROJECTION);
         glPushMatrix();
         {
-            Engine::Get().Renderer()->ResetProjection();
+            Engine::Get().GetRenderer()->ResetProjection();
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
-            Engine::Get().Renderer()->DrawSprite(tex_x, tex_y, 32, 32, 
+            Engine::Get().GetRenderer()->DrawSprite(tex_x, tex_y, 32, 32, 
                                                  pos_x, pos_y, m_width, m_height,
                                                  DL::DisplayLayer(m_layer));
         }

@@ -12,22 +12,14 @@
 #include "Entity.h"
 #include "AppState.h"
 
+class LevelChoiceScreen;
+
 class Game : public AppState {
 public:
-    explicit Game(const std::string& level_name, 
-                  size_t player_lifes = 2, 
-                  size_t player_total_score = 0) 
-        : m_stored_player_pos_x(9.0),
-          m_level_name(level_name),
-          m_player_lifes(player_lifes),
-          m_player_total_score(player_total_score) {
-
-        SetNextLevelName();
-    }
-
-    void SetNextLevelName() {
-        int n = StrToInt(m_level_name);
-        m_next_level_name = IntToStr(n+1);
+    explicit Game(const std::string& level_name, PlayerPtr player) 
+        : m_player(player),
+          m_stored_player_pos_x(9.0),
+          m_level_name(level_name)  {
     }
 
     void Start();
@@ -55,7 +47,8 @@ public:
         return m_next_app_state;
     }
 
-    
+    void BindLevelChoiceScreen(const boost::shared_ptr<LevelChoiceScreen>& screen);
+
 private:
     void SeepAndAddEntities(double dt);
     void CheckPlayerEntitiesCollisions(double dt);
@@ -73,11 +66,9 @@ private:
 
     std::string m_level_name;
     AppStatePtr m_next_app_state;
-
-    size_t m_player_lifes;
-    size_t m_player_total_score;
     
-    std::string m_next_level_name;
+
+    boost::shared_ptr<LevelChoiceScreen> m_level_choice_screen;
 };
 
 typedef boost::shared_ptr<Game> GamePtr;
