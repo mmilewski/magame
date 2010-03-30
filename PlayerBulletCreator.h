@@ -14,7 +14,7 @@ public:
 
     void Create(Game& game) {
         // stwórz jednostkę i nadaj jej odpowiednią prędkość (zgodnie ze zwrotem postaci gracza)
-        EntityPtr entity = Engine::Get().EntityFactory()->CreateEntity(ET::PlayerBullet, m_x, m_y);
+        EntityPtr entity = Engine::Get().GetEntityFactory()->CreateEntity(ET::PlayerBullet, m_x, m_y);
         double x_vel = m_vx < 0 ? -entity->GetDefaultXVelocity() : entity->GetDefaultXVelocity();
         double y_vel = entity->GetDefaultYVelocity();
 //        std::cout << "[PlayerBulletCreator] " << m_vx << "  " << x_vel << " " << y_vel << std::endl;
@@ -23,7 +23,7 @@ public:
         // dodaj pocisk do gry oraz odegraj dźwięk 'laser'
         if (game.CanAddEntity(entity)) {
             game.AddEntity(entity);
-            Engine::Get().Sound()->PlaySfx("laser");
+            Engine::Get().GetSound()->PlaySfx("laser");
         }
     }
 

@@ -44,7 +44,7 @@ void Game::ProcessEvents(const SDL_Event& event) {
 }
 
 void Game::Start() {
-    Engine::Get().Sound()->PlayMusic("game");
+    Engine::Get().GetSound()->PlayMusic("game");
 }
 
 void Game::Init() {
@@ -62,10 +62,10 @@ void Game::Init() {
     m_level->LoadEntitiesFromFile("data/" + m_level_name + ".ents");
     m_entities_to_create = m_level->GetAllEntitiesToCreate();
 
-    m_level_view.StoreSprite(FT::PlatformLeftEnd,  SpritePtr(new Sprite(engine.SpriteConfig()->Get("platform_left"))));
-    m_level_view.StoreSprite(FT::PlatformMidPart,  SpritePtr(new Sprite(engine.SpriteConfig()->Get("platform_mid"))));
-    m_level_view.StoreSprite(FT::PlatformRightEnd, SpritePtr(new Sprite(engine.SpriteConfig()->Get("platform_right"))));
-    m_level_view.StoreSprite(FT::EndOfLevel,       SpritePtr(new Sprite(engine.SpriteConfig()->Get("end_of_level"))));
+    m_level_view.StoreSprite(FT::PlatformLeftEnd,  SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("platform_left"))));
+    m_level_view.StoreSprite(FT::PlatformMidPart,  SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("platform_mid"))));
+    m_level_view.StoreSprite(FT::PlatformRightEnd, SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("platform_right"))));
+    m_level_view.StoreSprite(FT::EndOfLevel,       SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("end_of_level"))));
 
     // utwórz postać gracza
     const LevelEntityData player_data = m_level->GetPlayerData();
@@ -73,9 +73,9 @@ void Game::Init() {
         if (player_data.name == "player") {
             m_player.reset(new Player(player_data.x, player_data.y, m_level->GetWidth(), 
                                       3, 0));
-            m_player->SetSprites(SpritePtr(new Sprite(engine.SpriteConfig()->Get("player_left"))),
-                                 SpritePtr(new Sprite(engine.SpriteConfig()->Get("player_right"))),
-                                 SpritePtr(new Sprite(engine.SpriteConfig()->Get("player_stop"))) );
+            m_player->SetSprites(SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_left"))),
+                                 SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_right"))),
+                                 SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_stop"))) );
         } else {
             std::cerr << "brak informacji o postaci gracza w pliku z poziomem" << std::endl;
         }
@@ -228,7 +228,7 @@ void Game::ExecuteCreators() {
 
 void Game::SeepAndAddEntities(double /* dt */) {
     // oznacz jednostki, które są za lewą krawędzią ekranu jako martwe
-    const double distance_of_deletion = Engine::Get().Renderer()->GetHorizontalTilesOnScreenCount();
+    const double distance_of_deletion = Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount();
     for (std::vector<EntityPtr>::iterator it = m_entities.begin(); it != m_entities.end(); ++it) {
         EntityPtr e = *it;
         if (e->GetX() + distance_of_deletion < m_player->GetX()) {
@@ -248,12 +248,12 @@ void Game::SeepAndAddEntities(double /* dt */) {
     }
 
     // dodaj kolejne jednostki z listy do gry
-    const double distance_of_creation = Engine::Get().Renderer()->GetHorizontalTilesOnScreenCount();
+    const double distance_of_creation = Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount();
     while (m_entities_to_create.empty() == false) {
         if (m_entities_to_create.front().x - m_player->GetX() < distance_of_creation) {
             LevelEntityData data = m_entities_to_create.front();
             m_entities_to_create.pop_front();
-            EntityPtr e = Engine::Get().EntityFactory()->CreateEntity(data.name, data.x, data.y);
+            EntityPtr e = Engine::Get().GetEntityFactory()->CreateEntity(data.name, data.x, data.y);
             m_entities.push_back(e);
         } else {
             break;
@@ -325,7 +325,7 @@ void Game::Draw() {
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     {
-        glTranslatef(-(m_stored_player_pos_x * Engine::Get().Renderer()->GetTileWidth() - 0.45), 0, 0);
+        glTranslatef(-(m_stored_player_pos_x * Engine::Get().GetRenderer()->GetTileWidth() - 0.45), 0, 0);
         glMatrixMode(GL_MODELVIEW);
     
         m_level_view.SetLevel(m_level, m_stored_player_pos_x);

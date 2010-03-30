@@ -31,7 +31,7 @@ void Sprite::Update(double dt) {
 }
 
 void Sprite::DrawCurrentFrame(double x, double y, double width, double height) {
-    Engine::Get().Renderer()->DrawSprite(
+    Engine::Get().GetRenderer()->DrawSprite(
             m_data.left + m_data.width * m_current_frame, m_data.bottom,
             m_data.width, m_data.height, x, y, width, height, m_data.layer);
 }
