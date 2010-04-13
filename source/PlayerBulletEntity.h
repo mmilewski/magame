@@ -3,7 +3,6 @@
 #include "StdAfx.h"
 
 #include "Entity.h"
-#include <iostream>
 
 
 class PlayerBulletEntity : public Entity {

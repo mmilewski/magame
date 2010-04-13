@@ -47,6 +47,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
+				PrecompiledHeaderFile="$(IntDir)\$(TargetName).pch"
 				WarningLevel="3"
 				DebugInformationFormat="4"
 			/>
@@ -117,10 +118,11 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)\..\externals\SDL-devel-1.2.14-VC8\SDL-1.2.14\SDL&quot;;&quot;$(ProjectDir)\..\externals\SDL-devel-1.2.14-VC8\SDL-1.2.14&quot;;&quot;$(ProjectDir)\..\externals\SDL_mixer-devel-1.2.11-VC\SDL_mixer-1.2.11&quot;;&quot;$(ProjectDir)\..\externals\boost_1_42_0&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="1"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>

@@ -2,9 +2,6 @@
 #define __AABB_H__
 #include "StdAfx.h"
 
-//#include <boost/shared_ptr.hpp>
-#include <cassert>
-#include <ostream>
 
 // Axis-Aligned Bounding Box
 class Aabb {

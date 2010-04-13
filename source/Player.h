@@ -2,7 +2,6 @@
 #define __PLAYER_H__
 #include "StdAfx.h"
 
-#include <stdexcept>  // logic_error
 #include "Entity.h"
 
 class Player : public Entity {

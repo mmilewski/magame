@@ -2,10 +2,6 @@
 #define __HALL_OF_FAME_H__
 #include "StdAfx.h"
 
-#include <string>
-#include <vector> 
-#include <boost/shared_ptr.hpp>
-
 #include "AppState.h"
 
 

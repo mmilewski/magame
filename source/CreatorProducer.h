@@ -2,7 +2,6 @@
 #define __CREATOR_PRODUCER_H_INCLUDED__
 #include "StdAfx.h"
 
-#include <list>
 #include "Creator.h"
 
 // Klasa bazowa dla klas, które będą dodawać kreatory

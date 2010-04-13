@@ -16,6 +16,7 @@
 #include <iostream>
 #include <fstream>
 
+#include <stdexcept>  // logic_error
 #include <cassert>
 #include <cmath>
 #include <ctime>
@@ -25,10 +26,16 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_opengl.h>
 #include <SDL/SDL_mixer.h>
-#include <algorithm>
+
+#include <boost/shared_ptr.hpp>
+#include <boost/enable_shared_from_this.hpp>
 
 #include <string>
 #include <vector> 
+#include <list>
+#include <map>
+#include <algorithm>
+#include <utility>
 
 //#include <cstdio>
 //#include <tchar.h>

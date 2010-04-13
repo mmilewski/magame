@@ -2,7 +2,6 @@
 #define __ENTITY_H__
 #include "StdAfx.h"
 
-#include <boost/shared_ptr.hpp> 
 #include "Aabb.h"
 #include "Sprite.h"
 #include "Types.h"

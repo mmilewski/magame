@@ -2,8 +2,6 @@
 #define __APP_STATE_H__
 #include "StdAfx.h"
 
-#include <SDL/SDL.h>
-#include <boost/shared_ptr.hpp>
 
 class AppState {
 public:

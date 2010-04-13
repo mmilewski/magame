@@ -2,8 +2,6 @@
 #define __ENTITY_FACTORY_H__
 #include "StdAfx.h"
 
-#include <boost/shared_ptr.hpp>
-
 class Entity;
 typedef boost::shared_ptr<Entity> EntityPtr;
 

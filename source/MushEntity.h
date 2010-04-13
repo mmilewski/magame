@@ -2,7 +2,6 @@
 #define __MUSH_ENTITY_H__
 #include "StdAfx.h"
 
-#include <iostream>
 #include "Types.h"
 #include "Entity.h"
 

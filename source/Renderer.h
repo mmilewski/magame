@@ -2,8 +2,6 @@
 #define RENDERER_H_
 #include "StdAfx.h"
 
-#include <SDL/SDL_opengl.h>
-#include <boost/shared_ptr.hpp>
 #include <string>
 #include "Aabb.h"
 #include "Types.h"
