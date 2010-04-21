@@ -361,7 +361,7 @@ bool LevelChoiceScreen::GoRight() {
 
 std::string LevelChoiceScreen::NodeToLevelName(int node) {
     if (m_node_to_level_name.find(node)!=m_node_to_level_name.end()) {
-        return m_node_to_level_name.at(node);
+        return m_node_to_level_name[node];
     }
     return "";
 }

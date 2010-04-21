@@ -56,10 +56,10 @@ private:
     void DrawRoad(size_t from, size_t to) const;
 
     struct Point {
-        Point(float x, float y) : x(x), y(y) {}
-        float operator[](int idx) const { return (idx==0?x:y); }
-        float& operator[](int idx) { return (idx==0?x:y); }
-        float x, y;
+        Point(double x, double y) : x(x), y(y) {}
+        double operator[](int idx) const { return (idx==0?x:y); }
+        double & operator[](int idx) { return (idx==0?x:y); }
+        double x, y;
     };
 
     typedef std::vector<bool> BoolVector;
@@ -79,8 +79,8 @@ private:
     SpritePtr m_entry_disabled_sprite;   // animacja nieaktywnego wejścia
     SpritePtr m_face_sprite;             // animacja sprite'a bohatera
 
-    float m_tile_width;             // szerokość kafla na ekranie
-    float m_tile_height;            // wysokość kafla na ekranie
+    double m_tile_width;             // szerokość kafla na ekranie
+    double m_tile_height;            // wysokość kafla na ekranie
 
     PlayerPtr m_player;             // wskaźnik na gracza, który przekażemy do instancji gry
     boost::shared_ptr<AppState> m_next_app_state;
