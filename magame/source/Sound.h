@@ -2,14 +2,6 @@
 #define __SOUND_H__
 #include "StdAfx.h"
 
-#include <string>
-#include <map>
-
-#include <boost/shared_ptr.hpp>
-
-#include <SDL/SDL_mixer.h>
-
-
 
 class Sound {
 public:

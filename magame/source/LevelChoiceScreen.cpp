@@ -2,6 +2,7 @@
 
 #include <boost/assign/std/vector.hpp>     // operator+=()
 #include <boost/assign/list_inserter.hpp>  // insert()
+
 #include "Engine.h"
 #include "LevelChoiceScreen.h"
 #include "MainMenu.h"
@@ -15,7 +16,11 @@ LevelChoiceScreen::LevelChoiceScreen(PlayerPtr player) :
     m_face_pos(0, 0),
     m_current_from_node(0),
     m_current_to_node(0),
-    m_sprite(),
+    m_horizontal_road_sprite(),
+    m_vertical_road_sprite(),
+    m_entry_enabled_sprite(),
+    m_entry_disabled_sprite(),
+    m_face_sprite(),
     m_tile_width(1.0 / 15),
     m_tile_height(1.0 / 15),
     m_player(player),
@@ -34,7 +39,7 @@ LevelChoiceScreen::LevelChoiceScreen(PlayerPtr player) :
 
 //
 //    boost assignment lbrary
-//    http://www.boost.org/doc/libs/1_35_0/libs/assign/doc/index.html
+//    http://www.boost.org/doc/libs/release/libs/assign/doc/index.html
 //
     using namespace boost::assign;
     m_connections += IntVector(), IntVector(), IntVector(), IntVector(), IntVector();
@@ -45,7 +50,7 @@ LevelChoiceScreen::LevelChoiceScreen(PlayerPtr player) :
     m_connections.at(4) += 2;
 
     // zdefiniuj odwzorowanie (aka mapowanie)  węzeł->nazwa poziomu
-    insert(m_node_to_level_name)(0, "1")(1, "2")(2, "2")(3, "1")(4, "2");
+    insert(m_node_to_level_name)(0, "1")(1, "2")(2, "3")(3, "4")(4, "5");
 
 //
 //    http://en.wikipedia.org/wiki/C%2B%2B0x#Initializer_lists
@@ -54,9 +59,18 @@ LevelChoiceScreen::LevelChoiceScreen(PlayerPtr player) :
     m_positions += Point(.1, .7), Point(.7, .7), Point(.7, .4), Point(.3, .4), Point(.7, .1);
     m_face_pos = m_positions.at(0);
 
-    const SpriteConfigData land_choice_sprite_data( DL::Foreground, 8, 0,
-                                                    0, 14 * 32, 32, 32, false );
-    m_sprite.reset(new Sprite(land_choice_sprite_data));
+    // załaduj sprite'y
+    const SpriteConfigData horizontal_road_data(DL::Foreground, 1, 1, 0 * 32, 14 * 32, 32, 32, false);
+    const SpriteConfigData vertical_road_data(DL::Foreground, 1, 1,  1 * 32, 14 * 32, 32, 32, false);
+    const SpriteConfigData entry_enabled_data(DL::Foreground, 1, 1,  6 * 32, 14 * 32, 32, 32, false);
+    const SpriteConfigData face_data(DL::Foreground, 8, .1,  8 * 32, 14 * 32, 32, 32, true);
+
+    m_horizontal_road_sprite.reset(new Sprite(horizontal_road_data));
+    m_vertical_road_sprite.reset(new Sprite(vertical_road_data));
+    m_entry_enabled_sprite.reset(new Sprite(entry_enabled_data));
+    m_entry_disabled_sprite.reset(new Sprite(entry_enabled_data)); // ! pełna kopia, a nie kopia wskaźnika
+    m_face_sprite.reset(new Sprite(face_data));
+
 }
 
 LevelChoiceScreen::~LevelChoiceScreen() {
@@ -84,21 +98,23 @@ void LevelChoiceScreen::DrawRoad(size_t from, size_t to) const {
 
     Point from_node_pos = m_positions.at(from);
     Point to_node_pos = m_positions.at(to);
-//    bool is_vertical = false, is_horizontal = false;
+    // jeśli droga jest pionowa
     if (from_node_pos[0] - to_node_pos[0]) {
         if (from_node_pos[0] > to_node_pos[0]) {
             std::swap(from_node_pos, to_node_pos);
         }
-        m_sprite->SetCurrentFrame(1);
-        m_sprite->DrawCurrentFrame( from_node_pos[0], from_node_pos[1] - m_tile_height / 2,
-                                    to_node_pos[0] - from_node_pos[0], m_tile_height );
-    } else if (from_node_pos[1] - to_node_pos[1]) {
+        m_vertical_road_sprite->DrawCurrentFrame(
+                from_node_pos[0],                   from_node_pos[1] - m_tile_height / 2,
+                to_node_pos[0] - from_node_pos[0],  m_tile_height);
+    }
+    // jeśli droga jest pozioma
+    else if (from_node_pos[1] - to_node_pos[1]) {
         if (from_node_pos[1] > to_node_pos[1]) {
             std::swap(from_node_pos, to_node_pos);
         }
-        m_sprite->SetCurrentFrame(0);
-        m_sprite->DrawCurrentFrame( from_node_pos[0] - m_tile_width / 2, from_node_pos[1],
-                                    m_tile_width, to_node_pos[1] - from_node_pos[1] );
+        m_horizontal_road_sprite->DrawCurrentFrame(
+                from_node_pos[0] - m_tile_width / 2,  from_node_pos[1],
+                m_tile_width,                         to_node_pos[1] - from_node_pos[1]);
     }
 }
 
@@ -119,9 +135,9 @@ void LevelChoiceScreen::Draw() {
     for (size_t from_node = 0; from_node < m_connections.size(); ++from_node) {
         const IntVector roads = m_connections.at(from_node);
         for (IntVector::const_iterator to_node = roads.begin(); to_node != roads.end(); ++to_node) {
-            if (from_node < *to_node) {
-                DrawRoad(from_node, *to_node);
-            } else if (*to_node < from_node) {
+            if (from_node < (size_t)*to_node) {
+                DrawRoad(from_node, (size_t)*to_node);
+            } else if ((size_t)*to_node < from_node) {
                 // drogi dwukierunkowe rysujemy jednokrotnie
                 const IntVector cs = m_connections.at(*to_node);
                 if (std::find(cs.begin(), cs.end(), from_node) == cs.end()) {
@@ -133,15 +149,15 @@ void LevelChoiceScreen::Draw() {
 
     // narysuj węzły
     for (size_t node_id = 0; node_id < m_positions.size(); ++node_id) {
-        const bool node_enabled = true; // czy można skorzystać z tego węzła
+        const double x = m_positions[node_id][0] - m_tile_width / 2;
+        const double y = m_positions[node_id][1] - m_tile_height / 2;
+
+        bool node_enabled = true; // czy można skorzystać z tego węzła (na razie wszystkie węzły są aktywne
         if (node_enabled) {
-            m_sprite->SetCurrentFrame(6);
+            m_entry_enabled_sprite->DrawCurrentFrame(x, y, m_tile_width, m_tile_height);
         } else {
-            m_sprite->SetCurrentFrame(7);
+            m_entry_disabled_sprite->DrawCurrentFrame(x, y, m_tile_width, m_tile_height);
         }
-        const float x = m_positions[node_id][0] - m_tile_width / 2;
-        const float y = m_positions[node_id][1] - m_tile_height / 2;
-        m_sprite->DrawCurrentFrame(x, y, m_tile_width, m_tile_height);
 //        Engine::Get().Renderer()->DrawSprite(
 //                i * 32, 14 * 32, 32, 32,
 //                x, y,
@@ -149,8 +165,7 @@ void LevelChoiceScreen::Draw() {
     }
 
     // narysuj postać
-    m_sprite->SetCurrentFrame(8);
-    m_sprite->DrawCurrentFrame(m_face_pos[0] - m_tile_width / 2, m_face_pos[1]
+    m_face_sprite->DrawCurrentFrame(m_face_pos[0] - m_tile_width / 2, m_face_pos[1]
             - m_tile_height / 2, m_tile_width, m_tile_height);
 
 
@@ -185,13 +200,16 @@ bool LevelChoiceScreen::Update(double dt) {
 //    assert(from_node!=to_node && "from == to :/");
 //    std::cout << from_node << " " << to_node << std::endl;
 
-    const Point from_node_pos = m_positions.at(m_current_from_node);
+    // uaktualnij położenie twarzy postaci
+    const double face_velocity_x = .6;   // prędkość twarzy w poziomie i pionie
+    const double face_velocity_y = .5;
     const Point to_node_pos = m_positions.at(m_current_to_node);
     const double dist_x = to_node_pos.x - m_face_pos[0];
     const double dist_y = to_node_pos.y - m_face_pos[1];
-    double vel_x = .5 * sgn(dist_x);
-    double vel_y = .4 * sgn(dist_y);
+    double vel_x = face_velocity_x * sgn(dist_x);
+    double vel_y = face_velocity_y * sgn(dist_y);
 
+    // sprawdź czy postać należy zatrzymać (bo jest w węźle)
     if (fabs(dist_x) < .01 && fabs(dist_y) < .01) {
         m_current_from_node = m_current_to_node;
         vel_x = vel_y = 0;
@@ -199,8 +217,16 @@ bool LevelChoiceScreen::Update(double dt) {
         m_face_pos[1] = to_node_pos.y;
     }
 
+    // uaktualnij położenie na podstawie prędkości
     m_face_pos[0] += vel_x * dt;
     m_face_pos[1] += vel_y * dt;
+
+
+    // uaktualnij animacje
+    m_horizontal_road_sprite->Update(dt);
+    m_vertical_road_sprite->Update(dt);
+    m_entry_enabled_sprite->Update(dt);
+    m_face_sprite->Update(dt);
 
     return !IsDone();
 }

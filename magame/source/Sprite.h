@@ -2,9 +2,8 @@
 #define SPRITE_H_
 #include "StdAfx.h"
 
-#include <string>
-#include <boost/shared_ptr.hpp>
 #include "SpriteConfig.h"
+
 
 class Sprite {
 public:

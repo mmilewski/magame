@@ -2,9 +2,6 @@
 #define __SPRITE_POOL_H__
 #include "StdAfx.h"
 
-#include <vector> 
-#include <boost/shared_ptr.hpp> 
-
 #include "Types.h"
 #include "Sprite.h"
 

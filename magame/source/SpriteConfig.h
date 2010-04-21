@@ -2,10 +2,8 @@
 #define SPRITECONFIG_H_
 #include "StdAfx.h"
 
-#include <map>
-#include <string>
-#include <boost/shared_ptr.hpp>
 #include "Types.h"
+
 
 struct SpriteConfigData {
     /**

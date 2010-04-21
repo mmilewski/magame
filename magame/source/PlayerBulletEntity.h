@@ -28,6 +28,8 @@ public:
     }
 
     void Update(double dt, LevelPtr level) {
+        m_right->Update(dt);
+
         // usuń obiekt jeżeli żyje zbyt długo
         m_time_to_live -= dt;
         if (m_time_to_live < 0) {

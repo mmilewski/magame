@@ -244,10 +244,10 @@ void Entity::Draw() const {
 
 void Entity::KilledByPlayer() {
     SetIsDead(true);
-    std::cout << "[Entity] Killed by player" << std::endl;
+    // std::cout << "[Entity] Killed by player" << std::endl;
 }
 
 void Entity::KilledWithBullet() {
     SetIsDead(true);
-    std::cout << "[Entity] Killed by bullet" << std::endl;
+    // std::cout << "[Entity] Killed by bullet" << std::endl;
 }

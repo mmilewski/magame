@@ -69,9 +69,14 @@ private:
     int m_current_from_node;        // numer węzła początkowego
     int m_current_to_node;          // numer węzła docelowego
 
-    SpritePtr m_sprite;             // klatki z polami (droga, węzły, postać)
-    double m_tile_width;             // szerokość kafla na ekranie
-    double m_tile_height;            // wysokość kafla na ekranie
+    SpritePtr m_horizontal_road_sprite;  // animacja drogi w poziomie
+    SpritePtr m_vertical_road_sprite;    // animacja drogi w pionie
+    SpritePtr m_entry_enabled_sprite;    // animacja aktywnego wejścia
+    SpritePtr m_entry_disabled_sprite;   // animacja nieaktywnego wejścia
+    SpritePtr m_face_sprite;             // animacja sprite'a bohatera
+
+    float m_tile_width;             // szerokość kafla na ekranie
+    float m_tile_height;            // wysokość kafla na ekranie
 
     PlayerPtr m_player;             // wskaźnik na gracza, który przekażemy do instancji gry
     boost::shared_ptr<AppState> m_next_app_state;

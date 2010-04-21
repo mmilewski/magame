@@ -2,13 +2,12 @@
 #define RENDERER_H_
 #include "StdAfx.h"
 
-#include <string>
 #include "Aabb.h"
 #include "Types.h"
 
 class Renderer {
 public:
-    Renderer() 
+    explicit Renderer() 
         : m_tile_width(0.05),
           m_tile_height(0.05) {    
     }

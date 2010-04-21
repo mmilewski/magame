@@ -2,8 +2,7 @@
 #define __UTILS_H_INCLUDED__
 #include "StdAfx.h"
 
-#include <sstream>
-#include <string>
+
 
 /**
  * Zamienia liczbę number na  odpowiadający jej ciąg znaków.

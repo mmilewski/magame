@@ -2,10 +2,6 @@
 #define __GAME_H_INCLUDED__
 #include "StdAfx.h"
 
-#include <boost/shared_ptr.hpp>
-#include <SDL/SDL.h>
-#include <vector>
-#include <iostream>
 
 #include "Utils.h"
 #include "Player.h"
