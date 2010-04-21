@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="windows-1250"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="myprops"
+	>
+	<UserMacro
+		Name="Externals"
+		Value="$(ProjectDir)..\..\..\externals\"
+	/>
+	<UserMacro
+		Name="Sources"
+		Value="$(ProjectDir)..\..\..\source\"
+	/>
+</VisualStudioPropertySheet>
