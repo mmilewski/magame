@@ -179,7 +179,7 @@ void LevelChoiceScreen::Draw() {
 }
 
 // zwraca znak x
-int sgn(float x) {
+int sgn(double x) {
     return x ? (x > 0 ? 1 : -1) : 0;
 //    if (x < 0) return -1;
 //    if (x > 0) return 1;
