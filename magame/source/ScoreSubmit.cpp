@@ -125,10 +125,13 @@ void ScoreSubmit::StoreInFile() {
     }
 
     hof.close();
+    hof.clear();
+
     hof.open("data/hof.txt", std::ios::out);
     for (size_t i = 0; i < 10 && i < entries.size(); ++i) {
         hof << entries.at(i).name << " " << entries.at(i).points << "\n";
     }
+    hof.close();
 }
 
 void ScoreSubmit::Init() {
