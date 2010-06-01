@@ -3,10 +3,14 @@
 #include "AppState.h"
 #include "Types.h"
 
+class FadeEffect;
+typedef boost::shared_ptr<FadeEffect> FadeEffectPtr;
+
 
 class FadeEffect : public AppState {
 public:
     explicit FadeEffect(double delay, double duration, AppStatePtr from_state, AppStatePtr to_state, FadeEffectType::Type effect_type);
+    static FadeEffectPtr New(double delay, double duration, AppStatePtr from_state, AppStatePtr to_state, FadeEffectType::Type effect_type);
     void Start();
     void Init();
     void Draw();

@@ -11,9 +11,15 @@ HallOfFame::HallOfFame()
     LoadFromFile();
 }
 
+HallOfFamePtr HallOfFame::New() {
+    return HallOfFamePtr(new HallOfFame);
+}
+
 void HallOfFame::Draw() {
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //glLoadIdentity();
+    if (m_clear_before_draw) {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glLoadIdentity();
+    }
 
     Text t(0.08, 0.08);
     t.DrawText("Hall Of Fame", 0.01, 0.9);
@@ -27,7 +33,9 @@ void HallOfFame::Draw() {
         y -= 0.07;
     }
 
-    //SDL_GL_SwapBuffers();
+    if (m_swap_after_draw) {
+        SDL_GL_SwapBuffers();
+    }
 }
 
 bool HallOfFame::Update(double /* dt */) {

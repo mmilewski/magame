@@ -4,6 +4,9 @@
 
 #include "AppState.h"
 
+class HallOfFame;
+typedef boost::shared_ptr<HallOfFame> HallOfFamePtr;
+
 
 class HallOfFame : public AppState  {
 private:
@@ -14,6 +17,7 @@ private:
 
 public:
     explicit HallOfFame();
+    static HallOfFamePtr New();
 
     void Draw();
     bool Update(double dt);

@@ -101,7 +101,7 @@ void Renderer::DrawQuad(double min_x, double min_y,
     glPushAttrib(GL_ALL_ATTRIB_BITS);
     glDisable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glColor4d(r, g, b, a);
     glBegin(GL_QUADS);
     {

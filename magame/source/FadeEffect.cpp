@@ -18,6 +18,10 @@ FadeEffect::FadeEffect(double delay, double duration, AppStatePtr from_state, Ap
   m_delay = 0;
 }
 
+FadeEffectPtr FadeEffect::New(double delay, double duration, AppStatePtr from_state, AppStatePtr to_state, FadeEffectType::Type effect_type) {
+    return FadeEffectPtr(new FadeEffect(delay, duration, from_state, to_state, effect_type));
+}
+
 void FadeEffect::Start() {
     m_timer = 0;
     if (m_effect_type==FadeEffectType::FadeIn) {
@@ -41,9 +45,14 @@ void FadeEffect::Draw() {
     glLoadIdentity();
 
     std::cout << m_timer << "\t" << m_alpha << std::endl;
-    m_from_state->Draw();
+    if (m_from_state) {
+        m_from_state->m_clear_before_draw = false;
+        m_from_state->m_swap_after_draw = false;
+        m_from_state->Draw();
+    }
+    
     Engine& engine = Engine::Get();
-    engine.GetRenderer()->DrawQuad(0,0,1,1, 1,1,1,m_alpha);
+    engine.GetRenderer()->DrawQuad(0,0,1,1, 0,0,0,m_alpha);
 
     SDL_GL_SwapBuffers();
 }
@@ -55,14 +64,16 @@ bool FadeEffect::Update(double dt) {
         return IsDone();
     }
     m_timer += dt;
-    //m_from_state->Draw();
 
-    if (m_effect_type==FadeEffectType::FadeIn) {
-        m_alpha -= dt/m_duration;
-    } else if (m_effect_type==FadeEffectType::FadeOut) {
-        m_alpha += dt/m_duration;
-    } else {
-        assert(false && "Update: Nieznany typ efektu");
+    // efekt jest aktywny tylko jeœli up³yn¹³ czas delay
+    if (m_timer >= m_delay) {
+        if (m_effect_type==FadeEffectType::FadeIn) {
+            m_alpha -= dt/m_duration;
+        } else if (m_effect_type==FadeEffectType::FadeOut) {
+            m_alpha += dt/m_duration;
+        } else {
+            assert(false && "Update: Nieznany typ efektu");
+        }
     }
     return !IsDone();
 }
@@ -72,6 +83,10 @@ void FadeEffect::ProcessEvents(const SDL_Event& event) {
 
 AppStatePtr FadeEffect::NextAppState() const {
     if (IsDone()) {
+        if (m_from_state) {
+            m_from_state->m_clear_before_draw = true;
+            m_from_state->m_swap_after_draw = true;
+        }
         return m_to_state;
     } else {
         return AppStatePtr();

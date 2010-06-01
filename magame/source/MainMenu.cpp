@@ -18,8 +18,10 @@ void MainMenu::Start() {
 }
 
 void MainMenu::Draw() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
+    if (m_clear_before_draw) {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glLoadIdentity();
+    }
 
     Text t(0.1, 0.1);
     t.DrawText("menu", 0.3, 0.8);
@@ -39,7 +41,9 @@ void MainMenu::Draw() {
     t.DrawText("hall of fame", 0.21, 0.5);
     t.DrawText("wyjscie", 0.335, 0.4);
 
-    SDL_GL_SwapBuffers();
+    if (m_swap_after_draw) {
+        SDL_GL_SwapBuffers();
+    }
 }
 
 bool MainMenu::Update(double /* dt */) {
@@ -69,8 +73,11 @@ void MainMenu::ProcessEvents(const SDL_Event& event) {
                 m_next_app_state.reset(new LevelChoiceScreen(PlayerPtr()));
             }
             else if (m_selection == Sel::HallOfFame) {
-                m_next_app_state.reset(new HallOfFame);
-                m_next_app_state.reset(new FadeEffect(.1, 1.5, m_next_app_state, m_next_app_state, FadeEffectType::FadeOut));
+                HallOfFamePtr next_state = HallOfFame::New();
+                //m_next_app_state.reset(new HallOfFame);
+                FadeEffectPtr fadein = FadeEffect::New(0, 1, FadeEffectPtr(), next_state, FadeEffectType::FadeIn);
+                FadeEffectPtr fadeout = FadeEffect::New(0.1, .5, shared_from_this(), fadein, FadeEffectType::FadeOut);
+                m_next_app_state = fadeout;
             }
             else if (m_selection == Sel::Quit) {
                 m_next_app_state.reset();

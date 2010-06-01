@@ -6,7 +6,9 @@
 class AppState {
 public:
     explicit AppState() 
-        : m_is_done(false) {
+        : m_is_done(false),
+          m_clear_before_draw(true),
+          m_swap_after_draw(true) {
     }
 
     virtual void Init() = 0;
@@ -28,6 +30,11 @@ public:
 
 private:
     bool m_is_done;
+
+// TODO: to nie powinno byæ publiczne
+public:
+    bool m_clear_before_draw;
+    bool m_swap_after_draw;
 };
 
 typedef boost::shared_ptr<AppState> AppStatePtr;
