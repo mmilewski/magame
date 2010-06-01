@@ -52,4 +52,14 @@ namespace ET {
     };
 }
 
+// typ fade effectu
+namespace FadeEffectType {
+    enum Type {
+        FadeIn,
+        FadeOut,
+
+        COUNT
+    };
+}
+
 #endif

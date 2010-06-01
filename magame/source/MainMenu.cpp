@@ -6,6 +6,7 @@
 //#include "Game.h"
 #include "LevelChoiceScreen.h"
 #include "HallOfFame.h"
+#include "FadeEffect.h"
 
 
 void MainMenu::Init() {
@@ -69,6 +70,7 @@ void MainMenu::ProcessEvents(const SDL_Event& event) {
             }
             else if (m_selection == Sel::HallOfFame) {
                 m_next_app_state.reset(new HallOfFame);
+                m_next_app_state.reset(new FadeEffect(.1, 1.5, m_next_app_state, m_next_app_state, FadeEffectType::FadeOut));
             }
             else if (m_selection == Sel::Quit) {
                 m_next_app_state.reset();

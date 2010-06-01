@@ -199,6 +199,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\source\FadeEffect.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\source\Game.cpp"
 				>
 			</File>
@@ -318,6 +322,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\source\EntityFactory.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\source\FadeEffect.h"
 				>
 			</File>
 			<File
