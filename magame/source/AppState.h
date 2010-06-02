@@ -18,7 +18,7 @@ public:
     virtual bool Update(double dt) = 0;
     virtual void ProcessEvents(const SDL_Event& event) = 0;
 
-    virtual boost::shared_ptr<AppState> NextAppState() const = 0;
+	virtual boost::shared_ptr<AppState> NextAppState() const = 0;
 
     bool IsDone() const {
         return m_is_done;
@@ -28,15 +28,26 @@ public:
         m_is_done = value;
     }
 
-private:
-    bool m_is_done;
+	bool IsClearBeforeDraw() const { return m_clear_before_draw; }
+	bool IsSwapAfterDraw() const { return m_swap_after_draw; }
 
-// TODO: to nie powinno by� publiczne
-public:
-    bool m_clear_before_draw;
-    bool m_swap_after_draw;
+	AppState* SetClearBeforeDraw(bool clear) {
+		m_clear_before_draw = clear;
+		return this;
+	}
+
+	AppState* SetSwapAfterDraw(bool swap) {
+		m_swap_after_draw = swap;
+		return this;
+	}
+
+private:
+    bool m_is_done;                                 // czy stan się zakończył (i należy przejść do następnego)
+    bool m_clear_before_draw;                       // czy przed rysowaniem stanu będzie czyszczenie ekranu
+    bool m_swap_after_draw;                         // czy rysowanie zakończy się podmianą buforów
 };
 
+class AppState;
 typedef boost::shared_ptr<AppState> AppStatePtr;
 
 #endif /* __APP_STATE_H__ */

@@ -18,7 +18,7 @@ void MainMenu::Start() {
 }
 
 void MainMenu::Draw() {
-    if (m_clear_before_draw) {
+	if (IsClearBeforeDraw()) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
     }
@@ -41,7 +41,7 @@ void MainMenu::Draw() {
     t.DrawText("hall of fame", 0.21, 0.5);
     t.DrawText("wyjscie", 0.335, 0.4);
 
-    if (m_swap_after_draw) {
+    if (IsSwapAfterDraw()) {
         SDL_GL_SwapBuffers();
     }
 }
@@ -74,9 +74,10 @@ void MainMenu::ProcessEvents(const SDL_Event& event) {
             }
             else if (m_selection == Sel::HallOfFame) {
                 HallOfFamePtr next_state = HallOfFame::New();
-                //m_next_app_state.reset(new HallOfFame);
-                FadeEffectPtr fadein = FadeEffect::New(0, 1, FadeEffectPtr(), next_state, FadeEffectType::FadeIn);
-                FadeEffectPtr fadeout = FadeEffect::New(0.1, .5, shared_from_this(), fadein, FadeEffectType::FadeOut);
+//                FadeEffectPtr fadein = FadeEffect::New(FadeEffectPtr(), next_state, FadeEffectType::FadeIn, 1);
+//                FadeEffectPtr fadeout = FadeEffect::Newf(shared_from_this(), fadein, FadeEffectType::FadeOut, 1.5);
+				FadeEffectPtr fadein = FadeEffect::NewFadeIn(FadeEffectPtr(), next_state, 1);
+				FadeEffectPtr fadeout = FadeEffect::NewFadeOut(shared_from_this(), fadein, 1.5);
                 m_next_app_state = fadeout;
             }
             else if (m_selection == Sel::Quit) {

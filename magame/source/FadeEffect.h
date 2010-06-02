@@ -9,8 +9,10 @@ typedef boost::shared_ptr<FadeEffect> FadeEffectPtr;
 
 class FadeEffect : public AppState {
 public:
-    explicit FadeEffect(double delay, double duration, AppStatePtr from_state, AppStatePtr to_state, FadeEffectType::Type effect_type);
-    static FadeEffectPtr New(double delay, double duration, AppStatePtr from_state, AppStatePtr to_state, FadeEffectType::Type effect_type);
+    explicit FadeEffect(AppStatePtr from_state, AppStatePtr to_state, FadeEffectType::Type effect_type, double duration, double delay=0.0);
+    static FadeEffectPtr New(AppStatePtr from_state, AppStatePtr to_state, FadeEffectType::Type effect_type, double duration, double delay=0.0);
+	static FadeEffectPtr NewFadeIn(AppStatePtr from_state, AppStatePtr to_state, double duration, double delay=0.0);
+	static FadeEffectPtr NewFadeOut(AppStatePtr from_state, AppStatePtr to_state, double duration, double delay=0.0);
     void Start();
     void Init();
     void Draw();
@@ -19,14 +21,14 @@ public:
     AppStatePtr NextAppState() const;
 
 private:
-    double m_delay;                       // opÛünienie od rozpoczÍcia efektu
-    double m_duration;                    // czas trwania efektu (nie wliczajπc delay)
-    AppStatePtr m_from_state;             // stan, z ktÛrego robimy przejúcie
-    AppStatePtr m_to_state;               // stan, do ktÛrego robimy przejúcie. Zostanie zwrÛcony po zakoÒczeniu efektu
+    double m_delay;                       // op√≥≈∫nienie od rozpocz√™cia efektu
+    double m_duration;                    // czas trwania efektu (nie wliczajƒÖc delay)
+    AppStatePtr m_from_state;             // stan, z kt√≥rego robimy przej≈õcie
+    AppStatePtr m_to_state;               // stan, do kt√≥rego robimy przej≈ìcie. Zostanie zwr√≥cony po zako≈Ñczeniu efektu
     FadeEffectType::Type m_effect_type;   // typ efektu
-    double m_alpha;                       // aktualna przezroczystoúÊ rysowanego czworokπta
+    double m_alpha;                       // aktualna przezroczysto≈ì√¶ rysowanego czworokƒÖta
 
-    double m_timer;                       // czas trwania stanu (pozwala okreúliÊ czy juø mina≥ czas delay czy nie)
+    double m_timer;                       // czas trwania stanu (pozwala okre≈ìli√¶ czy ju≈º mina≈Ç czas delay czy nie)
 };
 
 #endif  // this file
