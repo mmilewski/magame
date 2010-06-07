@@ -10,7 +10,9 @@ public:
           m_clear_before_draw(true),
           m_swap_after_draw(true) {
     }
-
+    
+    virtual ~AppState() {}
+    
     virtual void Init() = 0;
     virtual void Start() = 0;
 
