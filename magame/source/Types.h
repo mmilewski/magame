@@ -53,7 +53,7 @@ namespace ET {
 }
 
 // typ fade effectu
-namespace FadeEffectType {
+namespace TransitionEffectType {
     enum Type {
         FadeIn,
         FadeOut,

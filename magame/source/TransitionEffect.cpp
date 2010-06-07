@@ -1,9 +1,9 @@
 #include "StdAfx.h"
-#include "FadeEffect.h"
+#include "TransitionEffect.h"
 #include "Engine.h"
 
 
-FadeEffect::FadeEffect(AppStatePtr from_state, AppStatePtr to_state, FadeEffectType::Type effect_type, double duration, double delay)
+TransitionEffect::TransitionEffect(AppStatePtr from_state, AppStatePtr to_state, TransitionEffectType::Type effect_type, double duration, double delay)
     : m_delay(delay), 
       m_duration(duration), 
       m_from_state(from_state),
@@ -18,46 +18,46 @@ FadeEffect::FadeEffect(AppStatePtr from_state, AppStatePtr to_state, FadeEffectT
   m_delay = 0;
 }
 
-FadeEffectPtr FadeEffect::New(AppStatePtr from_state, AppStatePtr to_state, FadeEffectType::Type effect_type, double duration, double delay) {
-    return FadeEffectPtr(new FadeEffect(from_state, to_state, effect_type, duration, delay));
+TransitionEffectPtr TransitionEffect::New(AppStatePtr from_state, AppStatePtr to_state, TransitionEffectType::Type effect_type, double duration, double delay) {
+    return TransitionEffectPtr(new TransitionEffect(from_state, to_state, effect_type, duration, delay));
 }
 
-FadeEffectPtr FadeEffect::NewFadeIn(AppStatePtr from_state, AppStatePtr to_state, double duration, double delay) {
-	return FadeEffectPtr(new FadeEffect(from_state, to_state, FadeEffectType::FadeIn, duration, delay));
+TransitionEffectPtr TransitionEffect::NewFadeIn(AppStatePtr from_state, AppStatePtr to_state, double duration, double delay) {
+	return TransitionEffectPtr(new TransitionEffect(from_state, to_state, TransitionEffectType::FadeIn, duration, delay));
 }
 
-FadeEffectPtr FadeEffect::NewFadeOut(AppStatePtr from_state, AppStatePtr to_state, double duration, double delay) {
-	return FadeEffectPtr(new FadeEffect(from_state, to_state, FadeEffectType::FadeOut, duration, delay));
+TransitionEffectPtr TransitionEffect::NewFadeOut(AppStatePtr from_state, AppStatePtr to_state, double duration, double delay) {
+	return TransitionEffectPtr(new TransitionEffect(from_state, to_state, TransitionEffectType::FadeOut, duration, delay));
 }
 
-void FadeEffect::Start() {
+void TransitionEffect::Start() {
     m_timer = 0;
-    if (m_effect_type==FadeEffectType::FadeIn) {
+    if (m_effect_type==TransitionEffectType::FadeIn) {
         m_alpha = 1;   // dużo czarnego i będzie coraz mniej
-    } else if (m_effect_type==FadeEffectType::FadeOut) {
+    } else if (m_effect_type==TransitionEffectType::FadeOut) {
         m_alpha = 0;   // mało czarnego i będzie coraz więcej
     } else {
         assert(false && "Start: Nieznany typ efektu");
     }
 }
 
-void FadeEffect::Init() {
+void TransitionEffect::Init() {
     // nie potrzebujemy żadnych zasobów
 }
 
-void FadeEffect::Draw() {
+void TransitionEffect::Draw() {
     if (IsDone()) {
         return;
     }
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
-    if (m_effect_type==FadeEffectType::FadeIn) {
+    if (m_effect_type==TransitionEffectType::FadeIn) {
 		if (m_to_state) {
 			m_to_state->SetClearBeforeDraw(false)->SetSwapAfterDraw(false);
 			m_to_state->Draw();
 		}
-    } else if (m_effect_type==FadeEffectType::FadeOut) {
+    } else if (m_effect_type==TransitionEffectType::FadeOut) {
 		if (m_from_state) {
 			m_from_state->SetClearBeforeDraw(false)->SetSwapAfterDraw(false);
 			m_from_state->Draw();
@@ -72,7 +72,7 @@ void FadeEffect::Draw() {
     SDL_GL_SwapBuffers();
 }
 
-bool FadeEffect::Update(double dt) {
+bool TransitionEffect::Update(double dt) {
     // jeżeli efekt się zakończył to nic nie robimy
     if (IsDone() || (m_timer >= m_delay + m_duration)) {
         SetDone(true);
@@ -82,9 +82,9 @@ bool FadeEffect::Update(double dt) {
 
     // efekt jest aktywny tylko jeśli upłynął czas delay
     if (m_timer >= m_delay) {
-        if (m_effect_type==FadeEffectType::FadeIn) {
+        if (m_effect_type==TransitionEffectType::FadeIn) {
             m_alpha -= dt/m_duration;
-        } else if (m_effect_type==FadeEffectType::FadeOut) {
+        } else if (m_effect_type==TransitionEffectType::FadeOut) {
             m_alpha += dt/m_duration;
         } else {
             assert(false && "Update: Nieznany typ efektu");
@@ -93,10 +93,10 @@ bool FadeEffect::Update(double dt) {
     return !IsDone();
 }
 
-void FadeEffect::ProcessEvents(const SDL_Event& event) {
+void TransitionEffect::ProcessEvents(const SDL_Event& event) {
 }
 
-AppStatePtr FadeEffect::NextAppState() const {
+AppStatePtr TransitionEffect::NextAppState() const {
     if (IsDone()) {
         if (m_from_state) {
             m_from_state->SetClearBeforeDraw(true)->SetSwapAfterDraw(true);

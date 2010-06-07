@@ -18,7 +18,7 @@ public:
     virtual bool Update(double dt) = 0;
     virtual void ProcessEvents(const SDL_Event& event) = 0;
 
-	virtual boost::shared_ptr<AppState> NextAppState() const = 0;
+    virtual boost::shared_ptr<AppState> NextAppState() const = 0;
 
     bool IsDone() const {
         return m_is_done;

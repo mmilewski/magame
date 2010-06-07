@@ -6,7 +6,7 @@
 //#include "Game.h"
 #include "LevelChoiceScreen.h"
 #include "HallOfFame.h"
-#include "FadeEffect.h"
+#include "TransitionEffect.h"
 
 
 void MainMenu::Init() {
@@ -74,10 +74,10 @@ void MainMenu::ProcessEvents(const SDL_Event& event) {
             }
             else if (m_selection == Sel::HallOfFame) {
                 HallOfFamePtr next_state = HallOfFame::New();
-//                FadeEffectPtr fadein = FadeEffect::New(FadeEffectPtr(), next_state, FadeEffectType::FadeIn, 1);
-//                FadeEffectPtr fadeout = FadeEffect::Newf(shared_from_this(), fadein, FadeEffectType::FadeOut, 1.5);
-				FadeEffectPtr fadein = FadeEffect::NewFadeIn(FadeEffectPtr(), next_state, 1);
-				FadeEffectPtr fadeout = FadeEffect::NewFadeOut(shared_from_this(), fadein, 1.5);
+//                TransitionEffectPtr fadein = TransitionEffect::New(TransitionEffectPtr(), next_state, TransitionEffectType::FadeIn, 1);
+//                TransitionEffectPtr fadeout = TransitionEffect::Newf(shared_from_this(), fadein, TransitionEffectType::FadeOut, 1.5);
+				TransitionEffectPtr fadein = TransitionEffect::NewFadeIn(TransitionEffectPtr(), next_state, 1);
+				TransitionEffectPtr fadeout = TransitionEffect::NewFadeOut(shared_from_this(), fadein, 1.5);
                 m_next_app_state = fadeout;
             }
             else if (m_selection == Sel::Quit) {
