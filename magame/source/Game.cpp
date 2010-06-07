@@ -153,7 +153,7 @@ void Game::CheckCollisionOfOnePair(EntityPtr fst_entity, ET::EntityType fst_type
     // w dobrej kolejności, tzn. tak, aby każdą parę obsługiwać jeden raz
 #define SWAP_IF( type_a, type_b )  \
     if (fst_type == type_a && snd_type == type_b) {  \
-    	std::swap(fst_entity, snd_entity);   \
+        std::swap(fst_entity, snd_entity);   \
         std::swap(fst_type, snd_type);   \
     }
 

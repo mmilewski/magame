@@ -23,11 +23,11 @@ TransitionEffectPtr TransitionEffect::New(AppStatePtr from_state, AppStatePtr to
 }
 
 TransitionEffectPtr TransitionEffect::NewFadeIn(AppStatePtr from_state, AppStatePtr to_state, double duration, double delay) {
-	return TransitionEffectPtr(new TransitionEffect(from_state, to_state, TransitionEffectType::FadeIn, duration, delay));
+    return TransitionEffectPtr(new TransitionEffect(from_state, to_state, TransitionEffectType::FadeIn, duration, delay));
 }
 
 TransitionEffectPtr TransitionEffect::NewFadeOut(AppStatePtr from_state, AppStatePtr to_state, double duration, double delay) {
-	return TransitionEffectPtr(new TransitionEffect(from_state, to_state, TransitionEffectType::FadeOut, duration, delay));
+    return TransitionEffectPtr(new TransitionEffect(from_state, to_state, TransitionEffectType::FadeOut, duration, delay));
 }
 
 void TransitionEffect::Start() {
@@ -53,15 +53,15 @@ void TransitionEffect::Draw() {
     glLoadIdentity();
 
     if (m_effect_type==TransitionEffectType::FadeIn) {
-		if (m_to_state) {
-			m_to_state->SetClearBeforeDraw(false)->SetSwapAfterDraw(false);
-			m_to_state->Draw();
-		}
+        if (m_to_state) {
+            m_to_state->SetClearBeforeDraw(false)->SetSwapAfterDraw(false);
+            m_to_state->Draw();
+        }
     } else if (m_effect_type==TransitionEffectType::FadeOut) {
-		if (m_from_state) {
-			m_from_state->SetClearBeforeDraw(false)->SetSwapAfterDraw(false);
-			m_from_state->Draw();
-		}
+        if (m_from_state) {
+            m_from_state->SetClearBeforeDraw(false)->SetSwapAfterDraw(false);
+            m_from_state->Draw();
+        }
     } else {
         assert(false && "Draw: Nieznany typ efektu");
     }

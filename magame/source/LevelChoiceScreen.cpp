@@ -29,13 +29,13 @@ LevelChoiceScreen::LevelChoiceScreen(PlayerPtr player) :
     //srand(time(0));
 
 //
-//	0 -------- 1
-//	           |
-//	           |
+//    0 -------- 1
+//               |
+//               |
 //     3 ----- 2
-//	           |
-//	           |
-//	           4
+//               |
+//               |
+//               4
 
 //
 //    boost assignment lbrary

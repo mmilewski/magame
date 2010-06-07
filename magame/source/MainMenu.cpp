@@ -18,7 +18,7 @@ void MainMenu::Start() {
 }
 
 void MainMenu::Draw() {
-	if (IsClearBeforeDraw()) {
+    if (IsClearBeforeDraw()) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
     }
@@ -75,9 +75,9 @@ void MainMenu::ProcessEvents(const SDL_Event& event) {
             else if (m_selection == Sel::HallOfFame) {
                 HallOfFamePtr next_state = HallOfFame::New();
 //                TransitionEffectPtr fadein = TransitionEffect::New(TransitionEffectPtr(), next_state, TransitionEffectType::FadeIn, 1);
-//                TransitionEffectPtr fadeout = TransitionEffect::Newf(shared_from_this(), fadein, TransitionEffectType::FadeOut, 1.5);
-				TransitionEffectPtr fadein = TransitionEffect::NewFadeIn(TransitionEffectPtr(), next_state, 1);
-				TransitionEffectPtr fadeout = TransitionEffect::NewFadeOut(shared_from_this(), fadein, 1.5);
+//                TransitionEffectPtr fadeout = TransitionEffect::New(shared_from_this(), fadein, TransitionEffectType::FadeOut, 1.5);
+                TransitionEffectPtr fadein = TransitionEffect::NewFadeIn(TransitionEffectPtr(), next_state, 1);
+                TransitionEffectPtr fadeout = TransitionEffect::NewFadeOut(shared_from_this(), fadein, 1.5);
                 m_next_app_state = fadeout;
             }
             else if (m_selection == Sel::Quit) {

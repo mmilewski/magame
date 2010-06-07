@@ -11,8 +11,8 @@ class TransitionEffect : public AppState {
 public:
     explicit TransitionEffect(AppStatePtr from_state, AppStatePtr to_state, TransitionEffectType::Type effect_type, double duration, double delay=0.0);
     static TransitionEffectPtr New(AppStatePtr from_state, AppStatePtr to_state, TransitionEffectType::Type effect_type, double duration, double delay=0.0);
-	static TransitionEffectPtr NewFadeIn(AppStatePtr from_state, AppStatePtr to_state, double duration, double delay=0.0);
-	static TransitionEffectPtr NewFadeOut(AppStatePtr from_state, AppStatePtr to_state, double duration, double delay=0.0);
+    static TransitionEffectPtr NewFadeIn(AppStatePtr from_state, AppStatePtr to_state, double duration, double delay=0.0);
+    static TransitionEffectPtr NewFadeOut(AppStatePtr from_state, AppStatePtr to_state, double duration, double delay=0.0);
     void Start();
     void Init();
     void Draw();

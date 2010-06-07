@@ -28,18 +28,18 @@ public:
         m_is_done = value;
     }
 
-	bool IsClearBeforeDraw() const { return m_clear_before_draw; }
-	bool IsSwapAfterDraw() const { return m_swap_after_draw; }
+    bool IsClearBeforeDraw() const { return m_clear_before_draw; }
+    bool IsSwapAfterDraw() const { return m_swap_after_draw; }
 
-	AppState* SetClearBeforeDraw(bool clear) {
-		m_clear_before_draw = clear;
-		return this;
-	}
+    AppState* SetClearBeforeDraw(bool clear) {
+        m_clear_before_draw = clear;
+        return this;
+    }
 
-	AppState* SetSwapAfterDraw(bool swap) {
-		m_swap_after_draw = swap;
-		return this;
-	}
+    AppState* SetSwapAfterDraw(bool swap) {
+        m_swap_after_draw = swap;
+        return this;
+    }
 
 private:
     bool m_is_done;                                 // czy stan się zakończył (i należy przejść do następnego)

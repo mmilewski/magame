@@ -16,7 +16,7 @@ HallOfFamePtr HallOfFame::New() {
 }
 
 void HallOfFame::Draw() {
-	if (IsClearBeforeDraw()) {
+    if (IsClearBeforeDraw()) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
     }
@@ -33,7 +33,7 @@ void HallOfFame::Draw() {
         y -= 0.07;
     }
 
-	if (IsSwapAfterDraw()) {
+    if (IsSwapAfterDraw()) {
         SDL_GL_SwapBuffers();
     }
 }
