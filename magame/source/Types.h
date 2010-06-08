@@ -57,7 +57,7 @@ namespace TransitionEffectType {
     enum Type {
         FadeIn,
         FadeOut,
-        PieFill,
+        PinWheelOut,
 
         COUNT
     };

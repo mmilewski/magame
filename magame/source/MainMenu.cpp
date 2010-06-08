@@ -78,7 +78,7 @@ void MainMenu::ProcessEvents(const SDL_Event& event) {
 //                TransitionEffectPtr fadeout = TransitionEffect::New(shared_from_this(), fadein, TransitionEffectType::FadeOut, 1.5);
                 TransitionEffectPtr fadein = TransitionEffect::NewFadeIn(TransitionEffectPtr(), next_state, 1);
 //                TransitionEffectPtr fadeout = TransitionEffect::NewFadeOut(shared_from_this(), fadein, 1.5);
-                TransitionEffectPtr fadeout = TransitionEffect::NewPieFill(shared_from_this(), fadein, 1.5, 0, .3);
+                TransitionEffectPtr fadeout = TransitionEffect::NewPinWheelOut(shared_from_this(), fadein, 1.5, 1, 0, .3);
                 m_next_app_state = fadeout;
             }
             else if (m_selection == Sel::Quit) {

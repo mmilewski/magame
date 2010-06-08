@@ -6,14 +6,22 @@
 class TransitionEffect;
 typedef boost::shared_ptr<TransitionEffect> TransitionEffectPtr;
 
+// zbior efektow:
+// http://service.real.com/help/library/guides/ProductionGuide/prodguide/htmfiles/transit.htm#43424
+
+// TODO: 
+//  - dodac obracanie do pinwheelout
+//  - zrobic fluent interface
+
 
 class TransitionEffect : public AppState {
 public:
     explicit TransitionEffect(AppStatePtr from_state, AppStatePtr to_state, TransitionEffectType::Type effect_type, double duration, double delay_before=0.0, double delay_after=0.0);
+    explicit TransitionEffect(AppStatePtr from_state, AppStatePtr to_state, TransitionEffectType::Type effect_type, double duration, unsigned int blades, double delay_before=0.0, double delay_after=0.0);
     static TransitionEffectPtr New(AppStatePtr from_state, AppStatePtr to_state, TransitionEffectType::Type effect_type, double duration, double delay_before=0.0, double delay_after=0.0);
     static TransitionEffectPtr NewFadeIn(AppStatePtr from_state, AppStatePtr to_state, double duration, double delay_before=0.0, double delay_after=0.0);
     static TransitionEffectPtr NewFadeOut(AppStatePtr from_state, AppStatePtr to_state, double duration, double delay_before=0.0, double delay_after=0.0);
-    static TransitionEffectPtr NewPieFill(AppStatePtr from_state, AppStatePtr to_state, double duration, double delay_before=0.0, double delay_after=0.0);
+    static TransitionEffectPtr NewPinWheelOut(AppStatePtr from_state, AppStatePtr to_state, double duration, unsigned int blades, double delay_before=0.0, double delay_after=0.0);
     
     ~TransitionEffect();
 
@@ -36,6 +44,7 @@ private:
     
     GLUquadricObj* m_quadric;             // obiekt do wyświetlania dysków/sześcianów/sfer/...
     double m_sweep_angle;                 // kąt wypełnienia dysku - 360 oznacza pełen dysk, a 0 - pusty
+    unsigned int m_blades_count;          // ilość ramion wiatraczka
 
     double m_timer;                       // czas trwania stanu (pozwala okreœliæ czy już minał czas delay czy nie)
 };

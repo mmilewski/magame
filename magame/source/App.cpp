@@ -10,6 +10,9 @@ void App::ProcessEvents() {
     // przyjrzyj zdarzenia
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_KEYDOWN && event.key.keysym.sym==SDLK_q) {
+            exit(0);
+        }
         if (event.type == SDL_VIDEORESIZE) {
             Resize(event.resize.w, event.resize.h);
         } else {

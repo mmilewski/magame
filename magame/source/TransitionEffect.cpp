@@ -13,11 +13,30 @@ TransitionEffect::TransitionEffect(AppStatePtr from_state, AppStatePtr to_state,
       m_fade_alpha(0.0),
       m_quadric(0),
       m_sweep_angle(0.0),
+      m_blades_count(1),
       m_timer(0.0) {
 
     // TODO: kolor?
     // Każdy stan powinien mieć shared_from_this
 }
+
+TransitionEffect::TransitionEffect(AppStatePtr from_state, AppStatePtr to_state, TransitionEffectType::Type effect_type, double duration, unsigned int blades, double delay_before, double delay_after)
+    : m_delay_before(delay_before), 
+      m_delay_after(delay_after),
+      m_duration(duration), 
+      m_from_state(from_state),
+      m_to_state(to_state),
+      m_effect_type(effect_type),
+      m_fade_alpha(0.0),
+      m_quadric(0),
+      m_sweep_angle(0.0),
+      m_blades_count(blades),
+      m_timer(0.0) {
+
+    // TODO: kolor?
+    // Każdy stan powinien mieć shared_from_this
+}
+
 
 TransitionEffect::~TransitionEffect() {
     if (m_quadric) {
@@ -38,8 +57,8 @@ TransitionEffectPtr TransitionEffect::NewFadeOut(AppStatePtr from_state, AppStat
     return TransitionEffectPtr(new TransitionEffect(from_state, to_state, TransitionEffectType::FadeOut, duration, delay_before, delay_after));
 }
 
-TransitionEffectPtr TransitionEffect::NewPieFill(AppStatePtr from_state, AppStatePtr to_state, double duration, double delay_before, double delay_after) {
-    return TransitionEffectPtr(new TransitionEffect(from_state, to_state, TransitionEffectType::PieFill, duration, delay_before, delay_after));
+TransitionEffectPtr TransitionEffect::NewPinWheelOut(AppStatePtr from_state, AppStatePtr to_state, double duration, unsigned int blades, double delay_before, double delay_after) {
+    return TransitionEffectPtr(new TransitionEffect(from_state, to_state, TransitionEffectType::PinWheelOut, duration, blades, delay_before, delay_after));
 }
 
 void TransitionEffect::Start() {
@@ -48,7 +67,7 @@ void TransitionEffect::Start() {
         m_fade_alpha = 1;   // dużo czarnego i będzie coraz mniej
     } else if (m_effect_type==TransitionEffectType::FadeOut) {
         m_fade_alpha = 0;   // mało czarnego i będzie coraz więcej
-    } else if (m_effect_type==TransitionEffectType::PieFill) {
+    } else if (m_effect_type==TransitionEffectType::PinWheelOut) {
         if (m_quadric) {
             gluDeleteQuadric(m_quadric);
         }
@@ -80,7 +99,7 @@ void TransitionEffect::Draw() {
             m_from_state->SetClearBeforeDraw(false)->SetSwapAfterDraw(false);
             m_from_state->Draw();
         }
-    } else if (m_effect_type==TransitionEffectType::PieFill) {
+    } else if (m_effect_type==TransitionEffectType::PinWheelOut) {
         if (m_from_state) {
             m_from_state->SetClearBeforeDraw(false)->SetSwapAfterDraw(false);
             m_from_state->Draw();
@@ -88,13 +107,16 @@ void TransitionEffect::Draw() {
         glPushAttrib(GL_ALL_ATTRIB_BITS);
         glDisable(GL_TEXTURE_2D);
         glDisable(GL_LIGHTING);
-        glColor3f(0, 0, 0);
+        glColor3f(1, 0, 0);
         glPushMatrix();
         {
             const double inner_radius = 0;
             const double outer_radius = .5 * 2;   // .5 * coś_większego_od_sqrt(2)
             glTranslated(.5, .5, 0);
-            gluPartialDisk(m_quadric, inner_radius, outer_radius, 20, 3, 0, 10+m_sweep_angle);
+            assert(m_blades_count>0 && "Niepoprawna wartosc parametru dla efektu PinWheelOut");
+            for (unsigned i=0; i<m_blades_count; ++i) {
+                gluPartialDisk(m_quadric, inner_radius, outer_radius, 20, 3, (i*360.0)/m_blades_count, m_sweep_angle);
+            }
         }
         glPopMatrix();
         glPopAttrib();
@@ -122,6 +144,9 @@ bool TransitionEffect::Update(double dt) {
 
     // jeżeli upłynął czas trwania efektu
     if (m_delay_before + m_duration < m_timer) {
+        if (m_effect_type==TransitionEffectType::PinWheelOut) {
+            m_sweep_angle = 360.0;
+        }
     }
 
     // efekt jest aktywny - upłynął czas delay_before, ale jeszcze nie jest w fazie delay_after
@@ -130,8 +155,8 @@ bool TransitionEffect::Update(double dt) {
             m_fade_alpha -= 1 * dt/m_duration;
         } else if (m_effect_type==TransitionEffectType::FadeOut) {
             m_fade_alpha += 1 * dt/m_duration;
-        } else if (m_effect_type==TransitionEffectType::PieFill) {
-            m_sweep_angle += 360 * dt/m_duration;
+        } else if (m_effect_type==TransitionEffectType::PinWheelOut) {
+            m_sweep_angle += (360.0/m_blades_count) * dt/m_duration;
         } else {
             assert(false && "Update: Nieznany typ efektu");
         }
