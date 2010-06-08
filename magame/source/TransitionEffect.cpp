@@ -10,7 +10,7 @@
 //      m_from_state(from_state),
 //      m_to_state(to_state),
 //      m_effect_type(effect_type),
-//      m_fade_alpha(0.0),
+//      m_current_fade_alpha(0.0),
 //      m_start_fade_alpha(0),
 //      m_end_fade_alpha(1),
 //      m_quadric(0),
@@ -30,7 +30,7 @@ TransitionEffect::TransitionEffect(AppStatePtr from_state, AppStatePtr to_state,
       m_from_state(from_state),
       m_to_state(to_state),
       m_effect_type(effect_type),
-      m_fade_alpha(0.0),
+      m_current_fade_alpha(0.0),
       m_start_fade_alpha(start_alpha),
       m_end_fade_alpha(end_alpha),
       m_quadric(0),
@@ -70,13 +70,13 @@ TransitionEffectPtr TransitionEffect::NewPinWheelOut(AppStatePtr from_state, App
 
 void TransitionEffect::Start() {
     m_timer = 0;
-    m_fade_alpha = m_start_fade_alpha;
+    m_current_fade_alpha = m_start_fade_alpha;
     if (m_effect_type==TransitionEffectType::FadeIn) {
-        //m_fade_alpha = 1;   // dużo czarnego i będzie coraz mniej
+        //m_current_fade_alpha = 1;   // dużo czarnego i będzie coraz mniej
     } else if (m_effect_type==TransitionEffectType::FadeOut) {
-        //m_fade_alpha = 0;   // mało czarnego i będzie coraz więcej
+        //m_current_fade_alpha = 0;   // mało czarnego i będzie coraz więcej
     } else if (m_effect_type==TransitionEffectType::PinWheelOut) {
-        //m_fade_alpha = 0;
+        //m_current_fade_alpha = 0;
         if (m_quadric) {
             gluDeleteQuadric(m_quadric);
         }
@@ -103,13 +103,13 @@ void TransitionEffect::Draw() {
             m_to_state->SetClearBeforeDraw(false)->SetSwapAfterDraw(false);
             m_to_state->Draw();
         }
-        Engine::Get().GetRenderer()->DrawQuad(0,0,1,1, 0,0,0, m_fade_alpha);
+        Engine::Get().GetRenderer()->DrawQuad(0,0,1,1, 0,0,0, m_current_fade_alpha);
     } else if (m_effect_type==TransitionEffectType::FadeOut) {
         if (m_from_state) {
             m_from_state->SetClearBeforeDraw(false)->SetSwapAfterDraw(false);
             m_from_state->Draw();
         }
-        Engine::Get().GetRenderer()->DrawQuad(0,0,1,1, 0,0,0, m_fade_alpha);
+        Engine::Get().GetRenderer()->DrawQuad(0,0,1,1, 0,0,0, m_current_fade_alpha);
     } else if (m_effect_type==TransitionEffectType::PinWheelOut) {
         if (m_from_state) {
             m_from_state->SetClearBeforeDraw(false)->SetSwapAfterDraw(false);
@@ -121,7 +121,7 @@ void TransitionEffect::Draw() {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         
-        glColor4d(0, 0, 0, m_fade_alpha);
+        glColor4d(0, 0, 0, m_current_fade_alpha);
         glPushMatrix();
         {
             const double inner_radius = 0;
@@ -164,14 +164,14 @@ bool TransitionEffect::Update(double dt) {
 
     // efekt jest aktywny - upłynął czas delay_before, ale jeszcze nie jest w fazie delay_after
     if (m_delay_before <= m_timer && m_timer <= m_delay_before + m_duration) {
-        m_fade_alpha += (m_end_fade_alpha-m_start_fade_alpha) * dt/m_duration;
+        m_current_fade_alpha += (m_end_fade_alpha-m_start_fade_alpha) * dt/m_duration;
         if (m_effect_type==TransitionEffectType::FadeIn) {
-            //m_fade_alpha -= 1 * dt/m_duration;
+            //m_current_fade_alpha -= 1 * dt/m_duration;
         } else if (m_effect_type==TransitionEffectType::FadeOut) {
-            //m_fade_alpha += 1 * dt/m_duration;
+            //m_current_fade_alpha += 1 * dt/m_duration;
         } else if (m_effect_type==TransitionEffectType::PinWheelOut) {
             m_sweep_angle += (360.0/m_blades_count) * dt/m_duration;
-            //m_fade_alpha += 1 * dt/m_duration;
+            //m_current_fade_alpha += 1 * dt/m_duration;
             m_current_rot_angle += m_rot_angle * dt/m_duration;
         } else {
             assert(false && "Update: Nieznany typ efektu");

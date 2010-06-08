@@ -39,7 +39,7 @@ private:
     AppStatePtr m_to_state;               // stan, do którego robimy przejœcie. Zostanie zwrócony po zakończeniu efektu
     TransitionEffectType::Type m_effect_type;     // typ efektu
     
-    double m_fade_alpha;                  // aktualna przezroczystość rysowanego czworokąta
+    double m_current_fade_alpha;                  // aktualna przezroczystość rysowanego czworokąta
     double m_start_fade_alpha;            // przezroczystość na początku efektu
     double m_end_fade_alpha;              // przezroczystość na końcu efektu
     
