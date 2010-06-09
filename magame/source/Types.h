@@ -55,6 +55,8 @@ namespace ET {
 // typ fade effectu
 namespace TransitionEffectType {
     enum Type {
+        UNKNOWN,
+
         FadeIn,
         FadeOut,
         PinWheelOut,

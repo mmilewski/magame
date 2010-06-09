@@ -74,12 +74,9 @@ void MainMenu::ProcessEvents(const SDL_Event& event) {
             }
             else if (m_selection == Sel::HallOfFame) {
                 HallOfFamePtr next_state = HallOfFame::New();
-//                TransitionEffectPtr fadein = TransitionEffect::New(TransitionEffectPtr(), next_state, TransitionEffectType::FadeIn, 1, 0, 0);
-//                TransitionEffectPtr fadeout = TransitionEffect::New(shared_from_this(), fadein, TransitionEffectType::FadeOut, 1.5, 0, 0);
-                TransitionEffectPtr fadein = TransitionEffect::NewFadeIn(TransitionEffectPtr(), next_state, 1, 0, 0);
-//                TransitionEffectPtr fadeout = TransitionEffect::NewFadeOut(shared_from_this(), fadein, 1.5);
-//                TransitionEffectPtr fadeout = TransitionEffect::NewPinWheelOut(shared_from_this(), fadein, 1.5, 2, -720.0, 0, .3);
-                TransitionEffectPtr fadeout = TransitionEffect::NewPinWheelOut(shared_from_this(), fadein, 1.5, 2, 90.0, 0, 1, 0, .3);
+                
+                tefPtr fadein = TransitionEffect::Prepare(TransitionEffectType::FadeIn).to(next_state).duration(1).Build();
+                tefPtr fadeout = TransitionEffect::Prepare(TransitionEffectType::PinWheelOut).states(shared_from_this(),fadein).duration(1.5).blades(2).rotation(90).delay(0,.3).Build();
                 m_next_app_state = fadeout;
             }
             else if (m_selection == Sel::Quit) {
@@ -89,9 +86,9 @@ void MainMenu::ProcessEvents(const SDL_Event& event) {
             SetDone();
         }
         else if (event.key.keysym.sym == SDLK_ESCAPE) {
-            //m_next_app_state.reset();
-            TransitionEffectPtr fadeout = TransitionEffect::NewFadeOut(shared_from_this(), AppStatePtr(), 1.0, 0, 0);
+            TransitionEffectPtr fadeout = TransitionEffect::Prepare(TransitionEffectType::FadeOut).from(shared_from_this()).Build();
             m_next_app_state = fadeout;
+//            m_next_app_state.reset();
             SetDone();
         }
     }

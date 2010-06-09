@@ -2,70 +2,23 @@
 #include "TransitionEffect.h"
 #include "Engine.h"
 
-
-//TransitionEffect::TransitionEffect(AppStatePtr from_state, AppStatePtr to_state, TransitionEffectType::Type effect_type, double duration, double delay_before, double delay_after)
-//    : m_delay_before(delay_before), 
-//      m_delay_after(delay_after),
-//      m_duration(duration), 
-//      m_from_state(from_state),
-//      m_to_state(to_state),
-//      m_effect_type(effect_type),
-//      m_current_fade_alpha(0.0),
-//      m_start_fade_alpha(0),
-//      m_end_fade_alpha(1),
-//      m_quadric(0),
-//      m_sweep_angle(0.0),
-//      m_blades_count(1),
-//      m_current_rot_angle(0.0),
-//      m_timer(0.0) {
-//
-//    // TODO: kolor?
-//    // Każdy stan powinien mieć shared_from_this
-//}
-
-TransitionEffect::TransitionEffect(AppStatePtr from_state, AppStatePtr to_state, TransitionEffectType::Type effect_type, double duration, unsigned int blades, double rotation, double start_alpha, double end_alpha, double delay_before, double delay_after)
-    : m_delay_before(delay_before), 
-      m_delay_after(delay_after),
-      m_duration(duration), 
-      m_from_state(from_state),
-      m_to_state(to_state),
-      m_effect_type(effect_type),
-      m_current_fade_alpha(0.0),
-      m_start_fade_alpha(start_alpha),
-      m_end_fade_alpha(end_alpha),
-      m_quadric(0),
-      m_sweep_angle(0.0),
-      m_blades_count(blades),
-      m_current_rot_angle(0.0),
-      m_rot_angle(rotation),
-      m_timer(0.0) {
-
-    // TODO: kolor?
-    // Każdy stan powinien mieć shared_from_this
+tefFluent TransitionEffect::Prepare(TransitionEffectType::Type effect_type) {
+    if (effect_type==TransitionEffectType::FadeIn) {
+        return tefFluent(effect_type).fade_alpha(1,0);
+    } else if (effect_type==TransitionEffectType::FadeOut) {
+        return tefFluent(effect_type).fade_alpha(0,1);
+    } else if (effect_type==TransitionEffectType::PinWheelOut) {
+        return tefFluent(effect_type).fade_alpha(0,1).blades(1);
+    } else {
+        return tefFluent(effect_type);
+    }
 }
-
 
 TransitionEffect::~TransitionEffect() {
     if (m_quadric) {
         gluDeleteQuadric(m_quadric);
         m_quadric = 0;
     }
-}
-
-//TransitionEffectPtr TransitionEffect::New(AppStatePtr from_state, AppStatePtr to_state, TransitionEffectType::Type effect_type, double duration, double delay_before, double delay_after) {
-//    return TransitionEffectPtr(new TransitionEffect(from_state, to_state, effect_type, duration, delay_before, delay_after));
-//}
-
-TransitionEffectPtr TransitionEffect::NewFadeIn(AppStatePtr from_state, AppStatePtr to_state, double duration, double delay_before, double delay_after) {
-    return TransitionEffectPtr(new TransitionEffect(from_state, to_state, TransitionEffectType::FadeIn, duration, -1, -1, 1, 0, delay_before, delay_after));
-}
-
-TransitionEffectPtr TransitionEffect::NewFadeOut(AppStatePtr from_state, AppStatePtr to_state, double duration, double delay_before, double delay_after) {
-    return TransitionEffectPtr(new TransitionEffect(from_state, to_state, TransitionEffectType::FadeOut, duration, -1, -1, 0, 1, delay_before, delay_after));
-}
-
-TransitionEffectPtr TransitionEffect::NewPinWheelOut(AppStatePtr from_state, AppStatePtr to_state, double duration, unsigned int blades, double rotation, double start_alpha, double end_alpha, double delay_before, double delay_after) {
-    return TransitionEffectPtr(new TransitionEffect(from_state, to_state, TransitionEffectType::PinWheelOut, duration, blades, rotation, start_alpha, end_alpha, delay_before, delay_after));
 }
 
 void TransitionEffect::Start() {
@@ -129,7 +82,7 @@ void TransitionEffect::Draw() {
             glTranslated(.5, .5, 0);
             glRotated(m_current_rot_angle, 0, 0, 1);
             assert(m_blades_count>0 && "Niepoprawna wartosc parametru dla efektu PinWheelOut");
-            for (unsigned i=0; i<m_blades_count; ++i) {
+            for (int i=0; i<m_blades_count; ++i) {
                 gluPartialDisk(m_quadric, inner_radius, outer_radius, 20, 3, (i*360.0)/m_blades_count, m_sweep_angle);
             }
         }
