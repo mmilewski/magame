@@ -75,8 +75,10 @@ void MainMenu::ProcessEvents(const SDL_Event& event) {
             else if (m_selection == Sel::HallOfFame) {
                 HallOfFamePtr next_state = HallOfFame::New();
                 
-                tefPtr fadein = TransitionEffect::Prepare(TransitionEffectType::FadeIn).to(next_state).duration(1).Build();
-                tefPtr fadeout = TransitionEffect::Prepare(TransitionEffectType::PinWheelOut).states(shared_from_this(),fadein).duration(1.5).blades(2).rotation(90).delay(0,.3).Build();
+//                tefPtr fadein = TransitionEffect::Prepare(TransitionEffectType::FadeIn).to(next_state).duration(1).Build();
+                tefPtr fadein = TransitionEffect::PrepareFadeIn(next_state).duration(1).Build();
+//                tefPtr fadeout = TransitionEffect::Prepare(TransitionEffectType::PinWheelOut).states(shared_from_this(),fadein).duration(1.5).blades(2).rotation(90).delay(0,.3).Build();
+                tefPtr fadeout = TransitionEffect::PreparePinWheelOut().states(shared_from_this(),fadein).duration(1.5).blades(2).rotation(90).delay(0,.3).Build();
                 m_next_app_state = fadeout;
             }
             else if (m_selection == Sel::Quit) {
@@ -86,7 +88,8 @@ void MainMenu::ProcessEvents(const SDL_Event& event) {
             SetDone();
         }
         else if (event.key.keysym.sym == SDLK_ESCAPE) {
-            TransitionEffectPtr fadeout = TransitionEffect::Prepare(TransitionEffectType::FadeOut).from(shared_from_this()).Build();
+//            TransitionEffectPtr fadeout = TransitionEffect::Prepare(TransitionEffectType::FadeOut).from(shared_from_this()).Build();
+            TransitionEffectPtr fadeout = TransitionEffect::PrepareFadeOut(shared_from_this()).Build();
             m_next_app_state = fadeout;
 //            m_next_app_state.reset();
             SetDone();

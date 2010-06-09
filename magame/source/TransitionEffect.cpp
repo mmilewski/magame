@@ -14,6 +14,19 @@ tefFluent TransitionEffect::Prepare(TransitionEffectType::Type effect_type) {
     }
 }
 
+tefFluent TransitionEffect::PrepareFadeIn(AppStatePtr next_state) {
+    return TransitionEffect::Prepare(TransitionEffectType::FadeIn).to(next_state);
+}
+
+tefFluent TransitionEffect::PrepareFadeOut(AppStatePtr from_state) {
+    return TransitionEffect::Prepare(TransitionEffectType::FadeOut).from(from_state);
+}
+
+tefFluent TransitionEffect::PreparePinWheelOut() {
+    return TransitionEffect::Prepare(TransitionEffectType::PinWheelOut);
+}
+
+
 TransitionEffect::~TransitionEffect() {
     if (m_quadric) {
         gluDeleteQuadric(m_quadric);
