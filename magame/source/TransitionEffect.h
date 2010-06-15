@@ -72,6 +72,7 @@ public:
     AppStatePtr NextAppState() const;
 
 public:
+    void SetStates(AppStatePtr from, AppStatePtr to) { SetFromState(from); SetToState(to); }
     void SetFromState(AppStatePtr from) { m_from_state = from; }
     void SetToState(AppStatePtr to) { m_to_state = to; }
     void SetDuration(double duration) { m_duration = duration; }

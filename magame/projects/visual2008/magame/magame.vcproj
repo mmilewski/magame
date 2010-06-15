@@ -138,7 +138,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Opengl32.lib SDLmain.lib SDL.lib SDL_mixer.lib"
+				AdditionalDependencies="Opengl32.lib glu32.lib SDLmain.lib SDL.lib SDL_mixer.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="$(Externals)boost_1_42_0\libs;&quot;$(Externals)SDL-devel-1.2.14-VC8\SDL-1.2.14\lib&quot;;&quot;$(Externals)SDL_mixer-devel-1.2.11-VC\SDL_mixer-1.2.11\lib&quot;;&quot;$(Externals)SDL_image-1.2.10\lib&quot;"
 				GenerateDebugInformation="true"

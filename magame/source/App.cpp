@@ -11,52 +11,122 @@
 
 class Show : public AppState, public boost::enable_shared_from_this<Show> {
 private:
-    std::deque<TransitionEffectPtr> m_effects;
+    std::list<TransitionEffectPtr> m_effects;
     AppStatePtr m_next;
+    bool m_filled;
+    bool m_updated;
+
 public:
-    virtual void Init() {
-        if (false==m_effects.empty()) {
+    Show() : m_filled(false), m_updated(false) {}
+
+    void Init() {
+        std::cout << "show init" << std::endl;
+        if (m_filled) {
             return ;
         }
-        m_effects.push_back(TransitionEffect::PrepareFadeOut().duration(1).Build() );
+        m_filled = true;
+#define REPEAT(times) for (int i=1; i<=times; ++i)
 
-        m_effects.push_back(TransitionEffect::PrepareFadeIn().duration(1).Build() );
+        TransitionEffectPtr t1, t2;
+        t1 = TransitionEffect::PrepareFadeIn().states(shared_from_this(),shared_from_this()).duration(3).Build();
+        t2 = TransitionEffect::PrepareFadeOut().states(shared_from_this(),t1).duration(2).Build();
+        m_effects.push_back(t2);
+        REPEAT(3) {
+            t1 = TransitionEffect::PrepareFadeIn().states(shared_from_this(),shared_from_this()).duration(1).Build();
+            t2 = TransitionEffect::PrepareFadeOut().states(shared_from_this(),t1).duration(1).Build();
+            m_effects.push_back(t2);
+        }
+        REPEAT(5) {
+            m_effects.push_back(TransitionEffect::PrepareFadeOut().states(shared_from_this(),shared_from_this()).duration(.5).Build());
+            m_effects.push_back(TransitionEffect::PrepareFadeOut().states(shared_from_this(),shared_from_this()).duration(.25).Build());
+        }
+        REPEAT(6) {
+            m_effects.push_back(TransitionEffect::PrepareFadeOut().states(shared_from_this(),shared_from_this()).duration(.125).Build());
+        }
+        REPEAT(12) {
+            m_effects.push_back(TransitionEffect::PrepareFadeOut().states(shared_from_this(),shared_from_this()).duration(.08).Build());
+        }
+        m_effects.push_back(TransitionEffect::PrepareFadeOut().states(shared_from_this(),shared_from_this()).duration(3).Build());
+        REPEAT(3) {
+            m_effects.push_back(TransitionEffect::PreparePinWheelOut().states(shared_from_this(),shared_from_this()).duration(2).blades(i).Build());
+            m_effects.push_back(TransitionEffect::PreparePinWheelOut().states(shared_from_this(),shared_from_this()).duration(2).blades(i).fade_alpha(1,1).Build());
+            m_effects.push_back(TransitionEffect::PreparePinWheelOut().states(shared_from_this(),shared_from_this()).duration(2).blades(i).fade_alpha(.5,1).rotation(i*20).Build());
+        }
+        m_effects.push_back(TransitionEffect::PreparePinWheelOut().states(shared_from_this(),shared_from_this()).duration(2).blades(5).Build());
+        m_effects.push_back(TransitionEffect::PreparePinWheelOut().states(shared_from_this(),shared_from_this()).duration(2).blades(10).Build());
+        m_effects.push_back(TransitionEffect::PreparePinWheelOut().states(shared_from_this(),shared_from_this()).duration(2).blades(20).Build());
+        REPEAT(4) {
+            m_effects.push_back(TransitionEffect::PreparePinWheelOut().states(shared_from_this(),shared_from_this()).duration(2).blades(5).fade_alpha(1,0).rotation(25*i*i+i*10).Build());
+        }
+        REPEAT(4) {
+            m_effects.push_back(TransitionEffect::PreparePinWheelOut().states(shared_from_this(),shared_from_this()).duration(2).blades(i).rotation(-(25*i*i+i*10)).Build());
+        }
+
+
+#undef REPEAT
+    //        return;
+
+    //    m_effects.push_back(TransitionEffect::PrepareFadeOut().duration(1).Build() );
+    //return;
+
+    //    m_effects.push_back(TransitionEffect::PrepareFadeIn().duration(1).Build() );
         //m_effects.push_back(TransitionEffect::PrepareFadeOut().duration(.5).Build() );
         //m_effects.push_back(TransitionEffect::PrepareFadeIn().duration(.5).Build() );
         //m_effects.push_back(TransitionEffect::PrepareFadeIn().duration(.25).Build() );
         //m_effects.push_back(TransitionEffect::PrepareFadeIn().duration(.25).Build() );
         //m_effects.push_back(TransitionEffect::PrepareFadeIn().duration(.1).Build() );
 
-        const int COUNT = m_effects.size();
-        for (int i=1; i<COUNT-1; ++i) {
-            m_effects[i]->SetFromState(shared_from_this());
-            m_effects[i]->SetToState(shared_from_this());
+        //const int COUNT = m_effects.size();
+        //for (int i=1; i<COUNT-1; ++i) {
+        //    m_effects[i]->SetFromState(shared_from_this());
+        //    m_effects[i]->SetToState(shared_from_this());
+        //}
+        //m_effects[0]->SetToState(shared_from_this());
+        //m_effects[COUNT-1]->SetFromState(shared_from_this());
+        //m_effects[COUNT-1]->SetToState(AppStatePtr());
+    }
+
+    void Start() {
+        std::cout << "show start" << std::endl;
+    }
+
+    void Draw() {
+        if (m_updated) {
+            m_updated = false;
+            return;
         }
-        m_effects[0]->SetToState(shared_from_this());
-        m_effects[COUNT-1]->SetFromState(shared_from_this());
-        m_effects[COUNT-1]->SetToState(AppStatePtr());
-    }
-
-    virtual void Start() {
-    }
-
-    virtual void Draw() {
+        if (IsClearBeforeDraw()) {
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glLoadIdentity();
+        }
         Engine::Get().GetRenderer()->DrawQuad(.2,.1, .9, .9, 1,1,0,1);
+        Engine::Get().GetRenderer()->DrawQuad(.3,.4, .8, .7, 1,0,0,1);
+        Engine::Get().GetRenderer()->DrawQuad(.4,.5, .5, .4, 0,0,1,1);
+        Engine::Get().GetRenderer()->DrawQuad(.6,.5, .7, .4, 0,0,1,1);
+        if (IsSwapAfterDraw()) {
+            SDL_GL_SwapBuffers();
+        }
     }
 
-    virtual bool Update(double dt) {
-        if (m_effects.empty()) {
-            m_next = m_effects.front();
+    bool Update(double dt) {
+        m_updated = true;
+        if (false==m_effects.empty()) {
+            std::cout << "update: pop effect" << std::endl;
+            TransitionEffectPtr effect = m_effects.front();
             m_effects.pop_front();
+            //effect->SetStates(shared_from_this(), shared_from_this());
+            m_next = effect;
+            SetDone(true);
         }
         else {
             m_next = AppStatePtr();
         }
-        SetDone(false);
+        //m_next = TransitionEffect::PrepareFadeOut().states(shared_from_this(),shared_from_this()).duration(1).Build();
+        
         return !IsDone();
     }
 
-    virtual boost::shared_ptr<AppState> NextAppState() const { return m_next; }
+    boost::shared_ptr<AppState> NextAppState() const { return m_next; }
 
     void ProcessEvents(const SDL_Event& event) {
     }
@@ -69,7 +139,10 @@ void App::ProcessEvents() {
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_KEYDOWN && event.key.keysym.sym==SDLK_e) {
 
-            m_app_state = AppStatePtr(new Show);
+            m_app_state.reset(new Show);
+            m_app_state->Init();
+            m_app_state->Start();
+            return;
 
         } else
         if (event.type == SDL_KEYDOWN && event.key.keysym.sym==SDLK_q) {
