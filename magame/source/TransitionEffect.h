@@ -60,8 +60,8 @@ public:
     ~TransitionEffect();
 
     static tefFluent Prepare(TransitionEffectType::Type effect_type);
-    static tefFluent PrepareFadeIn(AppStatePtr next_state);
-    static tefFluent PrepareFadeOut(AppStatePtr from_state);
+    static tefFluent PrepareFadeIn(AppStatePtr next_state=AppStatePtr());
+    static tefFluent PrepareFadeOut(AppStatePtr from_state=AppStatePtr());
     static tefFluent PreparePinWheelOut();
 
     void Start();

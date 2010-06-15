@@ -6,10 +6,72 @@
 #include "HallOfFame.h"
 #include "LevelChoiceScreen.h"
 
+#include "TransitionEffect.h"
+#include <deque>
+
+class Show : public AppState, public boost::enable_shared_from_this<Show> {
+private:
+    std::deque<TransitionEffectPtr> m_effects;
+    AppStatePtr m_next;
+public:
+    virtual void Init() {
+        if (false==m_effects.empty()) {
+            return ;
+        }
+        m_effects.push_back(TransitionEffect::PrepareFadeOut().duration(1).Build() );
+
+        m_effects.push_back(TransitionEffect::PrepareFadeIn().duration(1).Build() );
+        //m_effects.push_back(TransitionEffect::PrepareFadeOut().duration(.5).Build() );
+        //m_effects.push_back(TransitionEffect::PrepareFadeIn().duration(.5).Build() );
+        //m_effects.push_back(TransitionEffect::PrepareFadeIn().duration(.25).Build() );
+        //m_effects.push_back(TransitionEffect::PrepareFadeIn().duration(.25).Build() );
+        //m_effects.push_back(TransitionEffect::PrepareFadeIn().duration(.1).Build() );
+
+        const int COUNT = m_effects.size();
+        for (int i=1; i<COUNT-1; ++i) {
+            m_effects[i]->SetFromState(shared_from_this());
+            m_effects[i]->SetToState(shared_from_this());
+        }
+        m_effects[0]->SetToState(shared_from_this());
+        m_effects[COUNT-1]->SetFromState(shared_from_this());
+        m_effects[COUNT-1]->SetToState(AppStatePtr());
+    }
+
+    virtual void Start() {
+    }
+
+    virtual void Draw() {
+        Engine::Get().GetRenderer()->DrawQuad(.2,.1, .9, .9, 1,1,0,1);
+    }
+
+    virtual bool Update(double dt) {
+        if (m_effects.empty()) {
+            m_next = m_effects.front();
+            m_effects.pop_front();
+        }
+        else {
+            m_next = AppStatePtr();
+        }
+        SetDone(false);
+        return !IsDone();
+    }
+
+    virtual boost::shared_ptr<AppState> NextAppState() const { return m_next; }
+
+    void ProcessEvents(const SDL_Event& event) {
+    }
+};
+
+
 void App::ProcessEvents() {
     // przyjrzyj zdarzenia
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_KEYDOWN && event.key.keysym.sym==SDLK_e) {
+
+            m_app_state = AppStatePtr(new Show);
+
+        } else
         if (event.type == SDL_KEYDOWN && event.key.keysym.sym==SDLK_q) {
             exit(0);
         }
