@@ -1,9 +1,7 @@
 #ifndef __GAME_H_INCLUDED__
 #define __GAME_H_INCLUDED__
-#include <boost/shared_ptr.hpp>
-#include <SDL/SDL.h>
-#include <vector>
-#include <iostream>
+#include "StdAfx.h"
+
 
 #include "Utils.h"
 #include "Player.h"
@@ -14,7 +12,7 @@
 
 class LevelChoiceScreen;
 
-class Game : public AppState {
+class Game : public AppState, public boost::enable_shared_from_this<Game> {
 public:
     explicit Game(const std::string& level_name, PlayerPtr player) 
         : m_player(player),

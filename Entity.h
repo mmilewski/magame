@@ -1,7 +1,7 @@
 #ifndef __ENTITY_H__
 #define __ENTITY_H__
+#include "StdAfx.h"
 
-#include <boost/shared_ptr.hpp> 
 #include "Aabb.h"
 #include "Sprite.h"
 #include "Types.h"
@@ -84,8 +84,8 @@ public:
     // pod argumenty x, y zapisuje numer aktualnego kafla
     void GetCurrentTile(size_t *x, size_t *y) const {
         const size_t v_tiles_count = Engine::Get().GetRenderer()->GetVerticalTilesOnScreenCount();
-        *y = v_tiles_count - (GetAabb().GetMinY() + GetAabb().GetMaxY()) / 2;
-        *x = GetX() + GetBasicAabb().GetMaxX() / 2;
+        *y = (size_t)(v_tiles_count - (GetAabb().GetMinY() + GetAabb().GetMaxY()) / 2);
+        *x = (size_t)(GetX() + GetBasicAabb().GetMaxX() / 2);
     }
 
     // prostokąt otaczający jednostkę bez uwzględniania pozycji jednostki

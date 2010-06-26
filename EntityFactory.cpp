@@ -1,4 +1,5 @@
-#include <iostream>
+#include "StdAfx.h"
+
 #include "Engine.h"
 #include "MushEntity.h"
 #include "PlayerBulletEntity.h"

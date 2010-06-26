@@ -1,5 +1,6 @@
 #ifndef __TEXT_H__
 #define __TEXT_H__
+#include "StdAfx.h"
 
 class Text {
 public:
@@ -24,7 +25,7 @@ public:
     void DrawNumber(size_t number, double pos_x, double pos_y, size_t width = 0);
 
 private:
-    void Draw(int tex_x, int tex_y, double pos_x, double pos_y);
+    void Draw(double tex_x, double tex_y, double pos_x, double pos_y);
 
 private:
     double m_width;

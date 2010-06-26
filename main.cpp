@@ -1,7 +1,8 @@
-#include <iostream>
+#include "StdAfx.h"
 
 #include "App.h"
 #include "Engine.h"
+
 
 int main(int argc, char *argv[]) {
     std::cout << "      strzałki lewo/prawo  -  poruszanie się postacią\n"
@@ -15,6 +16,7 @@ int main(int argc, char *argv[]) {
     size_t width = 640;
     size_t height = 420;
     Engine::Get().GetWindow()->SetSize(width, height);
+    Engine::Get().GetWindow()->SetFullscreen(false);
     App app(false);
 
     app.Run();

@@ -1,14 +1,14 @@
 #ifndef __HALL_OF_FAME_H__
 #define __HALL_OF_FAME_H__
-
-#include <string>
-#include <vector> 
-#include <boost/shared_ptr.hpp>
+#include "StdAfx.h"
 
 #include "AppState.h"
 
+class HallOfFame;
+typedef boost::shared_ptr<HallOfFame> HallOfFamePtr;
 
-class HallOfFame : public AppState  {
+
+class HallOfFame : public AppState, public boost::enable_shared_from_this<HallOfFame>  {
 private:
     struct Entry {
         std::string name;
@@ -17,6 +17,7 @@ private:
 
 public:
     explicit HallOfFame();
+    static HallOfFamePtr New();
 
     void Draw();
     bool Update(double dt);

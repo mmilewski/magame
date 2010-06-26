@@ -1,6 +1,6 @@
 #ifndef _CREATOR_H_INCLUDED__
 #define _CREATOR_H_INCLUDED__
-#include <boost/shared_ptr.hpp>
+#include "StdAfx.h"
 
 class Game;
 

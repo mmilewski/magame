@@ -1,10 +1,7 @@
 #ifndef __LEVEL_H__
 #define __LEVEL_H__
+#include "StdAfx.h"
 
-#include <boost/shared_ptr.hpp>
-#include <string>
-#include <vector>
-#include <list>
 #include "Aabb.h"
 #include "Types.h"
 

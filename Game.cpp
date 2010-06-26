@@ -1,6 +1,4 @@
-#include <cassert>
-#include <cmath>
-#include <iostream>
+#include "StdAfx.h"
 
 #include "Game.h"
 #include "Engine.h"
@@ -155,7 +153,7 @@ void Game::CheckCollisionOfOnePair(EntityPtr fst_entity, ET::EntityType fst_type
     // w dobrej kolejności, tzn. tak, aby każdą parę obsługiwać jeden raz
 #define SWAP_IF( type_a, type_b )  \
     if (fst_type == type_a && snd_type == type_b) {  \
-    	std::swap(fst_entity, snd_entity);   \
+        std::swap(fst_entity, snd_entity);   \
         std::swap(fst_type, snd_type);   \
     }
 
@@ -314,8 +312,10 @@ bool Game::Update(double dt) {
 }
 
 void Game::Draw() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
+    if (IsClearBeforeDraw()) {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glLoadIdentity();
+    }
 
     // narysuj mapę
     if (m_player->MoveMap()) {
@@ -325,7 +325,8 @@ void Game::Draw() {
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     {
-        glTranslatef(-(m_stored_player_pos_x * Engine::Get().GetRenderer()->GetTileWidth() - 0.45), 0, 0);
+        double player_x = -(m_stored_player_pos_x * Engine::Get().GetRenderer()->GetTileWidth() - 0.45);
+        glTranslated(player_x, 0, 0);
         glMatrixMode(GL_MODELVIEW);
     
         m_level_view.SetLevel(m_level, m_stored_player_pos_x);
@@ -346,6 +347,7 @@ void Game::Draw() {
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
 
-
-    SDL_GL_SwapBuffers();
+    if (IsSwapAfterDraw()) {
+        SDL_GL_SwapBuffers();
+    }
 }

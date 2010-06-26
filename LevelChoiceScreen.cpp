@@ -1,9 +1,7 @@
-#include <SDL/SDL_opengl.h>
+#include "StdAfx.h"
+
 #include <boost/assign/std/vector.hpp>     // operator+=()
 #include <boost/assign/list_inserter.hpp>  // insert()
-#include <cmath>      // fabs
-#include <algorithm>  // find
-#include <iostream>
 
 #include "Engine.h"
 #include "LevelChoiceScreen.h"
@@ -28,16 +26,16 @@ LevelChoiceScreen::LevelChoiceScreen(PlayerPtr player) :
     m_player(player),
     m_next_app_state() {
 
-    srand(time(0));
+    //srand(time(0));
 
 //
-//	0 -------- 1
-//	           |
-//	           |
+//    0 -------- 1
+//               |
+//               |
 //     3 ----- 2
-//	           |
-//	           |
-//	           4
+//               |
+//               |
+//               4
 
 //
 //    boost assignment lbrary
@@ -121,8 +119,10 @@ void LevelChoiceScreen::DrawRoad(size_t from, size_t to) const {
 }
 
 void LevelChoiceScreen::Draw() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
+    if (IsClearBeforeDraw()) {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glLoadIdentity();
+    }
 
     // DZIAŁANIE
     // dla każdego węzła i
@@ -177,11 +177,13 @@ void LevelChoiceScreen::Draw() {
     t.DrawText("WYBIERZ POZIOM", .2, .85);
 
     //
-    SDL_GL_SwapBuffers();
+    if (IsSwapAfterDraw()) {
+        SDL_GL_SwapBuffers();
+    }
 }
 
 // zwraca znak x
-int sgn(float x) {
+int sgn(double x) {
     return x ? (x > 0 ? 1 : -1) : 0;
 //    if (x < 0) return -1;
 //    if (x > 0) return 1;

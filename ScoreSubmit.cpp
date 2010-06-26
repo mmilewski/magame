@@ -1,10 +1,4 @@
-#include <SDL/SDL.h>
-#include <SDL/SDL_opengl.h>
-
-#include <vector> 
-#include <string>
-#include <fstream>
-#include <iostream>
+#include "StdAfx.h"
 
 #include "ScoreSubmit.h"
 #include "Text.h"
@@ -22,8 +16,10 @@ ScoreSubmit::ScoreSubmit(size_t points)
 }
 
 void ScoreSubmit::Draw() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
+    if (IsClearBeforeDraw()) {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glLoadIdentity();
+    }
 
     Text t(0.08, 0.08);
     t.DrawText("gratulacje", 0.1, 0.9);
@@ -47,7 +43,9 @@ void ScoreSubmit::Draw() {
         t.DrawLetter(ch, pos.first, pos.second);
     }
 
-    SDL_GL_SwapBuffers();
+    if (IsSwapAfterDraw()) {
+        SDL_GL_SwapBuffers();
+    }
 }
 
 std::pair<double, double> ScoreSubmit::LetterPosition(char ch) {
@@ -131,8 +129,8 @@ void ScoreSubmit::StoreInFile() {
     }
 
     hof.close();
-
     hof.clear();
+
     hof.open("data/hof.txt", std::ios::out);
     for (size_t i = 0; i < 10 && i < entries.size(); ++i) {
         hof << entries.at(i).name << " " << entries.at(i).points << "\n";

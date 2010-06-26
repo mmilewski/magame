@@ -1,9 +1,7 @@
 #ifndef __AABB_H__
 #define __AABB_H__
+#include "StdAfx.h"
 
-#include <boost/shared_ptr.hpp> 
-#include <cassert>
-#include <ostream>
 
 // Axis-Aligned Bounding Box
 class Aabb {
@@ -48,7 +46,7 @@ private:
     double m_max_y;
 };
 
-typedef boost::shared_ptr<Aabb> AabbPtr;
+//typedef boost::shared_ptr<Aabb> AabbPtr;
 
 #endif
 

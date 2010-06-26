@@ -1,5 +1,7 @@
 #ifndef __TWIN_SHOT_UPGRADE_H_INCLUDED__
 #define __TWIN_SHOT_UPGRADE_H_INCLUDED__
+#include "StdAfx.h"
+
 #include "Entity.h"
 
 class TwinShotUpgrade : public Entity {

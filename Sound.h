@@ -1,13 +1,6 @@
 #ifndef __SOUND_H__
 #define __SOUND_H__
-
-#include <string>
-#include <map>
-
-#include <boost/shared_ptr.hpp>
-
-#include <SDL/SDL_mixer.h>
-
+#include "StdAfx.h"
 
 
 class Sound {

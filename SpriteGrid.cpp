@@ -1,3 +1,5 @@
+#include "StdAfx.h"
+
 #include "SpriteGrid.h"
 #include "Engine.h"
 
@@ -39,10 +41,11 @@ void SpriteGrid::Draw(double dx) const {
 
     glPushMatrix();
     {
-        glTranslatef(dx*tile_width-0.45, 0, 0);
+        const double sprite_pos_x = dx * tile_width - 0.45;
+        glTranslated(sprite_pos_x, 0, 0);
 
-        double offset = dx - static_cast<int>(dx);
-        glTranslatef(-offset * tile_width, 0, 0);
+        const double offset = dx - static_cast<int>(dx);
+        glTranslated(-offset * tile_width, 0, 0);
         for (size_t y = 0; y < m_grid.size(); ++y) {
             const std::vector<SpritePtr>& row = m_grid.at(y);
             for (size_t x = 0; x < row.size(); ++x) {

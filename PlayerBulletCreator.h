@@ -1,5 +1,6 @@
 #ifndef __PLAYER_BULLET_CREATOR_H_INCLUDED__
 #define __PLAYER_BULLET_CREATOR_H_INCLUDED__
+#include "StdAfx.h"
 
 #include "Creator.h"
 #include "PlayerBulletEntity.h"

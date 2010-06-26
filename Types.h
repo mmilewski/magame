@@ -1,5 +1,6 @@
 #ifndef __TYPES_H__
 #define __TYPES_H__
+#include "StdAfx.h"
 
 namespace PS {
     enum PlayerState {
@@ -48,6 +49,19 @@ namespace ET {
         Mush,
         PlayerBullet,
         TwinShot
+    };
+}
+
+// typ fade effectu
+namespace TransitionEffectType {
+    enum Type {
+        UNKNOWN,
+
+        FadeIn,
+        FadeOut,
+        PinWheelOut,
+
+        COUNT
     };
 }
 

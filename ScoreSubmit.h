@@ -1,13 +1,11 @@
 #ifndef __SCORE_SUBMIT_H__
 #define __SCORE_SUBMIT_H__
-
-#include <utility>
-#include <boost/shared_ptr.hpp>
+#include "StdAfx.h"
 
 #include "AppState.h"
 
 
-class ScoreSubmit : public AppState {
+class ScoreSubmit : public AppState, public boost::enable_shared_from_this<ScoreSubmit> {
 private:
     struct Entry {
         std::string name;

@@ -1,7 +1,4 @@
-#include <SDL/SDL.h>
-#include <SDL/SDL_opengl.h>
-
-#include <string>
+#include "StdAfx.h"
 
 #include "MainMenu.h"
 #include "Text.h"
@@ -9,6 +6,7 @@
 //#include "Game.h"
 #include "LevelChoiceScreen.h"
 #include "HallOfFame.h"
+#include "TransitionEffect.h"
 
 
 void MainMenu::Init() {
@@ -20,8 +18,10 @@ void MainMenu::Start() {
 }
 
 void MainMenu::Draw() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
+    if (IsClearBeforeDraw()) {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glLoadIdentity();
+    }
 
     Text t(0.1, 0.1);
     t.DrawText("menu", 0.3, 0.8);
@@ -41,7 +41,9 @@ void MainMenu::Draw() {
     t.DrawText("hall of fame", 0.21, 0.5);
     t.DrawText("wyjscie", 0.335, 0.4);
 
-    SDL_GL_SwapBuffers();
+    if (IsSwapAfterDraw()) {
+        SDL_GL_SwapBuffers();
+    }
 }
 
 bool MainMenu::Update(double /* dt */) {
@@ -71,7 +73,13 @@ void MainMenu::ProcessEvents(const SDL_Event& event) {
                 m_next_app_state.reset(new LevelChoiceScreen(PlayerPtr()));
             }
             else if (m_selection == Sel::HallOfFame) {
-                m_next_app_state.reset(new HallOfFame);
+                HallOfFamePtr next_state = HallOfFame::New();
+                
+//                tefPtr fadein = TransitionEffect::Prepare(TransitionEffectType::FadeIn).to(next_state).duration(1).Build();
+                tefPtr fadein = TransitionEffect::PrepareFadeIn(next_state).duration(1).Build();
+//                tefPtr fadeout = TransitionEffect::Prepare(TransitionEffectType::PinWheelOut).states(shared_from_this(),fadein).duration(1.5).blades(2).rotation(90).delay(0,.3).Build();
+                tefPtr fadeout = TransitionEffect::PreparePinWheelOut().states(shared_from_this(),fadein).duration(1.5).blades(2).rotation(90).delay(0,.3).Build();
+                m_next_app_state = fadeout;
             }
             else if (m_selection == Sel::Quit) {
                 m_next_app_state.reset();
@@ -80,7 +88,10 @@ void MainMenu::ProcessEvents(const SDL_Event& event) {
             SetDone();
         }
         else if (event.key.keysym.sym == SDLK_ESCAPE) {
-            m_next_app_state.reset();
+//            TransitionEffectPtr fadeout = TransitionEffect::Prepare(TransitionEffectType::FadeOut).from(shared_from_this()).Build();
+            TransitionEffectPtr fadeout = TransitionEffect::PrepareFadeOut(shared_from_this()).Build();
+            m_next_app_state = fadeout;
+//            m_next_app_state.reset();
             SetDone();
         }
     }

@@ -1,5 +1,5 @@
-#include <cmath>
-#include <iostream>
+#include "StdAfx.h"
+
 #include "Entity.h"
 #include "Engine.h"
 
@@ -198,7 +198,7 @@ void Entity::Draw() const {
     const double pos_y = m_y * tile_height;
 
 //    std::cout << "Entity Draw: " << pos_x << " " << pos_y << std::endl;
-//    const size_t screen_tiles_count = Engine::Get().Renderer()->GetHorizontalTilesOnScreenCount();
+//    const size_t screen_tiles_count = Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount();
 //    const size_t half_screen_tiles_count = screen_tiles_count/2-1;
 //    double pos_x = 0.45;
 //    const double left_edge = m_max_x_pos - half_screen_tiles_count;
@@ -229,17 +229,17 @@ void Entity::Draw() const {
         break;
     }
 
-//    const size_t v_tiles_count = Engine::Get().Renderer()->GetVerticalTilesOnScreenCount();
+//    const size_t v_tiles_count = Engine::Get().GetRenderer()->GetVerticalTilesOnScreenCount();
 //    const size_t curr_y_tile = v_tiles_count - GetAabb().GetMinY();
 //    const size_t curr_x_tile = GetX() + .5;
 //    for (int y = -1; y < 2; ++y) {
-//        Engine::Get().Renderer()->DrawAabb(MM_level->GetFieldAabb(curr_x_tile + 1, curr_y_tile + y));
-//        Engine::Get().Renderer()->DrawAabb(MM_level->GetFieldAabb(curr_x_tile + y, curr_y_tile + 1));
+//        Engine::Get().GetRenderer()->DrawAabb(MM_level->GetFieldAabb(curr_x_tile + 1, curr_y_tile + y));
+//        Engine::Get().GetRenderer()->DrawAabb(MM_level->GetFieldAabb(curr_x_tile + y, curr_y_tile + 1));
 //    }
 
 
 
-//    Engine::Get().Renderer()->DrawAabb(GetAabb());
+//    Engine::Get().GetRenderer()->DrawAabb(GetAabb());
 }
 
 void Entity::KilledByPlayer() {

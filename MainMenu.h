@@ -1,9 +1,10 @@
 #ifndef __MAIN_MENU_H__
 #define __MAIN_MENU_H__
+#include "StdAfx.h"
 
 #include "AppState.h"
 
-class MainMenu : public AppState {
+class MainMenu : public AppState, public boost::enable_shared_from_this<MainMenu> {
 private:
     struct Sel {
         enum Selection {

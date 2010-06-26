@@ -1,5 +1,4 @@
-#include <cmath>
-#include <algorithm>
+#include "StdAfx.h"
 
 #include "PlayerBulletCreator.h"
 #include "Utils.h"

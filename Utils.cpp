@@ -1,4 +1,5 @@
-#include <sstream>
+#include "StdAfx.h"
+
 #include "Utils.h"
 
 std::string IntToStr(int number) {

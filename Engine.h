@@ -1,5 +1,7 @@
 #ifndef ENGINE_H_
 #define ENGINE_H_
+#include "StdAfx.h"
+
 #include "SpriteConfig.h"
 #include "Renderer.h"
 #include "EntityFactory.h"
@@ -24,8 +26,8 @@ public:
     EntityFactoryPtr GetEntityFactory() { return m_entity_factory; }
     SpriteConfigPtr GetSpriteConfig()   { return m_sprite_config; }
     RendererPtr GetRenderer()           { return m_renderer; }
-    SoundPtr GetSound() { return m_sound; }
-    WindowPtr GetWindow() { return m_window; }
+    SoundPtr GetSound()                 { return m_sound; }
+    WindowPtr GetWindow()               { return m_window; }
 
 private:
     EntityFactoryPtr m_entity_factory;

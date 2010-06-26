@@ -1,4 +1,4 @@
-#include <cassert>
+#include "StdAfx.h"
 
 #include "App.h"
 #include "Engine.h"
@@ -6,10 +6,25 @@
 #include "HallOfFame.h"
 #include "LevelChoiceScreen.h"
 
+#include "TransitionEffect.h"
+#include "EffectsShow.h"
+
+
 void App::ProcessEvents() {
     // przyjrzyj zdarzenia
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_KEYDOWN && event.key.keysym.sym==SDLK_e) {
+
+            m_app_state.reset(new Show);
+            m_app_state->Init();
+            m_app_state->Start();
+            return;
+
+        } else
+        if (event.type == SDL_KEYDOWN && event.key.keysym.sym==SDLK_q) {
+            exit(0);
+        }
         if (event.type == SDL_VIDEORESIZE) {
             Resize(event.resize.w, event.resize.h);
         } else {
@@ -33,7 +48,7 @@ void App::Run() {
     glDepthFunc(GL_LEQUAL);
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_ALPHA_TEST); // niewyświetlanie przezroczystych fragmentów sprite'a
-    glAlphaFunc(GL_GEQUAL, 0.1);
+    glAlphaFunc(GL_GEQUAL, 0.1f);
 
     // ładowanie atlasu
     const std::string atlas_filename = "data/tex.bmp";
@@ -78,13 +93,16 @@ void App::Update(double dt) {
 
 void App::Draw() {
     m_app_state->Draw();
+    glFlush();
 }
 
 void App::Resize(size_t width, size_t height) {
-    m_screen = SDL_SetVideoMode(width, height, 32, SDL_OPENGL | SDL_RESIZABLE | SDL_HWSURFACE);
+    const bool is_fullscreen = Engine::Get().GetWindow()->IsFullscreen();
+    const int fullscreen_flag = is_fullscreen ? SDL_FULLSCREEN : 0;
+
+    m_screen = SDL_SetVideoMode(width, height, 32, SDL_OPENGL | SDL_RESIZABLE | SDL_HWSURFACE | fullscreen_flag);
     assert(m_screen && "problem z ustawieniem wideo");
 
     Engine::Get().GetWindow()->SetSize(width, height);
-
     Engine::Get().GetRenderer()->SetProjection(width, height);
 }
