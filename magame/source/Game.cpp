@@ -312,8 +312,10 @@ bool Game::Update(double dt) {
 }
 
 void Game::Draw() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
+    if (IsClearBeforeDraw()) {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glLoadIdentity();
+    }
 
     // narysuj mapę
     if (m_player->MoveMap()) {
@@ -345,6 +347,7 @@ void Game::Draw() {
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
 
-
-    SDL_GL_SwapBuffers();
+    if (IsSwapAfterDraw()) {
+        SDL_GL_SwapBuffers();
+    }
 }

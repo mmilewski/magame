@@ -5,7 +5,7 @@
 #include "AppState.h"
 
 
-class ScoreSubmit : public AppState {
+class ScoreSubmit : public AppState, public boost::enable_shared_from_this<ScoreSubmit> {
 private:
     struct Entry {
         std::string name;

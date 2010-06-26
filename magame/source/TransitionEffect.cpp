@@ -61,8 +61,11 @@ void TransitionEffect::Draw() {
     if (IsDone()) {
         return;
     }
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
+
+    if (IsClearBeforeDraw()) {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glLoadIdentity();
+    }
 
     if (m_effect_type==TransitionEffectType::FadeIn) {
         if (m_to_state) {
@@ -106,7 +109,9 @@ void TransitionEffect::Draw() {
     }
 
 
-    SDL_GL_SwapBuffers();
+    if (IsSwapAfterDraw()) {
+        SDL_GL_SwapBuffers();
+    }
 }
 
 bool TransitionEffect::Update(double dt) {

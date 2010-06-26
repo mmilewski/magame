@@ -119,8 +119,10 @@ void LevelChoiceScreen::DrawRoad(size_t from, size_t to) const {
 }
 
 void LevelChoiceScreen::Draw() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
+    if (IsClearBeforeDraw()) {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glLoadIdentity();
+    }
 
     // DZIAŁANIE
     // dla każdego węzła i
@@ -175,7 +177,9 @@ void LevelChoiceScreen::Draw() {
     t.DrawText("WYBIERZ POZIOM", .2, .85);
 
     //
-    SDL_GL_SwapBuffers();
+    if (IsSwapAfterDraw()) {
+        SDL_GL_SwapBuffers();
+    }
 }
 
 // zwraca znak x

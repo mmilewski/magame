@@ -8,7 +8,7 @@ class HallOfFame;
 typedef boost::shared_ptr<HallOfFame> HallOfFamePtr;
 
 
-class HallOfFame : public AppState  {
+class HallOfFame : public AppState, public boost::enable_shared_from_this<HallOfFame>  {
 private:
     struct Entry {
         std::string name;

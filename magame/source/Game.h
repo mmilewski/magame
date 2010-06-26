@@ -12,7 +12,7 @@
 
 class LevelChoiceScreen;
 
-class Game : public AppState {
+class Game : public AppState, public boost::enable_shared_from_this<Game> {
 public:
     explicit Game(const std::string& level_name, PlayerPtr player) 
         : m_player(player),
