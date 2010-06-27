@@ -5,22 +5,21 @@
 
 
 SpriteConfig::SpriteConfig() {
-    Insert("player_right", SpriteConfigData(DL::Player, 4, 0.1, 0, 4 * 32, 32, 32, true));
-    Insert("player_left",  SpriteConfigData(DL::Player, 4, 0.1, 0, 5 * 32, 32, 32, true));
-    Insert("player_stop",  SpriteConfigData(DL::Player, 8, 0.1, 0, 6 * 32, 32, 32, true));
+    Insert("player_right", SpriteConfigData(DL::Player, 5, 0.15, 0, 4 * 32, 32, 32, true));
+    Insert("player_left",  SpriteConfigData(DL::Player, 5, 0.15, 0, 5 * 32, 32, 32, true));
+    Insert("player_stop",  SpriteConfigData(DL::Player, 1, 0.15, 0, 6 * 32, 32, 32, true));
 
-    Insert("platform_left",  SpriteConfigData(DL::Foreground, 1, 1, 0, 1*32, 32, 32, true));
-    Insert("platform_mid",   SpriteConfigData(DL::Foreground, 1, 1, 0, 2*32, 32, 32, true));
-    Insert("platform_right", SpriteConfigData(DL::Foreground, 1, 1, 0, 3*32, 32, 32, true));
-    Insert("end_of_level",   SpriteConfigData(DL::Foreground, 1, 1, 32, 2*32, 32, 32, true));
+    Insert("platform_left",  SpriteConfigData(DL::Foreground, 1, 1, 1*32, 1*32, 32, 32, true));
+    Insert("platform_mid",   SpriteConfigData(DL::Foreground, 1, 1, 1*32, 2*32, 32, 32, true));
+    Insert("platform_right", SpriteConfigData(DL::Foreground, 1, 1, 1*32, 3*32, 32, 32, true));
+    Insert("end_of_level",   SpriteConfigData(DL::Foreground, 4, 0.1, 4*32, 2*32, 32, 32, true));
 
-    Insert("mush_right", SpriteConfigData(DL::Entity, 4, 0.3,  0, 11 * 32, 32, 32, true));
-    Insert("mush_left",  SpriteConfigData(DL::Entity, 4, 0.3,  0, 11 * 32, 32, 32, true));
-    Insert("mush_stop",  SpriteConfigData(DL::Entity, 1, 0.3,  0, 12 * 32, 32, 32, true));
+    Insert("mush_right", SpriteConfigData(DL::Entity, 4, 0.3,  0, 12 * 32, 32, 32, true));
+    Insert("mush_left",  SpriteConfigData(DL::Entity, 4, 0.3,  0, 13 * 32, 32, 32, true));
+    Insert("mush_stop",  SpriteConfigData(DL::Entity, 4, 0.3,  0, 14 * 32, 32, 32, true));
 
-    Insert("player_bullet",  SpriteConfigData(DL::Entity, 4, 0.3,  5*32, 11*32, 32, 32, true));
-
-    Insert("twinshot_upgrade", SpriteConfigData(DL::Entity, 2, 0.3,  0*32, 13*32, 32, 32, true));
+    Insert("player_bullet",  SpriteConfigData(DL::Entity, 1, 0.3,  6*32, 13*32, 32, 32, true));
+    Insert("twinshot_upgrade", SpriteConfigData(DL::Entity, 4, 0.1,  6*32, 15*32, 32, 32, true));
 }
 
 SpriteConfigData SpriteConfig::Get(const std::string& name) const {

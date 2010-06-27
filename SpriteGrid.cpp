@@ -60,6 +60,17 @@ void SpriteGrid::Draw(double dx) const {
     glPopMatrix();
 }
 
+void SpriteGrid::Update(double dt) {
+    for (size_t y = 0; y < m_grid.size(); ++y) {
+        const std::vector<SpritePtr>& row = m_grid.at(y);
+        for (size_t x = 0; x < row.size(); ++x) {
+            const SpritePtr& sprite = row.at(x);
+            if (sprite) {
+                sprite->Update(dt);
+            }
+        }
+    }
+}
 
 void SpriteGrid::StoreSprite(FT::FieldType ft, SpritePtr sp) {
     if (m_sprites.size() <= static_cast<size_t>(ft)) m_sprites.resize(ft + 1);

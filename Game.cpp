@@ -308,6 +308,9 @@ bool Game::Update(double dt) {
     // usuń niepotrzebne jednostki i dodaj nowe
     SeepAndAddEntities(dt);
 
+    // zaaktualizuj stan mapy kaflowej (np. animację kafli)
+    m_level_view.Update(dt);
+
     return !IsDone();
 }
 
