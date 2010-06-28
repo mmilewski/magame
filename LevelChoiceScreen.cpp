@@ -32,7 +32,7 @@ LevelChoiceScreen::LevelChoiceScreen(PlayerPtr player) :
 //    0 -------- 1
 //               |
 //               |
-//     3 ----- 2
+//       3 ----- 2
 //               |
 //               |
 //               4
@@ -102,6 +102,7 @@ void LevelChoiceScreen::DrawRoad(size_t from, size_t to) const {
         if (from_node_pos[0] > to_node_pos[0]) {
             std::swap(from_node_pos, to_node_pos);
         }
+        m_vertical_road_sprite->SetRepeat(m_tile_width, m_tile_height);
         m_vertical_road_sprite->DrawCurrentFrame(
                 from_node_pos[0],                   from_node_pos[1] - m_tile_height / 2,
                 to_node_pos[0] - from_node_pos[0],  m_tile_height);
@@ -111,6 +112,7 @@ void LevelChoiceScreen::DrawRoad(size_t from, size_t to) const {
         if (from_node_pos[1] > to_node_pos[1]) {
             std::swap(from_node_pos, to_node_pos);
         }
+        m_horizontal_road_sprite->SetRepeat(m_tile_width, m_tile_height);
         m_horizontal_road_sprite->DrawCurrentFrame(
                 from_node_pos[0] - m_tile_width / 2,  from_node_pos[1],
                 m_tile_width,                         to_node_pos[1] - from_node_pos[1]);
@@ -166,8 +168,19 @@ void LevelChoiceScreen::Draw() {
     }
 
     // narysuj postać
-    m_face_sprite->DrawCurrentFrame(m_face_pos[0] - m_tile_width / 2, m_face_pos[1]
-            - m_tile_height / 2, m_tile_width, m_tile_height);
+    m_face_sprite->DrawCurrentFrame(m_face_pos[0] - m_tile_width / 2,
+                                    m_face_pos[1] - m_tile_height / 2,
+                                    m_tile_width,
+                                    m_tile_height);
+
+
+    // // Aby zobaczyć jak działa powtarzanie sprite'ów odkomentuj poniższy kawałek kodu
+    // // narysuj postać
+    // m_face_sprite->SetRepeat(m_tile_width, m_tile_width);
+    // m_face_sprite->DrawCurrentFrame(m_face_pos[0] - m_tile_width / 2,
+    //                                 m_face_pos[1] - m_tile_height / 2,
+    //                                 m_tile_width * 3.5,
+    //                                 m_tile_height * 2.75);
 
 
     // tekst na górze ekranu

@@ -220,7 +220,8 @@ void Player::FireBullet() {
     const double y = GetY() + .5;
     AddCreator(CreatorPtr(new PlayerBulletCreator(x, y, xvel, 0)));
     if (IsTwinShotEnabled()) {
-        AddCreator(CreatorPtr(new PlayerBulletCreator(x, y + .5, xvel + 2, 0)));
+        double twin_xvel = xvel + 2 * (xvel/std::fabs(xvel)); // zwiększamy prędkość w zależności od zwrotu wektora prędkości
+        AddCreator(CreatorPtr(new PlayerBulletCreator(x, y + .5, twin_xvel, 0)));
     }
 }
 
