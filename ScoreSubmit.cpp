@@ -80,8 +80,8 @@ void ScoreSubmit::ProcessEvents(const SDL_Event& event) {
         }
     }
     else if (event.type == SDL_MOUSEMOTION) {
-        double x = event.motion.x / 600.0;
-        double y = 1.0 - event.motion.y / 400.0;
+        double x = event.motion.x / static_cast<double>(Engine::Get().GetWindow()->GetWidth());
+        double y = 1.0 - event.motion.y / static_cast<double>(Engine::Get().GetWindow()->GetHeight());
         m_highlighted_char = ' ';
         for (char ch = 'a'; ch <= 'z'; ++ch) {
             std::pair<double, double> ch_pos = LetterPosition(ch);
