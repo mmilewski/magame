@@ -5,7 +5,8 @@
 
 Sprite::Sprite(const SpriteConfigData& data) :
     m_data(data), m_current_frame(0), m_current_frame_duration(0.0),
-    m_width_repeat(-1), m_height_repeat(-1) {
+    m_width_repeat(-1), m_height_repeat(-1),
+    m_dark(data.dark) {
 
 }
 
@@ -36,9 +37,17 @@ void Sprite::Update(double dt) {
 void Sprite::DrawCurrentFrame(double x, double y, double width, double height) {
     // jeżeli powtarzanie jest nieaktywne, to rysujemy normalnie
     if (m_width_repeat < 0 && m_height_repeat < 0) {
-        Engine::Get().GetRenderer()->DrawSprite(
-            m_data.left + m_data.width * m_current_frame, m_data.bottom,
-            m_data.width, m_data.height, x, y, width, height, m_data.layer);
+        if (m_dark) {
+            Engine::Get().GetRenderer()->DrawSprite(
+                m_data.left + m_data.width * m_current_frame, m_data.bottom,
+                m_data.width, m_data.height, x, y, width, height, m_data.layer,
+                0.15);
+        }
+        else {
+            Engine::Get().GetRenderer()->DrawSprite(
+                m_data.left + m_data.width * m_current_frame, m_data.bottom,
+                m_data.width, m_data.height, x, y, width, height, m_data.layer);
+        }
         return;
     }
 

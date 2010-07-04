@@ -4,7 +4,7 @@
 #include "Engine.h"
 
 
-int main(int argc, char *argv[]) {
+int main(/* int argc, char *argv[] */) {
     std::cout << "      strzałki lewo/prawo  -  poruszanie się postacią\n"
               << "         strzałka do góry  -  skok\n"
               << " przytrzymanie klawisza d  -  bieganie\n"

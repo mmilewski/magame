@@ -151,7 +151,7 @@ bool TransitionEffect::Update(double dt) {
     return !IsDone();
 }
 
-void TransitionEffect::ProcessEvents(const SDL_Event& event) {
+void TransitionEffect::ProcessEvents(const SDL_Event& /* event */) {
 }
 
 AppStatePtr TransitionEffect::NextAppState() const {

@@ -39,6 +39,8 @@ private:
 
     double m_width_repeat;            // szerokość, powyżej której sprite będzie ponownie rysowany
     double m_height_repeat;           // wysokość, powyżej której sprite będzie ponownie rysowany
+
+    bool m_dark;                      // czy sprite ma być przyciemniony
 };
 
 typedef boost::shared_ptr<Sprite> SpritePtr;

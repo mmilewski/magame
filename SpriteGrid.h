@@ -21,7 +21,7 @@ private:
 
 private:
     std::vector< std::vector< SpritePtr > > m_grid;
-    std::vector<SpritePtr> m_sprites;
+    std::map<FT::FieldType, SpritePtr> m_sprites;
 };
 
 

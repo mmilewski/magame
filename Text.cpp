@@ -29,7 +29,7 @@ void Text::DrawSpecial(char ch, double pos_x, double pos_y) {
 
     if (ch == '_') {
         tex_x = 192;
-        tex_y = 320;
+        tex_y = 352;
     }
     else {
         return; // pomijamy znaki, których nie znamy

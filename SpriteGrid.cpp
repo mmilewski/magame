@@ -26,7 +26,13 @@ void SpriteGrid::SetLevel(const LevelPtr lvl, double dx) {
 
             const FT::FieldType& ft = lvl->Field(draw_x, draw_y);
             if (ft != FT::None) {
-                SetSprite(x, y, m_sprites.at(ft));
+                std::map<FT::FieldType, SpritePtr>::iterator it = m_sprites.find(ft);
+                if (it != m_sprites.end()) {
+                    SetSprite(x, y, it->second);
+                }
+                else {
+                    SetSprite(x, y, SpritePtr());
+                }
             }
             else {
                 SetSprite(x, y, SpritePtr());
@@ -73,6 +79,5 @@ void SpriteGrid::Update(double dt) {
 }
 
 void SpriteGrid::StoreSprite(FT::FieldType ft, SpritePtr sp) {
-    if (m_sprites.size() <= static_cast<size_t>(ft)) m_sprites.resize(ft + 1);
-    m_sprites.at(ft) = sp;
+    m_sprites.insert(std::make_pair(ft, sp));
 }

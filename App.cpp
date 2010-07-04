@@ -14,20 +14,22 @@ void App::ProcessEvents() {
     // przyjrzyj zdarzenia
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_KEYDOWN && event.key.keysym.sym==SDLK_e) {
+//         if (event.type == SDL_KEYDOWN && event.key.keysym.sym==SDLK_e) {
 
-            m_app_state.reset(new Show);
-            m_app_state->Init();
-            m_app_state->Start();
-            return;
+//             m_app_state.reset(new Show);
+//             m_app_state->Init();
+//             m_app_state->Start();
+//             return;
 
-        } else
-        if (event.type == SDL_KEYDOWN && event.key.keysym.sym==SDLK_q) {
-            exit(0);
-        }
+//         } 
+//         else if (event.type == SDL_KEYDOWN && event.key.keysym.sym==SDLK_q) {
+//             exit(0);
+//         }
+//         else
         if (event.type == SDL_VIDEORESIZE) {
             Resize(event.resize.w, event.resize.h);
-        } else {
+        } 
+        else {
             m_app_state->ProcessEvents(event);
         }
     }

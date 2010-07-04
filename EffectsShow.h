@@ -77,7 +77,7 @@ public:
         }
     }
 
-    bool Update(double dt) {
+    bool Update(double /* dt */) {
         m_updated = true;
         if (false==m_effects.empty()) {
             TransitionEffectPtr effect = m_effects.front();
@@ -93,7 +93,7 @@ public:
 
     boost::shared_ptr<AppState> NextAppState() const { return m_next; }
 
-    void ProcessEvents(const SDL_Event& event) {
+    void ProcessEvents(const SDL_Event& /* event */) {
     }
 };
 
