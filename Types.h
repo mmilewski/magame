@@ -23,6 +23,10 @@ namespace DL {
 
 namespace FT {
     enum FieldType {
+
+        // NOTE: jeżeli chcesz zmienić poniższą listę, upewnij się, że funkcja
+        // Level::IsFieldCollidable zwróci poprawną wartość
+        
         None = 0,
         EndOfLevel = 1,
 

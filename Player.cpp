@@ -36,8 +36,15 @@ void Player::Jump(double y_velocity) {
 void Player::CheckCollisionsWithLevel(double dt, LevelPtr level) {
     size_t x_tile, y_tile;
     GetCurrentTile(&x_tile, &y_tile);
-    if (level->Field(x_tile, y_tile - 1) == FT::EndOfLevel) {
-        LevelCompleted();
+
+    // czy gracz wszedł w portal i należy mu się wygrana :)
+    for (int i=-1; i<2; i++) {
+        for (int j=-1; j<2; j++) {
+            if (level->GetFieldAabb(x_tile + i, y_tile + j).Collides(GetNextAabb(dt))
+                && level->Field(x_tile + i, y_tile + j) == FT::EndOfLevel) {
+                LevelCompleted();
+            }
+        }
     }
 
     // czy postać koliduje z czymś od góry

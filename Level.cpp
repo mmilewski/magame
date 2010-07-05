@@ -78,6 +78,17 @@ FT::FieldType Level::Field(size_t x, size_t y) const {
 }
 
 
+bool Level::IsFieldCollidable(int x, int y) const {
+    const FT::FieldType type = Field(x,y);
+    return (FT::COLLIDING_START < type && type < FT::COLLIDING_END)
+        || type==FT::EndOfLevel;
+}
+
+bool Level::IsFieldNotCollidable(int x, int y) const {
+    return !IsFieldCollidable(x, y);
+}
+
+
 Aabb Level::GetFieldAabb(size_t x, size_t y) const {
 //    const double tile_width = Engine::Get().GetRenderer()->GetTileWidth();
 //    const double tile_height = Engine::Get().GetRenderer()->GetTileHeight();

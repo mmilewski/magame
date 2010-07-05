@@ -37,7 +37,9 @@ public:
     size_t GetWidth() const   { return m_width; }
     size_t GetHeight() const  { return m_height; }
     Aabb GetFieldAabb(size_t x, size_t y) const;
-
+    bool IsFieldCollidable(int x, int y) const;
+    bool IsFieldNotCollidable(int x, int y) const;
+    
     bool GetLoaded() const {
         return m_loaded;
     }
