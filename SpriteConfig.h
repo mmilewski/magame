@@ -12,9 +12,10 @@ struct SpriteConfigData {
      * layer - poziom, na którym będzie wyświetlony sprite
      */
     explicit SpriteConfigData(DL::DisplayLayer layer, size_t frame_count, double frame_duration, double left,
-                              double bottom, double width, double height, bool loop, bool dark) :
+                              double bottom, double width, double height, bool loop) :
         layer(layer), frame_count(frame_count), frame_duration_time(frame_duration),
-        left(left), bottom(bottom), width(width), height(height), loop(loop), dark(dark) {
+        left(left), bottom(bottom), width(width), height(height), loop(loop) {
+        
     }
 
     DL::DisplayLayer layer;       // warstwa, na którym będzie rysowany sprite. Im bliżej 0, tym bliżej obserwatora
@@ -25,7 +26,6 @@ struct SpriteConfigData {
     double width;  // szerokość klatki w pikselach
     double height; // wysokość klatki w pikselach
     bool loop;     // czy animacja ma być zapętlona?
-    bool dark;     // czy spirte powinien być przyciemniony przy pomocy czarnej blendy?
 };
 
 class SpriteConfig {

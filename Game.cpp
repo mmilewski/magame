@@ -60,26 +60,10 @@ void Game::Init() {
     m_level->LoadEntitiesFromFile("data/" + m_level_name + ".ents");
     m_entities_to_create = m_level->GetAllEntitiesToCreate();
 
-    m_level_view.StoreSprite(FT::PlatformTopLeft, SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("PlatformTopLeft"))));
-    m_level_view.StoreSprite(FT::PlatformLeft, SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("PlatformLeft"))));
-    m_level_view.StoreSprite(FT::PlatfromMid, SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("PlatfromMid"))));
-    m_level_view.StoreSprite(FT::PlatformTop, SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("PlatformTop"))));
-    m_level_view.StoreSprite(FT::PlatformLeftTopRight, SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("PlatformLeftTopRight"))));
-    m_level_view.StoreSprite(FT::PlatformLeftRight, SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("PlatformLeftRight"))));
-    m_level_view.StoreSprite(FT::PlatformTopRight, SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("PlatformTopRight"))));
-    m_level_view.StoreSprite(FT::PlatformRight, SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("PlatformRight"))));
-
-    m_level_view.StoreSprite(FT::EndOfLevel, SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("EndOfLevel"))));
-
-    m_level_view.StoreSprite(FT::NcPlatformTopLeft, SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("NcPlatformTopLeft"))));
-    m_level_view.StoreSprite(FT::NcPlatformLeft, SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("NcPlatformLeft"))));
-    m_level_view.StoreSprite(FT::NcPlatfromMid, SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("NcPlatfromMid"))));
-    m_level_view.StoreSprite(FT::NcPlatformTop, SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("NcPlatformTop"))));
-    m_level_view.StoreSprite(FT::NcPlatformLeftTopRight, SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("NcPlatformLeftTopRight"))));
-    m_level_view.StoreSprite(FT::NcPlatformLeftRight, SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("NcPlatformLeftRight"))));
-    m_level_view.StoreSprite(FT::NcPlatformTopRight, SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("NcPlatformTopRight"))));
-    m_level_view.StoreSprite(FT::NcPlatformRight, SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("NcPlatformRight"))));
-
+    m_level_view.StoreSprite(FT::PlatformLeftEnd,  SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("platform_left"))));
+    m_level_view.StoreSprite(FT::PlatformMidPart,  SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("platform_mid"))));
+    m_level_view.StoreSprite(FT::PlatformRightEnd, SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("platform_right"))));
+    m_level_view.StoreSprite(FT::EndOfLevel,       SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("end_of_level"))));
 
     // utwórz postać gracza
     const LevelEntityData player_data = m_level->GetPlayerData();
@@ -323,9 +307,6 @@ bool Game::Update(double dt) {
 
     // usuń niepotrzebne jednostki i dodaj nowe
     SeepAndAddEntities(dt);
-
-    // zaaktualizuj stan mapy kaflowej (np. animację kafli)
-    m_level_view.Update(dt);
 
     return !IsDone();
 }

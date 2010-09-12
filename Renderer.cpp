@@ -57,8 +57,7 @@ void Renderer::LoadTexture(const std::string & filename) {
 
 void Renderer::DrawSprite(double tex_x, double tex_y, double tex_w, double tex_h,
                           double pos_x, double pos_y, double width, double height, 
-                          DL::DisplayLayer layer,
-                          double brightness) {
+                          DL::DisplayLayer layer) {
     const double texture_w = 1024.0;
     const double texture_h = 1024.0;
 
@@ -71,7 +70,7 @@ void Renderer::DrawSprite(double tex_x, double tex_y, double tex_w, double tex_h
      * Stąd wynika, że w powyższym wzorze top jest poniżej bottom
      */
 
-    glColor3f(brightness, brightness, brightness);
+    glColor3f(1, 1, 1);
     glPushMatrix();
     {
         glTranslated(0, 0, -static_cast<double> (layer));

@@ -7,7 +7,7 @@
 void Text::DrawDigit(char ch, double pos_x, double pos_y) {
     int digit = ch - '0';
     int tex_x = digit * 32;
-    int tex_y = 8*32;
+    int tex_y = 7*32;
     Draw(tex_x, tex_y, pos_x, pos_y);
 }
 
@@ -18,7 +18,7 @@ void Text::DrawLetter(char ch, double pos_x, double pos_y) {
     int letter_col = letter % 10; // kolumna, w której jest litera
 
     int tex_x = letter_col * 32;
-    int tex_y = (9+letter_row) * 32;
+    int tex_y = (8+letter_row) * 32;
 
     Draw(tex_x, tex_y, pos_x, pos_y);
 }
@@ -29,7 +29,7 @@ void Text::DrawSpecial(char ch, double pos_x, double pos_y) {
 
     if (ch == '_') {
         tex_x = 192;
-        tex_y = 352;
+        tex_y = 320;
     }
     else {
         return; // pomijamy znaki, których nie znamy
