@@ -1,5 +1,5 @@
 env = Environment();
-env.MergeFlags("-lSDL -lGL -lGLU -lSDL_mixer");
+env.MergeFlags("-lSDL -lGL -lGLU -lSDL_mixer -lSDL_image");
 env.MergeFlags("-g -ggdb");
 env.MergeFlags("-W -Wall -pedantic");
 env.Program("game", Glob("*.cpp"));

@@ -11,7 +11,8 @@ void Renderer::LoadTexture(const std::string & filename) {
     std::cout << "Ładowanie obrazka z pliku " + filename + "\n";
 
     // załaduj z pliku
-    SDL_Surface* surface = SDL_LoadBMP(filename.c_str());
+    // SDL_Surface* surface = SDL_LoadBMP(filename.c_str());
+    SDL_Surface* surface = IMG_Load(filename.c_str());
     if (!surface) {
         std::cerr << "Ładowanie pliku " + filename + " FAILED: " + SDL_GetError() + "\n";
         exit(1);
@@ -29,10 +30,10 @@ void Renderer::LoadTexture(const std::string & filename) {
     GLenum format;
     switch (surface->format->BytesPerPixel) {
     case 3:
-        format = GL_BGR;
+        format = GL_RGB;
         break;
     case 4:
-        format = GL_BGRA;
+        format = GL_RGBA;
         break;
     default:
         std::cerr << "Nieznany format pliku " + filename + "\n";

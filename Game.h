@@ -48,7 +48,7 @@ public:
     void BindLevelChoiceScreen(const boost::shared_ptr<LevelChoiceScreen>& screen);
 
 private:
-    void SeepAndAddEntities(double dt);
+    void SweepAndAddEntities(double dt);
     void CheckPlayerEntitiesCollisions(double dt);
     void CheckEntityEntityCollisions(double dt);
     void CheckCollisionOfOnePair(EntityPtr fst_entity, ET::EntityType fst_type,

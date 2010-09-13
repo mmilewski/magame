@@ -60,10 +60,10 @@ void Game::Init() {
     m_level->LoadEntitiesFromFile("data/" + m_level_name + ".ents");
     m_entities_to_create = m_level->GetAllEntitiesToCreate();
 
-    m_level_view.StoreSprite(FT::PlatformLeftEnd,  SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("platform_left"))));
-    m_level_view.StoreSprite(FT::PlatformMidPart,  SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("platform_mid"))));
-    m_level_view.StoreSprite(FT::PlatformRightEnd, SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("platform_right"))));
-    m_level_view.StoreSprite(FT::EndOfLevel,       SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("end_of_level"))));
+    m_level_view.StoreSprite(FT::PlatformLeftEnd,  Sprite::GetByName("platform_left"));
+    m_level_view.StoreSprite(FT::PlatformMidPart,  Sprite::GetByName("platform_mid"));
+    m_level_view.StoreSprite(FT::PlatformRightEnd, Sprite::GetByName("platform_right"));
+    m_level_view.StoreSprite(FT::EndOfLevel,       Sprite::GetByName("end_of_level"));
 
     // utwórz postać gracza
     const LevelEntityData player_data = m_level->GetPlayerData();
@@ -224,7 +224,7 @@ void Game::ExecuteCreators() {
     }
 }
 
-void Game::SeepAndAddEntities(double /* dt */) {
+void Game::SweepAndAddEntities(double /* dt */) {
     // oznacz jednostki, które są za lewą krawędzią ekranu jako martwe
     const double distance_of_deletion = Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount();
     for (std::vector<EntityPtr>::iterator it = m_entities.begin(); it != m_entities.end(); ++it) {
@@ -306,7 +306,7 @@ bool Game::Update(double dt) {
     }
 
     // usuń niepotrzebne jednostki i dodaj nowe
-    SeepAndAddEntities(dt);
+    SweepAndAddEntities(dt);
 
     return !IsDone();
 }

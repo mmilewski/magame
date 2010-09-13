@@ -5,12 +5,15 @@
 
 
 Level::Level()
-    : m_width(0),
+    : m_name("unknown"),
+      m_width(0),
       m_height(0),
       m_loaded(false) {
 }
 
 void Level::LoadFromFile(const std::string& filename) {
+    m_name = filename;
+        
     std::ifstream lvl(filename.c_str());
     if (!lvl) {
         std::cerr << "Nie udało się załadować pliku " << filename << "\n";
@@ -75,6 +78,13 @@ FT::FieldType Level::Field(size_t x, size_t y) const {
         return FT::None;
     }
     return m_data.at(y).at(x);
+}
+
+void Level::SetField(size_t x, size_t y, FT::FieldType ft) {
+    if (x >= m_width || y >= m_height) {
+        return ;
+    }
+    m_data.at(y).at(x) = ft;
 }
 
 

@@ -1,0 +1,24 @@
+# jeżeli # jest pierwszym znakiem, to linia jest komentarzem
+
+# pozycja gracza - nie musi być na początku
+# ale po co jej szukać gdzieś w pliku?
+player 1 2
+
+# pozostałe obiekty
+mush 2 1
+mush 4 1
+mush 5 1
+
+mush 10 2
+mush 12 4
+mush 16 4
+
+mush 23 7
+
+mush 30 4
+mush 30 13
+
+mush 38 7
+mush 39 7
+
+twinshot_upgrade 4 3

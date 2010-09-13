@@ -108,3 +108,6 @@ void Sprite::ResetRepeat() {
     m_height_repeat = m_width_repeat = -1;
 }
 
+SpritePtr Sprite::GetByName(const std::string& name) {
+    return SpritePtr(new Sprite(Engine::Get().GetSpriteConfig()->Get(name)));
+}

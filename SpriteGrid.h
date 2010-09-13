@@ -12,6 +12,7 @@ public:
 
     void SetLevel(const LevelPtr lvl, double dx);
     void Draw(double dx) const;
+    void DrawHighlighted(double dx, int x, int y) const;
 
     void StoreSprite(FT::FieldType ft, SpritePtr p);
 

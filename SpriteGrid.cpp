@@ -60,6 +60,19 @@ void SpriteGrid::Draw(double dx) const {
     glPopMatrix();
 }
 
+void SpriteGrid::DrawHighlighted(double dx, int x, int y) const {
+    Draw(dx);
+
+    const double tile_width  = Engine::Get().GetRenderer()->GetTileWidth();
+    const double tile_height = Engine::Get().GetRenderer()->GetTileHeight();
+    const double sprite_x(x * tile_width);
+    const double sprite_y(1.0 - (y+1) * tile_height);
+    Engine::Get().GetRenderer()->DrawQuad(
+        sprite_x,              sprite_y,
+        sprite_x + tile_width, sprite_y + tile_height,
+        1, 1, 0, .6);
+}
+
 
 void SpriteGrid::StoreSprite(FT::FieldType ft, SpritePtr sp) {
     if (m_sprites.size() <= static_cast<size_t>(ft)) m_sprites.resize(ft + 1);

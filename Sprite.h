@@ -4,6 +4,8 @@
 
 #include "SpriteConfig.h"
 
+class Sprite;
+typedef boost::shared_ptr<Sprite> SpritePtr;
 
 class Sprite {
 public:
@@ -32,6 +34,9 @@ public:
     /* Po wywołaniu tej metody, sprite będzie rozciągany, a nie powtarzany. */
     void ResetRepeat();
 
+public:
+    static SpritePtr GetByName(const std::string& name);
+    
 private:
     SpriteConfigData m_data;
     size_t m_current_frame;           // numer aktualnej klatki
@@ -41,7 +46,5 @@ private:
     double m_height_repeat;           // wysokość, powyżej której sprite będzie ponownie rysowany
 };
 
-
-typedef boost::shared_ptr<Sprite> SpritePtr;
 
 #endif /* SPRITE_H_ */

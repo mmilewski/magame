@@ -5,6 +5,7 @@
 #include "MainMenu.h"
 #include "HallOfFame.h"
 #include "LevelChoiceScreen.h"
+#include "Editor.h"
 
 #include "TransitionEffect.h"
 #include "EffectsShow.h"
@@ -53,10 +54,14 @@ void App::Run() {
     glAlphaFunc(GL_GEQUAL, 0.1f);
 
     // ładowanie atlasu
-    const std::string atlas_filename = "data/tex.bmp";
+    const std::string atlas_filename = "data/tex.png";
     Engine::Get().GetRenderer()->LoadTexture(atlas_filename);
 
-    m_app_state.reset(new MainMenu);
+    // m_app_state.reset(new Game("1", PlayerPtr()));
+    LevelPtr level(new Level());
+    level->LoadFromFile("data/0.lvl");
+    m_app_state.reset(new Editor(level));
+
     m_app_state->Init();
     m_app_state->Start();
 

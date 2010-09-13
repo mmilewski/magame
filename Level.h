@@ -34,6 +34,8 @@ public:
     LevelEntityData GetPlayerData() const { return m_player_data; }
 
     FT::FieldType Field(size_t x, size_t y) const;
+    void SetField(size_t x, size_t y, FT::FieldType ft);
+        
     size_t GetWidth() const   { return m_width; }
     size_t GetHeight() const  { return m_height; }
     Aabb GetFieldAabb(size_t x, size_t y) const;
@@ -42,8 +44,10 @@ public:
         return m_loaded;
     }
 
-    
+    std::string GetName()  const { return m_name; }
+
 private:
+    std::string m_name;
     size_t m_width;
     size_t m_height;
     std::vector<std::vector<FT::FieldType> > m_data;
