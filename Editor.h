@@ -7,7 +7,7 @@
 #include "Level.h"
 #include "SpriteGrid.h"
 // #include "Entity.h"
-#include "Hud.h"
+#include "Gui.h"
 #include "AppState.h"
 
 class Game;
@@ -16,7 +16,7 @@ class Editor : public AppState, public boost::enable_shared_from_this<Editor> {
 public:
     explicit Editor(LevelPtr level) 
         : m_next_app_state(),
-          m_hud(new EditorHud),
+          m_gui(new EditorGui),
           m_level(level),
           m_viewer_offset_x(0),                            // Update zadba o poprawną wartość
           m_pointer_x(0), m_pointer_y(0),
@@ -68,7 +68,7 @@ private:
 private:
     AppStatePtr m_next_app_state;
 
-    HudPtr m_hud;                       // head up diplay
+    GuiPtr m_gui;                       // head up diplay
 
     LevelPtr m_level;
     SpriteGrid m_level_view;

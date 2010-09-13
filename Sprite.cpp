@@ -34,7 +34,11 @@ void Sprite::Update(double dt) {
     }
 }
 
-void Sprite::DrawCurrentFrame(double x, double y, double width, double height) {
+void Sprite::DrawCurrentFrame(Position position, Size size) const {
+    DrawCurrentFrame(position.X(), position.Y(), size.X(), size.Y());
+}
+
+void Sprite::DrawCurrentFrame(double x, double y, double width, double height) const {
     // jeżeli powtarzanie jest nieaktywne, to rysujemy normalnie
     if (m_width_repeat < 0 && m_height_repeat < 0) {
         Engine::Get().GetRenderer()->DrawSprite(

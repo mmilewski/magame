@@ -66,24 +66,24 @@ void Editor::ProcessEvents(const SDL_Event& event) {
     if (event.type == SDL_QUIT) {
         SetDone();
     } else if (event.type == SDL_KEYDOWN) {
-        if (m_hud->OnKeyDown(event.key.keysym.sym)==false) {
+        if (m_gui->OnKeyDown(event.key.keysym.sym)==false) {
             m_keys_down[event.key.keysym.sym] = true;
         }
     } else if (event.type == SDL_KEYUP) {
-        if (m_hud->OnKeyUp(event.key.keysym.sym)==false) {
+        if (m_gui->OnKeyUp(event.key.keysym.sym)==false) {
             m_keys_down[event.key.keysym.sym] = false;
         }
     } else if (event.type == SDL_MOUSEMOTION) {
         m_pointer_window_x =       event.motion.x / static_cast<double>(Engine::Get().GetWindow()->GetWidth());
         m_pointer_window_y = 1.0 - event.motion.y / static_cast<double>(Engine::Get().GetWindow()->GetHeight());
-        if (m_hud->OnMouseMove(m_pointer_window_x, m_pointer_window_y)==false) {
+        if (m_gui->OnMouseMove(m_pointer_window_x, m_pointer_window_y)==false) {
             m_pointer_x = MapWindowCoordToWorldX(m_pointer_window_x);
             m_pointer_y = MapWindowCoordToWorldY(m_pointer_window_y);
         }
     } else if (event.type == SDL_MOUSEBUTTONDOWN) {
         m_pointer_window_x =       event.motion.x / static_cast<double>(Engine::Get().GetWindow()->GetWidth());
         m_pointer_window_y = 1.0 - event.motion.y / static_cast<double>(Engine::Get().GetWindow()->GetHeight());
-        if (m_hud->OnMouseDown(event.button.button, m_pointer_window_x, m_pointer_window_y)==false) {
+        if (m_gui->OnMouseDown(event.button.button, m_pointer_window_x, m_pointer_window_y)==false) {
             ClearFieldAt(m_pointer_x, m_pointer_y);
         }
     }

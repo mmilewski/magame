@@ -2,6 +2,7 @@
 #define SPRITE_H_
 #include "StdAfx.h"
 
+#include "BasicMathTypes.h"
 #include "SpriteConfig.h"
 
 class Sprite;
@@ -13,7 +14,8 @@ public:
 
     void Update(double dt);
     void SetCurrentFrame(size_t frame_num);
-    void DrawCurrentFrame(double x, double y, double width, double height);
+    void DrawCurrentFrame(double x, double y, double width, double height) const;
+    void DrawCurrentFrame(Position position, Size size) const;
 
     /* Ustawia rozmiary sprite'a powyżej których będzie on powtarzany -- rysowany ponownie.
        Wywołanie:
