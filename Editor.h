@@ -24,6 +24,7 @@ public:
           m_keys_down(SDLK_LAST, false)                    // Wszystkie klawisze puszczone
         {
             // nop
+            SetDone(false);
     }
 
     void Start();
@@ -50,8 +51,12 @@ private:
     double MapWindowCoordToWorldY(double y) const;
 
     // Czyści pole pod wskazanymi współrzędnymi (przestrzeń świata).
-    // y -- bottom-up.
+    // y -- bottom-up
     void ClearFieldAt(double x, double y);
+
+    // Ustawia pole na wskazany typ
+    // y -- bottom-up
+    void SetFieldAt(double x, double y, FT::FieldType ft);
 
     // Zwraca typ pola we wskazanych współrzędnych (przestrzeń świata).
     // y -- bottom-up
@@ -68,7 +73,8 @@ private:
 private:
     AppStatePtr m_next_app_state;
 
-    GuiPtr m_gui;                       // head up diplay
+    EditorGuiPtr m_gui;                 // kontrolki do wybierania stawianych pól
+    BrushPtr m_brush;                   // pędzel do rysowania
 
     LevelPtr m_level;
     SpriteGrid m_level_view;
