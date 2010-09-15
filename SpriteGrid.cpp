@@ -60,6 +60,21 @@ void SpriteGrid::Draw(double dx) const {
     glPopMatrix();
 }
 
+Position SpriteGrid::GetWindowPositionOfField(int x, int y) const {
+    const double tile_width  = Engine::Get().GetRenderer()->GetTileWidth();
+    const double tile_height = Engine::Get().GetRenderer()->GetTileHeight();
+    const double field_x(x * tile_width);
+    const double field_y(1.0 - (y+1) * tile_height);
+    // const double field_y(y * tile_height);
+    return Position(field_x, field_y);
+}
+
+Size SpriteGrid::GetWindowSizeOfField(int x, int y) const {
+    const double tile_width  = Engine::Get().GetRenderer()->GetTileWidth();
+    const double tile_height = Engine::Get().GetRenderer()->GetTileHeight();
+    return Size(tile_width, tile_height);
+}
+
 void SpriteGrid::DrawHighlighted(double dx, int x, int y) const {
     Draw(dx);
 
