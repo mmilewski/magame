@@ -116,6 +116,13 @@ void Renderer::DrawQuad(double min_x, double min_y,
     glPopAttrib();
 }
 
+void Renderer::DrawQuad(Position min_position, Position max_position,
+                        double r, double g, double b, double a) const {
+    DrawQuad(min_position.X(), min_position.Y(),
+             max_position.X(), max_position.Y(),
+             r, g, b, a);
+}
+
 void Renderer::SetProjection(size_t width, size_t height) {
     glViewport(0, 0, static_cast<GLsizei> (width), static_cast<GLsizei> (height));
     ResetProjection();

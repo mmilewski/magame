@@ -12,11 +12,15 @@
 
 class Game;
 
+class Editor;
+typedef boost::shared_ptr<Editor> EditorPtr;
+
 class Editor : public AppState, public boost::enable_shared_from_this<Editor> {
 public:
     explicit Editor(LevelPtr level) 
         : m_next_app_state(),
           m_gui(new EditorGui),
+          m_is_gui_visible(true),
           m_level(level),
           m_viewer_offset_x(0),                            // Update zadba o poprawną wartość
           m_pointer_x(0), m_pointer_y(0),
@@ -69,11 +73,22 @@ private:
     double BottomUp(double y) const { return 1.0/Engine::Get().GetRenderer()->GetTileHeight() - y; }
     double TopDown(double y)  const { return 1.0/Engine::Get().GetRenderer()->GetTileHeight() - y; }
 
+    // pokazuje/ukrywa gui
+    void ToggleGui() { m_is_gui_visible = !m_is_gui_visible; }
+    bool IsGuiVisible() const { return m_is_gui_visible; }
+    bool IsGuiHidden()  const { return !IsGuiVisible(); }
+
+    bool InPaintingFieldMode()  const { return m_brush && m_brush->IsField(); }
+    bool InPaintingEntityMode() const { return m_brush && m_brush->IsEntity(); }
+    BrushPtr GetBrush()         const { return m_brush; }
 
 private:
+    Editor* SetBrush(BrushPtr brush) { m_brush = brush; return this; }
+
     AppStatePtr m_next_app_state;
 
     EditorGuiPtr m_gui;                 // kontrolki do wybierania stawianych pól
+    bool m_is_gui_visible;              // czy kontrolki są widoczne?
     BrushPtr m_brush;                   // pędzel do rysowania
 
     LevelPtr m_level;
@@ -86,11 +101,9 @@ private:
     double m_pointer_window_y;          // bottom-up
 
     // PlayerPtr m_player;
-    // std::vector<EntityPtr> m_entities;                // jednostki
-    // std::list<LevelEntityData> m_entities_to_create;  // opisy jednostek do stworzenia
+    std::vector<EntityPtr> m_entities;                // jednostki
+    std::list<LevelEntityData> m_entities_to_create;  // opisy jednostek do stworzenia
     std::vector<bool> m_keys_down;
 };
-
-typedef boost::shared_ptr<Editor> EditorPtr;
 
 #endif

@@ -9,9 +9,6 @@ typedef boost::shared_ptr<Gui> GuiPtr;
 
 class Gui : public boost::enable_shared_from_this<Gui> {
 public:
-    explicit Gui() {
-    }
-
     virtual ~Gui() {}
 
     virtual void Start() = 0;
@@ -69,22 +66,31 @@ typedef boost::shared_ptr<Brush> BrushPtr;
 
 class Brush {
 public:
+    typedef std::string EntityId;
+    
     explicit Brush(SpritePtr sprite, FT::FieldType ft)
         : m_is_field(true),
           m_is_entity(false),
-          m_field_type(ft),
-          m_sprite(sprite)
+          m_sprite(sprite),
+          m_field_type(ft)
+        {
+    }
+    explicit Brush(SpritePtr sprite, EntityId entity_id)
+        : m_is_field(false),
+          m_is_entity(true),
+          m_sprite(sprite),
+          m_entity_id(entity_id)
         {
     }
 
     static BrushPtr New(SpritePtr sprite, FT::FieldType ft) {
         return BrushPtr(new Brush(sprite, ft));
     }
+    static BrushPtr New(SpritePtr sprite, EntityId entity_id) {
+        return BrushPtr(new Brush(sprite, entity_id));
+    }
 
-    //
-    // TODO: wspieranie jednostek/obiektów
-    //
-    
+    SpritePtr GetSprite() const { return m_sprite; }
     bool IsField()  const { return m_is_field; }
     bool IsEntity() const { return m_is_entity; }
 
@@ -92,12 +98,17 @@ public:
     // tylko wtedy gdy IsField()==true. W innych przypadkach może być losowa.
     FT::FieldType GetFieldType() const { return m_field_type; }
 
-    SpritePtr GetSprite() const { return m_sprite; }
+    // Zwraca identyfikator encji, którą należy malować. Wartość jest poprawna
+    // tylko wtedy gdy IsEntity()==true. W innych przypadkach może być losowa.
+    EntityId GetEntityId() const { return m_entity_id; }
+
 private:
     bool m_is_field;
     bool m_is_entity;
-    FT::FieldType m_field_type;
     SpritePtr m_sprite;
+
+    FT::FieldType m_field_type;
+    EntityId m_entity_id;
 };
 
 
