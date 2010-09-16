@@ -48,16 +48,17 @@ void Game::Start() {
 void Game::Init() {
     Engine& engine = Engine::Get();
 
-    // ładowanie poziomu i sprite'ów planszy
-    m_level.reset(new Level());
-    m_level->LoadFromFile("data/" + m_level_name + ".lvl");
-    if (!m_level->GetLoaded()) {
-        m_level_name = "1";
+    if (!m_level) {
+        // ładowanie poziomu i sprite'ów planszy
+        m_level.reset(new Level());
         m_level->LoadFromFile("data/" + m_level_name + ".lvl");
+        if (!m_level->GetLoaded()) {
+            m_level_name = "1";
+            m_level->LoadFromFile("data/" + m_level_name + ".lvl");
+        }
+        // załaduj jednostki do poziomu
+        m_level->LoadEntitiesFromFile("data/" + m_level_name + ".ents");
     }
-
-    // załaduj jednostki do poziomu
-    m_level->LoadEntitiesFromFile("data/" + m_level_name + ".ents");
     m_entities_to_create = m_level->GetAllEntitiesToCreate();
 
     m_level_view.StoreSprite(FT::PlatformLeftEnd,  Sprite::GetByName("platform_left"));
@@ -67,7 +68,7 @@ void Game::Init() {
 
     // utwórz postać gracza
     const LevelEntityData player_data = m_level->GetPlayerData();
-    if(!m_player) {
+    if (!m_player) {
         if (player_data.name == "player") {
             m_player.reset(new Player(player_data.x, player_data.y, m_level->GetWidth(), 
                                       3, 0));

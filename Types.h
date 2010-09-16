@@ -48,7 +48,9 @@ namespace ET {
     enum EntityType {
         Mush,
         PlayerBullet,
-        TwinShot
+        TwinShot,
+
+        COUNT
     };
 }
 

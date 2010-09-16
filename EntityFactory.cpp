@@ -50,3 +50,7 @@ EntityPtr EntityFactory::CreateEntity(const std::string& name, double x, double 
     std::cerr << "fabryka nie umie stworzyć żądanej jednostki: " << name << std::endl;
     return EntityPtr();
 }
+
+EntityPtr EntityFactory::CreateEntity(const LevelEntityData& entity_data) {
+    return CreateEntity(entity_data.name, entity_data.x, entity_data.y);
+}

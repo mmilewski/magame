@@ -66,49 +66,66 @@ typedef boost::shared_ptr<Brush> BrushPtr;
 
 class Brush {
 public:
-    typedef std::string EntityId;
+    struct ST {
+        enum SpecialType { UNKNOWN, Player };
+    };
     
     explicit Brush(SpritePtr sprite, FT::FieldType ft)
-        : m_is_field(true),
+        : m_sprite(sprite),
+          m_is_field(true),
           m_is_entity(false),
-          m_sprite(sprite),
+          m_is_special(false),
           m_field_type(ft)
         {
     }
-    explicit Brush(SpritePtr sprite, EntityId entity_id)
-        : m_is_field(false),
+    explicit Brush(SpritePtr sprite, ET::EntityType et)
+        : m_sprite(sprite),
+          m_is_field(false),
           m_is_entity(true),
-          m_sprite(sprite),
-          m_entity_id(entity_id)
+          m_is_special(false),
+          m_entity_type(et)
+        {
+    }
+    explicit Brush(SpritePtr sprite, ST::SpecialType st)
+        : m_sprite(sprite),
+          m_is_field(false),
+          m_is_entity(false),
+          m_is_special(true),
+          m_special_type(st)
         {
     }
 
     static BrushPtr New(SpritePtr sprite, FT::FieldType ft) {
         return BrushPtr(new Brush(sprite, ft));
     }
-    static BrushPtr New(SpritePtr sprite, EntityId entity_id) {
-        return BrushPtr(new Brush(sprite, entity_id));
+    static BrushPtr New(SpritePtr sprite, ET::EntityType et) {
+        return BrushPtr(new Brush(sprite, et));
+    }
+    static BrushPtr New(SpritePtr sprite, ST::SpecialType st) {
+        return BrushPtr(new Brush(sprite, st));
     }
 
-    SpritePtr GetSprite() const { return m_sprite; }
-    bool IsField()  const { return m_is_field; }
-    bool IsEntity() const { return m_is_entity; }
+    bool IsField()   const { return m_is_field; }
+    bool IsEntity()  const { return m_is_entity; }
+    bool IsSpecial() const { return m_is_special; }
 
-    // Zwraca typ pola, którym należy malować. Wartość jest poprawna
-    // tylko wtedy gdy IsField()==true. W innych przypadkach może być losowa.
+    // Zwraca typ pola/encji/specjalny.
+    // Wartość jest poprawna, gdy IsField/IsEntity/IsSpecial()==true
     FT::FieldType GetFieldType() const { return m_field_type; }
+    ET::EntityType GetEntityType() const { return m_entity_type; }
+    ST::SpecialType GetSpecialType() const { return m_special_type; }
 
-    // Zwraca identyfikator encji, którą należy malować. Wartość jest poprawna
-    // tylko wtedy gdy IsEntity()==true. W innych przypadkach może być losowa.
-    EntityId GetEntityId() const { return m_entity_id; }
-
+    SpritePtr GetSprite() const { return m_sprite; }
 private:
-    bool m_is_field;
-    bool m_is_entity;
     SpritePtr m_sprite;
 
+    bool m_is_field;
+    bool m_is_entity;
+    bool m_is_special;
+
     FT::FieldType m_field_type;
-    EntityId m_entity_id;
+    ET::EntityType m_entity_type;
+    ST::SpecialType m_special_type;
 };
 
 

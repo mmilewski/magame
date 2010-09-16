@@ -10,6 +10,14 @@ Level::Level()
       m_height(0),
       m_loaded(false) {
 }
+Level::Level(const std::list<LevelEntityData>& entities_data, std::string name="unknown")
+    : m_name(name),
+      m_width(0),
+      m_height(0),
+      m_entities_to_create(entities_data),
+      m_loaded(false) {
+    m_entities_to_create.sort(LevelEntityData());
+}
 
 void Level::LoadFromFile(const std::string& filename) {
     m_name = filename;

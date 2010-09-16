@@ -19,6 +19,7 @@ class Editor : public AppState, public boost::enable_shared_from_this<Editor> {
 public:
     explicit Editor(LevelPtr level) 
         : m_next_app_state(),
+          m_in_game(false),
           m_gui(new EditorGui),
           m_is_gui_visible(true),
           m_level(level),
@@ -66,26 +67,35 @@ private:
     // y -- bottom-up
     FT::FieldType GetFieldAt(double x, double y) const;
 
-    // BottomUp odbija współrzędną y w pionie. Niektóre elementy kodu umiejscawiają
-    // y=0 na górze świata, a inne na dole. Zwraca y jako bottom-up
-    // y -- top-down
-    // TopDown działa odwrotnie
-    double BottomUp(double y) const { return 1.0/Engine::Get().GetRenderer()->GetTileHeight() - y; }
-    double TopDown(double y)  const { return 1.0/Engine::Get().GetRenderer()->GetTileHeight() - y; }
-
     // pokazuje/ukrywa gui
     void ToggleGui() { m_is_gui_visible = !m_is_gui_visible; }
     bool IsGuiVisible() const { return m_is_gui_visible; }
     bool IsGuiHidden()  const { return !IsGuiVisible(); }
 
-    bool InPaintingFieldMode()  const { return m_brush && m_brush->IsField(); }
-    bool InPaintingEntityMode() const { return m_brush && m_brush->IsEntity(); }
-    BrushPtr GetBrush()         const { return m_brush; }
+    bool InPaintingFieldMode()   const { return m_brush && m_brush->IsField(); }
+    bool InPaintingEntityMode()  const { return m_brush && m_brush->IsEntity(); }
+    bool InPaintingSpecialMode() const { return m_brush && m_brush->IsSpecial(); }
+    BrushPtr GetBrush()          const { return m_brush; }
+
+    void SwitchToGame() { m_in_game = true; }
+    void SwitchToEditor() { m_in_game = false; }
+    bool IsInGame() const { return m_in_game; }
+    bool IsInEditor() const { return !m_in_game; }
 
 private:
+    // TopDown odbija współrzędną y w pionie. Niektóre elementy kodu umiejscawiają
+    // y=0 na górze świata, a inne na dole. Edytor zawsze działa z osią OY skierowanę
+    // w górę, więc jeżeli pewna funkcja foo wymaga odbitego argumentu, to należy
+    // wywołać ją jako foo(TopDown(some_y_coord)), by zaznaczyć, że pamiętaliśmy o odbiciu
+    double TopDown(double y)  const { return Engine::Get().GetRenderer()->GetVerticalTilesOnScreenCount() - y; }
+
     Editor* SetBrush(BrushPtr brush) { m_brush = brush; return this; }
 
+    void ActionAtCoords(double x, double y);
+
+private:
     AppStatePtr m_next_app_state;
+    bool m_in_game;                     // czy włączona jest gra?
 
     EditorGuiPtr m_gui;                 // kontrolki do wybierania stawianych pól
     bool m_is_gui_visible;              // czy kontrolki są widoczne?

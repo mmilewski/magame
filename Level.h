@@ -27,6 +27,7 @@ struct LevelEntityData {
 class Level {
 public:
     explicit Level();
+    explicit Level(const std::list<LevelEntityData>& entities_data, std::string name);
 
     void LoadFromFile(const std::string& filename);
     void LoadEntitiesFromFile(const std::string& filename);
