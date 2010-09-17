@@ -4,13 +4,11 @@
 
 // #include "Utils.h"
 // #include "Player.h"
+#include "Game.h"
 #include "Level.h"
 #include "SpriteGrid.h"
-// #include "Entity.h"
 #include "Gui.h"
 #include "AppState.h"
-
-class Game;
 
 class Editor;
 typedef boost::shared_ptr<Editor> EditorPtr;
@@ -78,7 +76,7 @@ private:
     BrushPtr GetBrush()          const { return m_brush; }
 
     void SwitchToGame() { m_in_game = true; }
-    void SwitchToEditor() { m_in_game = false; }
+    void SwitchToEditor() { m_in_game = false; m_game.reset(); }
     bool IsInGame() const { return m_in_game; }
     bool IsInEditor() const { return !m_in_game; }
 
@@ -96,6 +94,7 @@ private:
 private:
     AppStatePtr m_next_app_state;
     bool m_in_game;                     // czy włączona jest gra?
+    GamePtr m_game;                     // instancja gry
 
     EditorGuiPtr m_gui;                 // kontrolki do wybierania stawianych pól
     bool m_is_gui_visible;              // czy kontrolki są widoczne?
@@ -111,6 +110,7 @@ private:
     double m_pointer_window_y;          // bottom-up
 
     // PlayerPtr m_player;
+    LevelEntityData m_player_data;                    // informacje o graczu
     std::vector<EntityPtr> m_entities;                // jednostki
     std::list<LevelEntityData> m_entities_to_create;  // opisy jednostek do stworzenia
     std::vector<bool> m_keys_down;

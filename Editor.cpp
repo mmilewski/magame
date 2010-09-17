@@ -18,6 +18,11 @@ void Editor::Init() {
 }
 
 void Editor::Draw() {
+    if (IsInGame()) {
+        m_game->Draw();
+        return;
+    }
+
     if (IsClearBeforeDraw()) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
@@ -37,8 +42,16 @@ void Editor::Draw() {
     glPushMatrix();
     {
         glTranslated(viewer_x, 0, 0);
-        // jednostki
+
+        // jednostki i gracz
         std::for_each(m_entities.begin(), m_entities.end(), boost::bind(&Entity::Draw, _1));
+        if (m_player_data.x >= 0) {
+            SpritePtr player_sprite = Sprite::GetByName("player_stop");
+            double player_x(m_player_data.x*tile_width), player_y(m_player_data.y*tile_height);
+            player_sprite->DrawCurrentFrame(player_x, player_y, tile_width, tile_height);
+        } else {
+        }
+        
         // poziom
         m_level_view.SetLevel(m_level, offset);
         m_level_view.Draw(offset);
@@ -79,6 +92,14 @@ void Editor::Draw() {
 }
 
 bool Editor::Update(double dt) {
+    if (IsInGame()) {
+        m_game->Update(dt);
+        if (m_game->IsDone()) {
+            SwitchToEditor();
+        }
+        return !IsDone();
+    }
+
     if (m_keys_down[SDLK_ESCAPE]) {
         SetDone(true);
     } else if (m_keys_down[SDLK_LEFT]) {
@@ -105,14 +126,21 @@ void Editor::ActionAtCoords(double x, double y) {
         if (InPaintingFieldMode()) {
             SetFieldAt(x, y, b->GetFieldType());
         } else if (InPaintingEntityMode()) {
-            EntityFactory factory;
-            std::string name = "mush";
+            ET::EntityType entity_type = b->GetEntityType();
+            assert(entity_type!=ET::UNKNOWN);
+            std::string name = EntityTypeAsString(entity_type);
             LevelEntityData entity_data(name, x, y);
             m_entities_to_create.push_back(entity_data);
+            EntityFactory factory;
             m_entities.push_back(factory.CreateEntity(entity_data));
             // std::cout << "New entity: " << name << " " << x << " " << y << std::endl;
         } else if (InPaintingSpecialMode()) {
-            std::cout << "Action in special mode" << std::endl;
+            Brush::ST::SpecialType special_type = b->GetSpecialType();
+            if (special_type == Brush::ST::Player) {
+                m_player_data = LevelEntityData("player", x, y);
+            } else {
+                std::cout << "Action in special mode" << std::endl;
+            }
         }
         else {
             assert(false && "nie odnaleziono trybu rysowania");
@@ -124,6 +152,23 @@ void Editor::ActionAtCoords(double x, double y) {
 
 void Editor::ProcessEvents(const SDL_Event& event) {
     if (IsDone()) {
+        return;
+    }
+
+    if (event.type == SDL_KEYUP && event.key.keysym.sym==SDLK_0) {
+        if (IsInGame()) {
+            SwitchToEditor();
+        } else {
+            LevelPtr level(new Level(m_level, m_entities_to_create, m_player_data));
+            m_game.reset(new Game(level, PlayerPtr()));
+            m_game->Init();
+            m_game->Start();
+            SwitchToGame();
+        }
+        return;
+    }
+    if (IsInGame()) {
+        m_game->ProcessEvents(event);
         return;
     }
 

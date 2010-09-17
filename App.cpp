@@ -58,6 +58,9 @@ void App::Run() {
     Engine::Get().GetRenderer()->LoadTexture(atlas_filename);
 
     // m_app_state.reset(new Game("1", PlayerPtr()));
+
+    // m_app_state.reset(new MainMenu());
+
     LevelPtr level(new Level());
     level->LoadFromFile("data/0.lvl");
     m_app_state.reset(new Editor(level));

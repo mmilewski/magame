@@ -11,7 +11,7 @@ Sound::Sound() {
  
     if(Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers) != 0) {
         std::cout << "Unable to initialize audio: " << Mix_GetError() << "\n";
-    exit(1);
+        exit(1);
     }
 }
 
@@ -75,4 +75,8 @@ void Sound::PlaySfx(const std::string& name) {
             std::cout <<"Unable to play sfx: '" << name << "'\n";
         }
     }    
+}
+
+void Sound::HaltMusic() {
+    Mix_HaltMusic();
 }

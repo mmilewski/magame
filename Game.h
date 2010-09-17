@@ -28,6 +28,8 @@ public:
           m_level_name(level->GetName())  {
     }
 
+    ~Game();
+
     void Start();
     void Init();
     void Draw();

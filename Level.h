@@ -24,10 +24,13 @@ struct LevelEntityData {
 };
 
 
+class Level;
+typedef boost::shared_ptr<Level> LevelPtr;
+
 class Level {
 public:
     explicit Level();
-    explicit Level(const std::list<LevelEntityData>& entities_data, std::string name);
+    explicit Level(LevelPtr level, const std::list<LevelEntityData>& entities_data, const LevelEntityData& player_data);
 
     void LoadFromFile(const std::string& filename);
     void LoadEntitiesFromFile(const std::string& filename);
@@ -57,6 +60,5 @@ private:
     bool m_loaded;
 
 };
-typedef boost::shared_ptr<Level> LevelPtr;
 
 #endif

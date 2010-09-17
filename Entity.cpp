@@ -216,7 +216,7 @@ void Entity::Draw() const {
 //    }
 
 
-//    std::cout << "[Entity::Draw] " << pos_x << " " << pos_y << std::endl;
+//     std::cout << "[Entity::Draw] " << pos_x << " " << pos_y << std::endl;
     switch (m_state) {
     case ES::Stand:
         m_stop->DrawCurrentFrame(pos_x, pos_y, tile_width, tile_height);

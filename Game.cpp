@@ -10,6 +10,10 @@
 #include "Creator.h"
 
 
+Game::~Game() {
+    Engine::Get().GetSound()->HaltMusic();
+}
+
 void Game::ProcessEvents(const SDL_Event& event) {
     if (IsDone()) {
         return;
@@ -265,11 +269,14 @@ void Game::BindLevelChoiceScreen(const boost::shared_ptr<LevelChoiceScreen>& scr
 }
 
 bool Game::Update(double dt) {
-    // czy gracz zakończył aktualny poziom
+    // czy gracz zakończył aktualny poziom?
     if (m_player->HasCompletedCurrentLevel()) {
-        m_level_choice_screen->SetPlayer(m_player);
-        m_next_app_state = m_level_choice_screen;
-        // m_next_app_state->Init();      // ważne!!
+        if (m_level_choice_screen) {
+            m_level_choice_screen->SetPlayer(m_player);
+            m_next_app_state = m_level_choice_screen;
+        } else {
+            m_next_app_state.reset();
+        }
 
         SetDone();
         return IsDone();

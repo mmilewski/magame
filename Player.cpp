@@ -75,6 +75,7 @@ void Player::Update(double dt, LevelPtr level) {
     if (!m_is_on_ground) {
         m_y = GetNextYPosition(dt);
         m_vy += m_ay * dt;
+        m_vy = std::max(m_vy, -22.0);    // maksymalna prędkość w dół
     }
 
     // jeżeli poniżej pierwszego kafla, to odbieramy życie.

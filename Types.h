@@ -46,6 +46,8 @@ namespace ES {
 // typ jednostki
 namespace ET {
     enum EntityType {
+        UNKNOWN,
+
         Mush,
         PlayerBullet,
         TwinShot,
@@ -53,6 +55,8 @@ namespace ET {
         COUNT
     };
 }
+
+std::string EntityTypeAsString(ET::EntityType et);
 
 // typ fade effectu
 namespace TransitionEffectType {

@@ -10,13 +10,21 @@ Level::Level()
       m_height(0),
       m_loaded(false) {
 }
-Level::Level(const std::list<LevelEntityData>& entities_data, std::string name="unknown")
-    : m_name(name),
-      m_width(0),
-      m_height(0),
+
+Level::Level(LevelPtr level, const std::list<LevelEntityData>& entities_data, const LevelEntityData& player_data)
+    : m_name(level->GetName()),
+      m_width(level->GetWidth()),
+      m_height(level->GetHeight()),
+      m_data(level->m_data),
       m_entities_to_create(entities_data),
-      m_loaded(false) {
+      m_player_data(player_data),
+      m_loaded(true) {
     m_entities_to_create.sort(LevelEntityData());
+    if (!(m_player_data.name == "player" && m_player_data.x > 0 && m_player_data.y > 0)) {
+        m_player_data.name = "player";
+        m_player_data.x = 1;
+        m_player_data.y = 19;
+    }
 }
 
 void Level::LoadFromFile(const std::string& filename) {
