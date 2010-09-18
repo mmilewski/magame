@@ -70,14 +70,17 @@ private:
     bool IsGuiVisible() const { return m_is_gui_visible; }
     bool IsGuiHidden()  const { return !IsGuiVisible(); }
 
+    // w jakim trybie jest rysowany pędzel -- plansza jest wyróównywana do siatki
+    // a encje (np. jednostki) - nie
     bool InPaintingFieldMode()   const { return m_brush && m_brush->IsField(); }
     bool InPaintingEntityMode()  const { return m_brush && m_brush->IsEntity(); }
     bool InPaintingSpecialMode() const { return m_brush && m_brush->IsSpecial(); }
     BrushPtr GetBrush()          const { return m_brush; }
 
-    void SwitchToGame() { m_in_game = true; }
-    void SwitchToEditor() { m_in_game = false; m_game.reset(); }
-    bool IsInGame() const { return m_in_game; }
+    // metody do przełączania między trybem gry a trybem edytora
+    void SwitchToGame()     { m_in_game = true; }
+    void SwitchToEditor()   { m_in_game = false; m_game.reset(); }
+    bool IsInGame() const   { return m_in_game; }
     bool IsInEditor() const { return !m_in_game; }
 
 private:
@@ -96,9 +99,9 @@ private:
     bool m_in_game;                     // czy włączona jest gra?
     GamePtr m_game;                     // instancja gry
 
+    BrushPtr m_brush;                   // pędzel do rysowania
     EditorGuiPtr m_gui;                 // kontrolki do wybierania stawianych pól
     bool m_is_gui_visible;              // czy kontrolki są widoczne?
-    BrushPtr m_brush;                   // pędzel do rysowania
 
     LevelPtr m_level;
     SpriteGrid m_level_view;
@@ -109,10 +112,10 @@ private:
     double m_pointer_window_x;          // położenie kursora (przestrzeń okna)
     double m_pointer_window_y;          // bottom-up
 
-    // PlayerPtr m_player;
     LevelEntityData m_player_data;                    // informacje o graczu
-    std::vector<EntityPtr> m_entities;                // jednostki
+    std::vector<EntityPtr> m_entities;                // jednostki (są tylko rysowane)
     std::list<LevelEntityData> m_entities_to_create;  // opisy jednostek do stworzenia
+
     std::vector<bool> m_keys_down;
 };
 
