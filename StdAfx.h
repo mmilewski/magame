@@ -11,6 +11,7 @@
 
 #include <sstream>
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 
 #include <stdexcept>  // logic_error

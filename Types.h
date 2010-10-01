@@ -24,6 +24,7 @@ namespace DL {
 namespace FT {
     enum FieldType {
         None = 0,
+
         PlatformLeftEnd = 1,
         PlatformMidPart = 2,
         PlatformRightEnd = 3,

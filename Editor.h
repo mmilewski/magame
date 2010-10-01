@@ -48,6 +48,9 @@ public:
     }
 
 private:
+    void DrawEntitiesAndPlayer(double viewer_x);
+    void DrawBrushAndGui(double viewer_x);
+
     // Przekształca współrzędny kursora (przestrzeń okna)
     // na współrzędne świata (przestrzeń świata)
     double MapWindowCoordToWorldX(double x) const;
@@ -77,6 +80,9 @@ private:
     bool InPaintingSpecialMode() const { return m_brush && m_brush->IsSpecial(); }
     BrushPtr GetBrush()          const { return m_brush; }
 
+    // czy rysowany obiekt (pod pędzlem) powinien być przyciągane do siatki
+    bool ShouldSnapToGrid()      const;
+        
     // metody do przełączania między trybem gry a trybem edytora
     void SwitchToGame()     { m_in_game = true; }
     void SwitchToEditor()   { m_in_game = false; m_game.reset(); }
@@ -88,7 +94,7 @@ private:
     // y=0 na górze świata, a inne na dole. Edytor zawsze działa z osią OY skierowanę
     // w górę, więc jeżeli pewna funkcja foo wymaga odbitego argumentu, to należy
     // wywołać ją jako foo(TopDown(some_y_coord)), by zaznaczyć, że pamiętaliśmy o odbiciu
-    double TopDown(double y)  const { return Engine::Get().GetRenderer()->GetVerticalTilesOnScreenCount() - y; }
+    double TopDown(double y)  const { return Engine::Get().GetRenderer()->GetVerticalTilesOnScreenCount() - 1 - y; }
 
     Editor* SetBrush(BrushPtr brush) { m_brush = brush; return this; }
 

@@ -22,22 +22,39 @@ void Editor::Draw() {
         m_game->Draw();
         return;
     }
-
     if (IsClearBeforeDraw()) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
     }
-    const double offset = m_viewer_offset_x;
+
+    glPushAttrib(GL_COLOR_BUFFER_BIT);
+    {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        // // -------------------- DEBUG ONLY --------------------
+        // Text(0.04, 0.04).DrawText(IntToStr(int(offset))+"_"+IntToStr(int(offset*100)%100), 0.1, 0.2);
+        // std::stringstream ss; ss << m_pointer_x << "_" << m_pointer_y;
+        // Text(0.04, 0.04).DrawText(ss.str(), 0.1, 0.1);
+        // Text(0.04, 0.04).DrawText(IntToStr(InPaintingFieldMode()), 0.1, 0.2);
+        Text(0.04, 0.04).DrawText(IntToStr(InPaintingEntityMode()), 0.1, 0.1);
+
+        const double tile_width = Engine::Get().GetRenderer()->GetTileWidth();
+        const double viewer_x   = -(m_viewer_offset_x * tile_width - 0.45);
+
+        DrawEntitiesAndPlayer(viewer_x);
+        DrawBrushAndGui(viewer_x);
+    }
+    glPopAttrib();
+
+    if (IsSwapAfterDraw()) {
+        SDL_GL_SwapBuffers();
+    }
+}
+
+void Editor::DrawEntitiesAndPlayer(double viewer_x) {
     const double tile_width  = Engine::Get().GetRenderer()->GetTileWidth();
     const double tile_height = Engine::Get().GetRenderer()->GetTileHeight();
-    const double viewer_x = -(offset * tile_width - 0.45);
-
-    // // -------------------- DEBUG ONLY --------------------
-    // Text(0.04, 0.04).DrawText(IntToStr(int(offset))+"_"+IntToStr(int(offset*100)%100), 0.1, 0.2);
-    // std::stringstream ss; ss << m_pointer_x << "_" << m_pointer_y;
-    // Text(0.04, 0.04).DrawText(ss.str(), 0.1, 0.1);
-    // Text(0.04, 0.04).DrawText(IntToStr(InPaintingFieldMode()), 0.1, 0.2);
-    Text(0.04, 0.04).DrawText(IntToStr(InPaintingEntityMode()), 0.1, 0.1);
 
     glPushMatrix();
     {
@@ -46,19 +63,27 @@ void Editor::Draw() {
         // jednostki i gracz
         std::for_each(m_entities.begin(), m_entities.end(), boost::bind(&Entity::Draw, _1));
         if (m_player_data.x >= 0) {
-            SpritePtr player_sprite = Sprite::GetByName("player_stop");
-            double player_x(m_player_data.x*tile_width), player_y(m_player_data.y*tile_height);
+            const SpritePtr player_sprite = Sprite::GetByName("player_stop");
+            const double player_x(m_player_data.x * tile_width), player_y(m_player_data.y * tile_height);
             player_sprite->DrawCurrentFrame(player_x, player_y, tile_width, tile_height);
         } else {
+            // nie ma danych gracza, to znaczy, że nie został ustawiony. Dlatego
+            // nie rysujemy jego sprite'a. Przy przejściu do podglądu gry zostanie
+            // dodany na domyślnej pozycji.
         }
         
         // poziom
+        double offset = m_viewer_offset_x;
         m_level_view.SetLevel(m_level, offset);
         m_level_view.Draw(offset);
     }
     glPopMatrix();
+}
 
-    // narysuj pędzel oraz GUI
+void Editor::DrawBrushAndGui(double viewer_x) {
+    const double tile_width  = Engine::Get().GetRenderer()->GetTileWidth();
+    const double tile_height = Engine::Get().GetRenderer()->GetTileHeight();
+
     glPushAttrib(GL_ENABLE_BIT);
     {
         // wyłącz test głębokości, żeby pędzel oraz gui były zawsze na wierzchu
@@ -70,8 +95,8 @@ void Editor::Draw() {
                 glTranslated(viewer_x, 0, 0);
                 Size size(tile_width, tile_height);
                 Position position(m_pointer_x * tile_width, m_pointer_y * tile_height);
-                if (InPaintingFieldMode()) {
-                    // pola zawsze leżą w komórkach siatki
+                // niektóre pola są wyrównywane do siatki, więc trzeba przyciąć współrzędne
+                if (ShouldSnapToGrid()) {
                     position = Position(static_cast<int>(m_pointer_x) * tile_width,
                                         static_cast<int>(m_pointer_y) * tile_height);
                 }
@@ -85,12 +110,17 @@ void Editor::Draw() {
         }
     }
     glPopAttrib();
-    
-    if (IsSwapAfterDraw()) {
-        SDL_GL_SwapBuffers();
-    }
 }
 
+bool Editor::ShouldSnapToGrid() const {
+    if (InPaintingFieldMode())
+        return true;
+    if (InPaintingSpecialMode()
+        && GetBrush()->IsSpecial()
+        && GetBrush()->GetSpecialType()==Brush::ST::Eraser)
+        return true;
+}
+    
 bool Editor::Update(double dt) {
     if (IsInGame()) {
         m_game->Update(dt);
@@ -108,9 +138,8 @@ bool Editor::Update(double dt) {
         m_viewer_offset_x += dt * 28.24;
     }
 
-    // upewnij się że edytor nie zagląda poza lewą krawędź planszy.
-    // Znajdują się tam ujemne wartości na osi odciętych, co może
-    // powodować błędy w obliczeniach.
+    // upewnij się że edytor nie zagląda poza lewą krawędź planszy. Znajdują się tam
+    // ujemne wartości na osi odciętych, co może powodować błędy w obliczeniach.
     const double tiles_in_row = 1.0/Engine::Get().GetRenderer()->GetTileWidth();
     m_viewer_offset_x = std::max(m_viewer_offset_x, tiles_in_row/2-1);
 
@@ -126,20 +155,23 @@ void Editor::ActionAtCoords(double x, double y) {
         if (InPaintingFieldMode()) {
             SetFieldAt(x, y, b->GetFieldType());
         } else if (InPaintingEntityMode()) {
-            ET::EntityType entity_type = b->GetEntityType();
+            const ET::EntityType entity_type = b->GetEntityType();
             assert(entity_type!=ET::UNKNOWN);
-            std::string name = EntityTypeAsString(entity_type);
-            LevelEntityData entity_data(name, x, y);
+            assert(entity_type!=ET::COUNT);
+            const std::string name = EntityTypeAsString(entity_type);
+            const LevelEntityData entity_data(name, x, y);
             m_entities_to_create.push_back(entity_data);
             EntityFactory factory;
             m_entities.push_back(factory.CreateEntity(entity_data));
             // std::cout << "New entity: " << name << " " << x << " " << y << std::endl;
         } else if (InPaintingSpecialMode()) {
-            Brush::ST::SpecialType special_type = b->GetSpecialType();
+            const Brush::ST::SpecialType special_type = b->GetSpecialType();
             if (special_type == Brush::ST::Player) {
                 m_player_data = LevelEntityData("player", x, y);
+            } else if (special_type == Brush::ST::Eraser) {
+                ClearFieldAt(static_cast<size_t>(x), static_cast<size_t>(y));
             } else {
-                std::cout << "Action in special mode" << std::endl;
+                std::cerr << "Niezdefiniowana akcja w trybie specjalnym" << std::endl;
             }
         }
         else {
@@ -160,6 +192,9 @@ void Editor::ProcessEvents(const SDL_Event& event) {
             SwitchToEditor();
         } else {
             LevelPtr level(new Level(m_level, m_entities_to_create, m_player_data));
+            level->ShrinkWidth();
+            level->SaveEntitiesToFile("/tmp/e.ents");
+            level->SaveFieldsToFile("/tmp/e.lvl");
             m_game.reset(new Game(level, PlayerPtr()));
             m_game->Init();
             m_game->Start();
@@ -221,6 +256,7 @@ void Editor::ClearFieldAt(double x, double y) {
 }
 
 void Editor::SetFieldAt(double x, double y, FT::FieldType ft) {
+    m_level->EnsureWidth(static_cast<size_t>(x+1));
     m_level->SetField(static_cast<size_t>(x), static_cast<size_t>(TopDown(y)), ft);
 }
 

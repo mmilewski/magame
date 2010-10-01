@@ -21,6 +21,8 @@ SpriteConfig::SpriteConfig() {
     Insert("player_bullet",  SpriteConfigData(DL::Entity, 4, 0.3,  5*32, 11*32, 32, 32, true));
 
     Insert("twinshot_upgrade", SpriteConfigData(DL::Entity, 2, 0.3,  0*32, 13*32, 32, 32, true));
+
+    Insert("eraser", SpriteConfigData(DL::Entity, 1, 1,  10*32, 10*32, 32, 32, true));
 }
 
 SpriteConfigData SpriteConfig::Get(const std::string& name) const {

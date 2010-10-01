@@ -67,7 +67,7 @@ typedef boost::shared_ptr<Brush> BrushPtr;
 class Brush {
 public:
     struct ST {
-        enum SpecialType { UNKNOWN, Player };
+        enum SpecialType { UNKNOWN, Player, Eraser };
     };
     
     explicit Brush(SpritePtr sprite, FT::FieldType ft)
