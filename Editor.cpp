@@ -169,7 +169,7 @@ void Editor::ActionAtCoords(double x, double y) {
     BrushPtr b = m_gui->GetActiveBrush();
     if (b) {
         if (InPaintingFieldMode()) {
-            SetFieldAt(x, y, b->GetFieldType());
+            SetFieldAt(static_cast<size_t>(x), static_cast<size_t>(y), b->GetFieldType());
         } else if (InPaintingEntityMode()) {
             const ET::EntityType entity_type = b->GetEntityType();
             assert(entity_type!=ET::UNKNOWN);
@@ -191,7 +191,8 @@ void Editor::ActionAtCoords(double x, double y) {
             }
         }
         else {
-            assert(false && "nie odnaleziono trybu rysowania");
+            std::cerr << "Nie odnaleziono trybu rysowania" << std::endl;
+            assert(false && "Nie odnaleziono trybu rysowania");
         }
     } else {
         ClearFieldAt(x, y);

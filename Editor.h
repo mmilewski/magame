@@ -94,7 +94,7 @@ private:
     // y=0 na górze świata, a inne na dole. Edytor zawsze działa z osią OY skierowanę
     // w górę, więc jeżeli pewna funkcja foo wymaga odbitego argumentu, to należy
     // wywołać ją jako foo(TopDown(some_y_coord)), by zaznaczyć, że pamiętaliśmy o odbiciu
-    double TopDown(double y)  const { return Engine::Get().GetRenderer()->GetVerticalTilesOnScreenCount() - y; }
+    double TopDown(double y)  const { return Engine::Get().GetRenderer()->GetVerticalTilesOnScreenCount() - 1 - y; }
 
     Editor* SetBrush(BrushPtr brush) { m_brush = brush; return this; }
 

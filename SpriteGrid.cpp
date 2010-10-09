@@ -45,19 +45,6 @@ void SpriteGrid::Draw(double dx) const {
     const double tile_width  = Engine::Get().GetRenderer()->GetTileWidth();
     const double tile_height = Engine::Get().GetRenderer()->GetTileHeight();
 
-    for (size_t y = 0; y < m_grid.size(); ++y) {
-        const std::vector<SpritePtr>& row = m_grid.at(y);
-        for (size_t x = 0; x < row.size(); ++x) {
-            const SpritePtr& sprite = row.at(x);
-            if (sprite)
-                std::cout << "*";
-            else
-                std::cout << " ";
-        }
-        std::cout << std::endl;
-    }
-    // abort();
-
     glPushMatrix();
     {
         const double sprite_pos_x = dx * tile_width - 0.45;
