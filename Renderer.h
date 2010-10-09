@@ -22,7 +22,8 @@ public:
 
     void LoadTexture(const std::string & filename);
     void DrawSprite(double tex_x, double tex_y, double tex_w, double tex_h, double pos_x, double pos_y,
-                    double width, double height, DL::DisplayLayer layer);
+                    double width, double height, DL::DisplayLayer layer, 
+                    double brightness = 1.0);
 
     void DrawAabb(const Aabb& box, double r=1, double g=1, double b=0, double a=.7) const;
     void DrawQuad(double min_x, double min_y,

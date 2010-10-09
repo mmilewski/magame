@@ -40,6 +40,8 @@ void Player::CheckCollisionsWithLevel(double dt, LevelPtr level) {
     // czy gracz wszedł w portal i należy mu się wygrana :)
     for (int i=-1; i<2; i++) {
         for (int j=-1; j<2; j++) {
+            if (static_cast<int>(x_tile) + i < 0 || static_cast<int>(y_tile) + j < 0)
+                continue;
             if (level->GetFieldAabb(x_tile + i, y_tile + j).Collides(GetNextAabb(dt))
                 && level->Field(x_tile + i, y_tile + j) == FT::EndOfLevel) {
                 LevelCompleted();

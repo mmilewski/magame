@@ -26,7 +26,13 @@ void SpriteGrid::SetLevel(const LevelPtr lvl, double dx) {
 
             const FT::FieldType& ft = lvl->Field(draw_x, draw_y);
             if (ft != FT::None) {
-                SetSprite(x, y, m_sprites.at(ft));
+                std::map<FT::FieldType, SpritePtr>::iterator it = m_sprites.find(ft);
+                if (it != m_sprites.end()) {
+                    SetSprite(x, y, it->second);
+                }
+                else {
+                    SetSprite(x, y, SpritePtr());
+                }
             }
             else {
                 SetSprite(x, y, SpritePtr());
@@ -38,6 +44,19 @@ void SpriteGrid::SetLevel(const LevelPtr lvl, double dx) {
 void SpriteGrid::Draw(double dx) const {
     const double tile_width  = Engine::Get().GetRenderer()->GetTileWidth();
     const double tile_height = Engine::Get().GetRenderer()->GetTileHeight();
+
+    for (size_t y = 0; y < m_grid.size(); ++y) {
+        const std::vector<SpritePtr>& row = m_grid.at(y);
+        for (size_t x = 0; x < row.size(); ++x) {
+            const SpritePtr& sprite = row.at(x);
+            if (sprite)
+                std::cout << "*";
+            else
+                std::cout << " ";
+        }
+        std::cout << std::endl;
+    }
+    // abort();
 
     glPushMatrix();
     {
@@ -60,7 +79,18 @@ void SpriteGrid::Draw(double dx) const {
     glPopMatrix();
 }
 
+void SpriteGrid::Update(double dt) {
+    for (size_t y = 0; y < m_grid.size(); ++y) {
+        const std::vector<SpritePtr>& row = m_grid.at(y);
+        for (size_t x = 0; x < row.size(); ++x) {
+            const SpritePtr& sprite = row.at(x);
+            if (sprite) {
+                sprite->Update(dt);
+            }
+        }
+    }
+}
+
 void SpriteGrid::StoreSprite(FT::FieldType ft, SpritePtr sp) {
-    if (m_sprites.size() <= static_cast<size_t>(ft)) m_sprites.resize(ft + 1);
-    m_sprites.at(ft) = sp;
+    m_sprites.insert(std::make_pair(ft, sp));
 }

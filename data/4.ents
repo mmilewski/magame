@@ -2,7 +2,7 @@
 
 # pozycja gracza - nie musi być na początku
 # ale po co jej szukać gdzieś w pliku?
-player 2 8
+player 1 6
 
 # pozostałe obiekty
 mush 4 1
@@ -16,7 +16,6 @@ mush 18 13
 mush 20 13
 mush 22 13
 mush 24 13
-mush 26 13
 mush 26 13
 mush 28 13
 mush 30 13

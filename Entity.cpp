@@ -34,7 +34,7 @@ bool Entity::IsAnyFieldBelowMe(double dt, LevelPtr level) const {
     size_t curr_x_tile, curr_y_tile;
     GetCurrentTile(&curr_x_tile, &curr_y_tile);
     for (int x = -1; x < 2; ++x) {
-        if (level->Field(curr_x_tile + x, curr_y_tile + 1) == FT::None) {
+        if (level->IsFieldNotCollidable(curr_x_tile + x, curr_y_tile + 1)) {
             continue;
         }
         const Aabb field_aabb = level->GetFieldAabb(curr_x_tile + x, curr_y_tile + 1);
@@ -49,7 +49,7 @@ bool Entity::IsAnyFieldAboveMe(double dt, LevelPtr level) const {
     size_t curr_x_tile, curr_y_tile;
     GetCurrentTile(&curr_x_tile, &curr_y_tile);
     for (int x = -1; x < 2; ++x) {
-        if (level->Field(curr_x_tile + x, curr_y_tile - 1) == FT::None) {
+        if (level->IsFieldNotCollidable(curr_x_tile + x, curr_y_tile - 1)) {
             continue;
         }
         const Aabb field_aabb = level->GetFieldAabb(curr_x_tile + x, curr_y_tile - 1);
@@ -64,7 +64,7 @@ bool Entity::IsAnyFieldOnLeft(double dt, LevelPtr level) const {
     size_t curr_x_tile, curr_y_tile;
     GetCurrentTile(&curr_x_tile, &curr_y_tile);
     for (int y = -1; y < 2; ++y) {
-        if (level->Field(curr_x_tile - 1, curr_y_tile + y) == FT::None) {
+        if (level->IsFieldNotCollidable(curr_x_tile - 1, curr_y_tile + y)) {
             continue;
         }
         const Aabb field_aabb = level->GetFieldAabb(curr_x_tile - 1, curr_y_tile + y);
@@ -79,7 +79,7 @@ bool Entity::IsAnyFieldOnRight(double dt, LevelPtr level) const {
     size_t curr_x_tile, curr_y_tile;
     GetCurrentTile(&curr_x_tile, &curr_y_tile);
     for (int y = -1; y < 2; ++y) {
-        if (level->Field(curr_x_tile + 1, curr_y_tile + y) == FT::None) {
+        if (level->IsFieldNotCollidable(curr_x_tile + 1, curr_y_tile + y)) {
             continue;
         }
         const Aabb field_aabb = level->GetFieldAabb(curr_x_tile + 1, curr_y_tile + y);
@@ -95,7 +95,7 @@ bool Entity::DoFieldsEndOnLeft(double dt, LevelPtr level) const {
     GetCurrentTile(&curr_x_tile, &curr_y_tile);
     // czy pole o jeden w lewo i w doł jest puste (None)
     // oraz czy jednostka jest przy krawędzi (IsOnLeftOf)...
-    if (level->Field(curr_x_tile - 1, curr_y_tile + 1) == FT::None
+    if (level->IsFieldNotCollidable(curr_x_tile - 1, curr_y_tile + 1)
         && level->GetFieldAabb(curr_x_tile - 1, curr_y_tile).IsOnLeftOf(GetNextHorizontalAabb(dt))) {
         return true;
     }
@@ -105,7 +105,7 @@ bool Entity::DoFieldsEndOnLeft(double dt, LevelPtr level) const {
 bool Entity::DoFieldsEndOnRight(double dt, LevelPtr level) const {
     size_t curr_x_tile, curr_y_tile;
     GetCurrentTile(&curr_x_tile, &curr_y_tile);
-    if (level->Field(curr_x_tile + 1, curr_y_tile + 1) == FT::None
+    if (level->IsFieldNotCollidable(curr_x_tile + 1, curr_y_tile + 1)
         && level->GetFieldAabb(curr_x_tile + 1, curr_y_tile).IsOnRightOf(GetNextHorizontalAabb(dt))) {
         return true;
     }
@@ -216,7 +216,7 @@ void Entity::Draw() const {
 //    }
 
 
-//     std::cout << "[Entity::Draw] " << pos_x << " " << pos_y << std::endl;
+//    std::cout << "[Entity::Draw] " << pos_x << " " << pos_y << std::endl;
     switch (m_state) {
     case ES::Stand:
         m_stop->DrawCurrentFrame(pos_x, pos_y, tile_width, tile_height);

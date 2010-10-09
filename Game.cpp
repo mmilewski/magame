@@ -24,7 +24,9 @@ void Game::ProcessEvents(const SDL_Event& event) {
         SetDone();
     } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
         m_next_app_state = m_level_choice_screen;
-        m_next_app_state->Init();
+        if (m_next_app_state) {
+            m_next_app_state->Init();
+        }
         SetDone();
     } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_d) {
         m_player->Run();
@@ -65,10 +67,26 @@ void Game::Init() {
     }
     m_entities_to_create = m_level->GetAllEntitiesToCreate();
 
-    m_level_view.StoreSprite(FT::PlatformLeftEnd,  Sprite::GetByName("platform_left"));
-    m_level_view.StoreSprite(FT::PlatformMidPart,  Sprite::GetByName("platform_mid"));
-    m_level_view.StoreSprite(FT::PlatformRightEnd, Sprite::GetByName("platform_right"));
-    m_level_view.StoreSprite(FT::EndOfLevel,       Sprite::GetByName("end_of_level"));
+    m_level_view.StoreSprite(FT::PlatformTopLeft,        Sprite::GetByName("PlatformTopLeft"));
+    m_level_view.StoreSprite(FT::PlatformLeft,           Sprite::GetByName("PlatformLeft"));
+    m_level_view.StoreSprite(FT::PlatformMid,            Sprite::GetByName("PlatformMid"));
+    m_level_view.StoreSprite(FT::PlatformTop,            Sprite::GetByName("PlatformTop"));
+    m_level_view.StoreSprite(FT::PlatformLeftTopRight,   Sprite::GetByName("PlatformLeftTopRight"));
+    m_level_view.StoreSprite(FT::PlatformLeftRight,      Sprite::GetByName("PlatformLeftRight"));
+    m_level_view.StoreSprite(FT::PlatformTopRight,       Sprite::GetByName("PlatformTopRight"));
+    m_level_view.StoreSprite(FT::PlatformRight,          Sprite::GetByName("PlatformRight"));
+
+    m_level_view.StoreSprite(FT::EndOfLevel,             Sprite::GetByName("EndOfLevel"));
+
+    m_level_view.StoreSprite(FT::NcPlatformTopLeft,      Sprite::GetByName("NcPlatformTopLeft"));
+    m_level_view.StoreSprite(FT::NcPlatformLeft,         Sprite::GetByName("NcPlatformLeft"));
+    m_level_view.StoreSprite(FT::NcPlatformMid,          Sprite::GetByName("NcPlatformMid"));
+    m_level_view.StoreSprite(FT::NcPlatformTop,          Sprite::GetByName("NcPlatformTop"));
+    m_level_view.StoreSprite(FT::NcPlatformLeftTopRight, Sprite::GetByName("NcPlatformLeftTopRight"));
+    m_level_view.StoreSprite(FT::NcPlatformLeftRight,    Sprite::GetByName("NcPlatformLeftRight"));
+    m_level_view.StoreSprite(FT::NcPlatformTopRight,     Sprite::GetByName("NcPlatformTopRight"));
+    m_level_view.StoreSprite(FT::NcPlatformRight,        Sprite::GetByName("NcPlatformRight"));
+
 
     // utwórz postać gracza
     const LevelEntityData player_data = m_level->GetPlayerData();
@@ -316,6 +334,9 @@ bool Game::Update(double dt) {
     // usuń niepotrzebne jednostki i dodaj nowe
     SweepAndAddEntities(dt);
 
+    // zaaktualizuj stan mapy kaflowej (np. animację kafli)
+    m_level_view.Update(dt);
+
     return !IsDone();
 }
 
@@ -333,23 +354,30 @@ void Game::Draw() {
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     {
-        double player_x = -(m_stored_player_pos_x * Engine::Get().GetRenderer()->GetTileWidth() - 0.45);
-        glTranslated(player_x, 0, 0);
-        glMatrixMode(GL_MODELVIEW);
+        glPushAttrib(GL_COLOR_BUFFER_BIT);
+        {
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+            double player_x = -(m_stored_player_pos_x * Engine::Get().GetRenderer()->GetTileWidth() - 0.45);
+            glTranslated(player_x, 0, 0);
+            glMatrixMode(GL_MODELVIEW);
     
-        m_level_view.SetLevel(m_level, m_stored_player_pos_x);
-        m_level_view.Draw(m_stored_player_pos_x);
+            m_level_view.SetLevel(m_level, m_stored_player_pos_x);
+            m_level_view.Draw(m_stored_player_pos_x);
 
-        // narysuj postać gracza
-        m_player->Draw();
+            // narysuj postać gracza
+            m_player->Draw();
 
-        // narysuj pozostałe obiekty
-        for (std::vector<EntityPtr>::const_iterator it = m_entities.begin(); it != m_entities.end(); ++it) {
-            const EntityPtr e = *it;
-            if (e->IsAlive()) {
-                e->Draw();
+            // narysuj pozostałe obiekty
+            for (std::vector<EntityPtr>::const_iterator it = m_entities.begin(); it != m_entities.end(); ++it) {
+                const EntityPtr e = *it;
+                if (e->IsAlive()) {
+                    e->Draw();
+                }
             }
         }
+        glPopAttrib();
     }
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();

@@ -60,10 +60,10 @@ LevelChoiceScreen::LevelChoiceScreen(PlayerPtr player) :
     m_face_pos = m_positions.at(0);
 
     // załaduj sprite'y
-    const SpriteConfigData horizontal_road_data(DL::Foreground, 1, 1, 0 * 32, 14 * 32, 32, 32, false);
-    const SpriteConfigData vertical_road_data(DL::Foreground, 1, 1,  1 * 32, 14 * 32, 32, 32, false);
-    const SpriteConfigData entry_enabled_data(DL::Foreground, 1, 1,  6 * 32, 14 * 32, 32, 32, false);
-    const SpriteConfigData face_data(DL::Foreground, 8, .1,  8 * 32, 14 * 32, 32, 32, true);
+    const SpriteConfigData horizontal_road_data(DL::Foreground, 1, 1, 0 * 32, 17 * 32, 32, 32, false, false);
+    const SpriteConfigData vertical_road_data(DL::Foreground, 1, 1,  1 * 32, 17 * 32, 32, 32, false, false);
+    const SpriteConfigData entry_enabled_data(DL::Foreground, 4, .1,  4 * 32, 17 * 32, 32, 32, true, false);
+    const SpriteConfigData face_data(DL::Foreground, 4, .1,  0 * 32, 23 * 32, 32, 32, true, false);
 
     m_horizontal_road_sprite.reset(new Sprite(horizontal_road_data));
     m_vertical_road_sprite.reset(new Sprite(vertical_road_data));

@@ -14,9 +14,9 @@ void EditorGui::Init() {
     const Size default_size = Size(.1, .1);
 #define BUTTON(name,pos,size,type) SpriteButtonPtr(new SpriteButton(Sprite::GetByName(name), pos, size, Brush::New(Sprite::GetByName(name), type)))
     // nazwy sprite'ów zdefiniowane są w SpriteConfig::SpriteConfig
-    m_widgets.push_back(BUTTON("eraser",           Position( 0, .8), default_size, Brush::ST::Eraser));
+    m_widgets.push_back(BUTTON("gui_eraser",       Position( 0, .8), default_size, Brush::ST::Eraser));
     m_widgets.push_back(BUTTON("player_stop",      Position(.1, .8), default_size, Brush::ST::Player));
-    m_widgets.push_back(BUTTON("platform_mid",     Position(.2, .8), default_size, FT::PlatformMidPart));
+    m_widgets.push_back(BUTTON("PlatformMid",      Position(.2, .8), default_size, FT::PlatformMid));
     m_widgets.push_back(BUTTON("twinshot_upgrade", Position(.3, .8), default_size, ET::TwinShot));
     m_widgets.push_back(BUTTON("mush_stop",        Position(.4, .8), default_size, ET::Mush));
 #undef BUTTON

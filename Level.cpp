@@ -92,6 +92,7 @@ void Level::LoadFromFile(const std::string& filename) {
     m_loaded = true;
 }
 
+
 void Level::LoadEntitiesFromFile(const std::string& filename) {
     std::ifstream file(filename.c_str());
     if (!file) {
@@ -132,6 +133,18 @@ FT::FieldType Level::Field(size_t x, size_t y) const {
     }
     return m_data.at(y).at(x);
 }
+
+
+bool Level::IsFieldCollidable(int x, int y) const {
+    const FT::FieldType type = Field(x,y);
+    return (FT::COLLIDING_START < type && type < FT::COLLIDING_END)
+        || type==FT::EndOfLevel;
+}
+
+bool Level::IsFieldNotCollidable(int x, int y) const {
+    return !IsFieldCollidable(x, y);
+}
+
 
 void Level::SetField(size_t x, size_t y, FT::FieldType ft) {
     if (x >= m_width || y >= m_height) {

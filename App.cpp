@@ -62,7 +62,7 @@ void App::Run() {
     // m_app_state.reset(new MainMenu());
 
     LevelPtr level(new Level());
-    level->LoadFromFile("data/0.lvl");
+    level->LoadFromFile("data/1.lvl");
     m_app_state.reset(new Editor(level));
 
     m_app_state->Init();
@@ -92,6 +92,7 @@ void App::Run() {
             Update(delta_time);
         }
         Draw();
+        SDL_Delay(10);
     }
 
     SDL_Quit();

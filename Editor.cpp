@@ -9,10 +9,25 @@ void Editor::Start() {
 }
 
 void Editor::Init() {
-    m_level_view.StoreSprite(FT::EndOfLevel,       Sprite::GetByName("end_of_level"));
-    m_level_view.StoreSprite(FT::PlatformLeftEnd,  Sprite::GetByName("platform_left"));
-    m_level_view.StoreSprite(FT::PlatformMidPart,  Sprite::GetByName("platform_mid"));
-    m_level_view.StoreSprite(FT::PlatformRightEnd, Sprite::GetByName("platform_right"));
+    m_level_view.StoreSprite(FT::PlatformTopLeft,        Sprite::GetByName("PlatformTopLeft"));
+    m_level_view.StoreSprite(FT::PlatformLeft,           Sprite::GetByName("PlatformLeft"));
+    m_level_view.StoreSprite(FT::PlatformMid,            Sprite::GetByName("PlatformMid"));
+    m_level_view.StoreSprite(FT::PlatformTop,            Sprite::GetByName("PlatformTop"));
+    m_level_view.StoreSprite(FT::PlatformLeftTopRight,   Sprite::GetByName("PlatformLeftTopRight"));
+    m_level_view.StoreSprite(FT::PlatformLeftRight,      Sprite::GetByName("PlatformLeftRight"));
+    m_level_view.StoreSprite(FT::PlatformTopRight,       Sprite::GetByName("PlatformTopRight"));
+    m_level_view.StoreSprite(FT::PlatformRight,          Sprite::GetByName("PlatformRight"));
+
+    m_level_view.StoreSprite(FT::EndOfLevel,             Sprite::GetByName("EndOfLevel"));
+
+    m_level_view.StoreSprite(FT::NcPlatformTopLeft,      Sprite::GetByName("NcPlatformTopLeft"));
+    m_level_view.StoreSprite(FT::NcPlatformLeft,         Sprite::GetByName("NcPlatformLeft"));
+    m_level_view.StoreSprite(FT::NcPlatformMid,          Sprite::GetByName("NcPlatformMid"));
+    m_level_view.StoreSprite(FT::NcPlatformTop,          Sprite::GetByName("NcPlatformTop"));
+    m_level_view.StoreSprite(FT::NcPlatformLeftTopRight, Sprite::GetByName("NcPlatformLeftTopRight"));
+    m_level_view.StoreSprite(FT::NcPlatformLeftRight,    Sprite::GetByName("NcPlatformLeftRight"));
+    m_level_view.StoreSprite(FT::NcPlatformTopRight,     Sprite::GetByName("NcPlatformTopRight"));
+    m_level_view.StoreSprite(FT::NcPlatformRight,        Sprite::GetByName("NcPlatformRight"));
 
     m_gui->Init();
 }
@@ -42,7 +57,7 @@ void Editor::Draw() {
         const double tile_width = Engine::Get().GetRenderer()->GetTileWidth();
         const double viewer_x   = -(m_viewer_offset_x * tile_width - 0.45);
 
-        DrawEntitiesAndPlayer(viewer_x);
+        DrawEntitiesPlayerAndLevel(viewer_x);
         DrawBrushAndGui(viewer_x);
     }
     glPopAttrib();
@@ -52,7 +67,7 @@ void Editor::Draw() {
     }
 }
 
-void Editor::DrawEntitiesAndPlayer(double viewer_x) {
+void Editor::DrawEntitiesPlayerAndLevel(double viewer_x) {
     const double tile_width  = Engine::Get().GetRenderer()->GetTileWidth();
     const double tile_height = Engine::Get().GetRenderer()->GetTileHeight();
 
@@ -119,6 +134,7 @@ bool Editor::ShouldSnapToGrid() const {
         && GetBrush()->IsSpecial()
         && GetBrush()->GetSpecialType()==Brush::ST::Eraser)
         return true;
+    return false;
 }
     
 bool Editor::Update(double dt) {
