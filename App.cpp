@@ -57,12 +57,10 @@ void App::Run() {
     const std::string atlas_filename = "data/tex.png";
     Engine::Get().GetRenderer()->LoadTexture(atlas_filename);
 
-    // m_app_state.reset(new Game("1", PlayerPtr()));
-
     // m_app_state.reset(new MainMenu());
 
     LevelPtr level(new Level());
-    level->LoadFromFile("data/1.lvl");
+    level->LoadFromFile("data/new.lvl");
     m_app_state.reset(new Editor(level));
 
     m_app_state->Init();

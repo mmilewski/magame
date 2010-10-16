@@ -171,9 +171,10 @@ void Level::EnsureWidth(size_t width) {
         return;
     }
 
-    std::cout << "resising from " << m_data.at(0).size() << " to " << width << std::endl;
+    // std::cout << "resising from " << m_data.at(0).size() << " to " << width << std::endl;
 
     for (size_t y = 0; y < m_height; ++y) {
+        std::cout << "FT:None: " << FT::None << std::endl;
         m_data.at(y).resize(width, FT::None);  // dodaj puste komórki
     }
     m_width = width;
@@ -202,6 +203,7 @@ void Level::ShrinkWidth(size_t width) {
         // TODO: implement
 
         max_x++;
+        m_width = max_x;
         std::cout << "shrinking to " << max_x << std::endl;
         for (size_t y = 0; y < m_height; ++y) {
             m_data.at(y).resize(max_x);

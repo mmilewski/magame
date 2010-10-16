@@ -210,8 +210,8 @@ void Editor::ProcessEvents(const SDL_Event& event) {
         } else {
             LevelPtr level(new Level(m_level, m_entities_to_create, m_player_data));
             level->ShrinkWidth();
-            level->SaveEntitiesToFile("/tmp/e.ents");
-            level->SaveFieldsToFile("/tmp/e.lvl");
+            level->SaveEntitiesToFile("data/new.ents");
+            level->SaveFieldsToFile("data/new.lvl");
             m_game.reset(new Game(level, PlayerPtr()));
             m_game->Init();
             m_game->Start();
