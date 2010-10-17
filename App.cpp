@@ -90,7 +90,6 @@ void App::Run() {
             Update(delta_time);
         }
         Draw();
-        SDL_Delay(10);
     }
 
     SDL_Quit();

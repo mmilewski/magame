@@ -76,6 +76,5 @@ bool EditorGui::OnMouseDown(Uint8 /* button */, double /* x */, double /* y */) 
         return false;
     }
     m_active_brush = m_hovered_button->GetBrush();
-    // m_active_brush = Brush::New(FT::PlatformLeftEnd);
     return true;
 }

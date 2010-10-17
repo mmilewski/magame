@@ -47,13 +47,6 @@ void Editor::Draw() {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        // // -------------------- DEBUG ONLY --------------------
-        // Text(0.04, 0.04).DrawText(IntToStr(int(offset))+"_"+IntToStr(int(offset*100)%100), 0.1, 0.2);
-        // std::stringstream ss; ss << m_pointer_x << "_" << m_pointer_y;
-        // Text(0.04, 0.04).DrawText(ss.str(), 0.1, 0.1);
-        // Text(0.04, 0.04).DrawText(IntToStr(InPaintingFieldMode()), 0.1, 0.2);
-        Text(0.04, 0.04).DrawText(IntToStr(InPaintingEntityMode()), 0.1, 0.1);
-
         const double tile_width = Engine::Get().GetRenderer()->GetTileWidth();
         const double viewer_x   = -(m_viewer_offset_x * tile_width - 0.45);
 
@@ -194,8 +187,6 @@ void Editor::ActionAtCoords(double x, double y) {
             std::cerr << "Nie odnaleziono trybu rysowania" << std::endl;
             assert(false && "Nie odnaleziono trybu rysowania");
         }
-    } else {
-        ClearFieldAt(x, y);
     }
 }
 

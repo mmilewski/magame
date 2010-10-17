@@ -53,12 +53,9 @@ void Level::SaveEntitiesToFile(const std::string& filename) {
         return ;
     }
     outfile.precision(3);
-    std::cout.precision(3);
     outfile << m_player_data.name << "\t" << m_player_data.x << "\t" << m_player_data.y << std::endl;
-    std::cout << m_player_data.name << "\t" << m_player_data.x << "\t" << m_player_data.y << std::endl;
     for (std::list<LevelEntityData>::const_iterator it=m_entities_to_create.begin();
          it != m_entities_to_create.end(); ++it) {
-        std::cout << (*it).name << "\t" << (*it).x << "\t" << (*it).y << std::endl;
         outfile << (*it).name << "\t" << (*it).x << "\t" << (*it).y << std::endl;
     }
     outfile.close();
@@ -171,10 +168,11 @@ void Level::EnsureWidth(size_t width) {
         return;
     }
 
+    assert(m_height > 0);  // póki co, program może zachowywać się dziwnie 
+                           // dla niedodatniej wysokości poziomu.
     // std::cout << "resising from " << m_data.at(0).size() << " to " << width << std::endl;
 
     for (size_t y = 0; y < m_height; ++y) {
-        std::cout << "FT:None: " << FT::None << std::endl;
         m_data.at(y).resize(width, FT::None);  // dodaj puste komórki
     }
     m_width = width;
@@ -190,7 +188,7 @@ void Level::ShrinkWidth(size_t width) {
         for (size_t y = 0; y < m_height; ++y) {
             m_data.at(y).resize(width);
         }
-    } else {
+    } else { // automatyczne przycięcie -- znalezienie najdalszego pola poziomu
         size_t max_x = 0;
         for (size_t y = 0; y < m_height; ++y) {
             for (size_t x = 0; x < m_width; ++x) {
@@ -204,7 +202,7 @@ void Level::ShrinkWidth(size_t width) {
 
         max_x++;
         m_width = max_x;
-        std::cout << "shrinking to " << max_x << std::endl;
+        // std::cout << "shrinking to " << max_x << std::endl;
         for (size_t y = 0; y < m_height; ++y) {
             m_data.at(y).resize(max_x);
         }
