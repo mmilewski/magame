@@ -1,3 +1,4 @@
+#include "../StdAfx.h"
 #include "../Engine.h"
 #include "../Text.h"
 #include "../Utils.h"

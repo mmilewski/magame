@@ -24,7 +24,7 @@ public:
 
 private:
     typedef std::vector<BrushButtonPtr> BrushButtonContrainer;
-    BrushButtonContrainer m_widgets;
+    BrushButtonContrainer m_buttons;
     BrushButtonPtr m_hovered_button;
     BrushPtr m_active_brush;
 };
