@@ -1,14 +1,16 @@
 #ifndef __EDITOR_H_INCLUDED__
 #define __EDITOR_H_INCLUDED__
-#include "StdAfx.h"
+#include "../StdAfx.h"
 
 // #include "Utils.h"
 // #include "Player.h"
-#include "Game.h"
-#include "Level.h"
-#include "SpriteGrid.h"
-#include "Gui.h"
-#include "AppState.h"
+#include "../Game.h"
+#include "../Level.h"
+#include "../SpriteGrid.h"
+#include "../AppState.h"
+#include "../gui/Gui.h"
+#include "EditorGui.h"
+#include "BrushButton.h"
 
 class Editor;
 typedef boost::shared_ptr<Editor> EditorPtr;

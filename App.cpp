@@ -5,7 +5,7 @@
 #include "MainMenu.h"
 #include "HallOfFame.h"
 #include "LevelChoiceScreen.h"
-#include "Editor.h"
+#include "editor/Editor.h"
 
 #include "TransitionEffect.h"
 #include "EffectsShow.h"

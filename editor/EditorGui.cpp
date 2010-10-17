@@ -1,7 +1,7 @@
-#include "StdAfx.h"
+#include "../StdAfx.h"
 
-#include "Engine.h"
-#include "Gui.h"
+#include "../Engine.h"
+#include "EditorGui.h"
 
 EditorGui::EditorGui() {
 }
@@ -12,7 +12,7 @@ void EditorGui::Start() {
 void EditorGui::Init() {
     m_widgets.clear();
     const Size default_size = Size(.1, .1);
-#define BUTTON(name,pos,size,type) SpriteButtonPtr(new SpriteButton(Sprite::GetByName(name), pos, size, Brush::New(Sprite::GetByName(name), type)))
+#define BUTTON(name,pos,size,type) BrushButtonPtr(new BrushButton(Sprite::GetByName(name), pos, size, Brush::New(Sprite::GetByName(name), type)))
 #define ADD_BUTTON(name,pos,size,type) m_widgets.push_back(BUTTON(name,pos,size,type))
     // nazwy sprite'ów zdefiniowane są w SpriteConfig::SpriteConfig
     ADD_BUTTON("gui_eraser",       Position( 0, .0), default_size*2, Brush::ST::Eraser);
@@ -40,7 +40,7 @@ void EditorGui::Draw() {
     Engine::Get().GetRenderer()->DrawQuad(0, 0, 1, 1, 0,0,0,.7);
 
     // widoczne kontrolki
-    for (ButtonContrainer::const_iterator i=m_widgets.begin(); i!=m_widgets.end(); ++i) {
+    for (BrushButtonContrainer::const_iterator i=m_widgets.begin(); i!=m_widgets.end(); ++i) {
         if ((*i)->IsVisible() && (*i)!=m_hovered_button) {
             (*i)->Draw();
         }
@@ -63,7 +63,7 @@ void EditorGui::Update(double dt) {
 bool EditorGui::OnMouseMove(double x, double y) {
     m_hovered_button.reset();
     const Aabb cursor_aabb = Aabb(x, y, x+.02, y+0.02);
-    for (ButtonContrainer::const_iterator i=m_widgets.begin(); i!=m_widgets.end(); ++i) {
+    for (BrushButtonContrainer::const_iterator i=m_widgets.begin(); i!=m_widgets.end(); ++i) {
         if ((*i)->IsVisible() && (*i)->GetAabb().Collides(cursor_aabb)) {
             m_hovered_button = *i;
         }

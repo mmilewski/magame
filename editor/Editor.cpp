@@ -1,7 +1,7 @@
-#include "Engine.h"
-#include "Text.h"
-#include "Utils.h"
-#include "Entity.h"
+#include "../Engine.h"
+#include "../Text.h"
+#include "../Utils.h"
+#include "../Entity.h"
 #include "Editor.h"
 
 void Editor::Start() {
