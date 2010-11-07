@@ -9,6 +9,12 @@ int main(/* int argc, char *argv[] */) {
               << "         strzałka do góry  -  skok\n"
               << " przytrzymanie klawisza d  -  bieganie\n"
               << "   naciśnięcie klawisza s  -  strzelanie\n"
+              << "\n"
+              << "       --------- edytor poziomów ---------\n"
+              << "                 klawisz 1 - pokaż/ukryj GUI\n"
+              << "                 klawisz 0 - zmień tryb edytuj <-> graj\n"
+              << "       lewy przycisk myszy - wybieranie i dodawanie elementów\n"
+              << "\n"
               << std::endl;
 
     Engine::Get().Load();
