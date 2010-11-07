@@ -34,7 +34,7 @@ namespace FT {
 
         PlatformTopLeft, // 10001
         PlatformLeft, // 10002
-        PlatfromMid, // 10003
+        PlatformMid, // 10003
         PlatformTop, // 10004
         PlatformLeftTopRight, // 10005
         PlatformLeftRight, // 10006
@@ -47,7 +47,7 @@ namespace FT {
 
         NcPlatformTopLeft,
         NcPlatformLeft,
-        NcPlatfromMid,
+        NcPlatformMid,
         NcPlatformTop,
         NcPlatformLeftTopRight,
         NcPlatformLeftRight,
@@ -58,7 +58,9 @@ namespace FT {
         NcCrackWithBg,
         NcCrackNoBg,
 
-        NON_COLLIDING_END
+        NON_COLLIDING_END,
+
+        COUNT
     };
 }
 
@@ -74,11 +76,17 @@ namespace ES {
 // typ jednostki
 namespace ET {
     enum EntityType {
+        UNKNOWN,
+
         Mush,
         PlayerBullet,
-        TwinShot
+        TwinShot,
+
+        COUNT
     };
 }
+
+std::string EntityTypeAsString(ET::EntityType et);
 
 // typ fade effectu
 namespace TransitionEffectType {

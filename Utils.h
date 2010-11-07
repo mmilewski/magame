@@ -10,4 +10,11 @@
 std::string IntToStr(int number);
 int StrToInt(const std::string& number);
 
+/**
+ * Sprawdza czy str zaczyna się (kończy się) wskazanym prefiksem (sufiksem).
+ */
+bool StartsWith(const std::string& str, const std::string& prefix);
+bool EndsWith(const std::string& str, const std::string& suffix);
+
+
 #endif

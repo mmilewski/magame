@@ -2,8 +2,11 @@
 #define SPRITE_H_
 #include "StdAfx.h"
 
+#include "BasicMathTypes.h"
 #include "SpriteConfig.h"
 
+class Sprite;
+typedef boost::shared_ptr<Sprite> SpritePtr;
 
 class Sprite {
 public:
@@ -11,7 +14,8 @@ public:
 
     void Update(double dt);
     void SetCurrentFrame(size_t frame_num);
-    void DrawCurrentFrame(double x, double y, double width, double height);
+    void DrawCurrentFrame(double x, double y, double width, double height) const;
+    void DrawCurrentFrame(Position position, Size size) const;
 
     /* Ustawia rozmiary sprite'a powyżej których będzie on powtarzany -- rysowany ponownie.
        Wywołanie:
@@ -32,6 +36,9 @@ public:
     /* Po wywołaniu tej metody, sprite będzie rozciągany, a nie powtarzany. */
     void ResetRepeat();
 
+public:
+    static SpritePtr GetByName(const std::string& name);
+    
 private:
     SpriteConfigData m_data;
     size_t m_current_frame;           // numer aktualnej klatki
@@ -43,6 +50,5 @@ private:
     bool m_dark;                      // czy sprite ma być przyciemniony
 };
 
-typedef boost::shared_ptr<Sprite> SpritePtr;
 
 #endif /* SPRITE_H_ */

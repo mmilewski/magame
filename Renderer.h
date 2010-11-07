@@ -2,6 +2,7 @@
 #define RENDERER_H_
 #include "StdAfx.h"
 
+#include "BasicMathTypes.h"
 #include "Aabb.h"
 #include "Types.h"
 
@@ -27,6 +28,8 @@ public:
     void DrawAabb(const Aabb& box, double r=1, double g=1, double b=0, double a=.7) const;
     void DrawQuad(double min_x, double min_y,
                   double max_x, double max_y,
+                  double r, double g, double b, double a) const;
+    void DrawQuad(Position min_position, Position max_position,
                   double r, double g, double b, double a) const;
     void SetProjection(size_t width, size_t height);
     void ResetProjection();

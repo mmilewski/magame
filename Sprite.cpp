@@ -10,6 +10,7 @@ Sprite::Sprite(const SpriteConfigData& data) :
 
 }
 
+
 void Sprite::SetCurrentFrame(size_t frame_num) {
     m_current_frame = frame_num;
     m_current_frame_duration = 0.0;
@@ -34,7 +35,11 @@ void Sprite::Update(double dt) {
     }
 }
 
-void Sprite::DrawCurrentFrame(double x, double y, double width, double height) {
+void Sprite::DrawCurrentFrame(Position position, Size size) const {
+    DrawCurrentFrame(position.X(), position.Y(), size.X(), size.Y());
+}
+
+void Sprite::DrawCurrentFrame(double x, double y, double width, double height) const {
     // jeżeli powtarzanie jest nieaktywne, to rysujemy normalnie
     if (m_width_repeat < 0 && m_height_repeat < 0) {
         if (m_dark) {
@@ -114,4 +119,8 @@ void Sprite::SetRepeat(double width, double height) {
 
 void Sprite::ResetRepeat() {
     m_height_repeat = m_width_repeat = -1;
+}
+
+SpritePtr Sprite::GetByName(const std::string& name) {
+    return SpritePtr(new Sprite(Engine::Get().GetSpriteConfig()->Get(name)));
 }

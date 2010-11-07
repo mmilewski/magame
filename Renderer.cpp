@@ -11,7 +11,8 @@ void Renderer::LoadTexture(const std::string & filename) {
     std::cout << "Ładowanie obrazka z pliku " + filename + "\n";
 
     // załaduj z pliku
-    SDL_Surface* surface = SDL_LoadBMP(filename.c_str());
+    // SDL_Surface* surface = SDL_LoadBMP(filename.c_str());
+    SDL_Surface* surface = IMG_Load(filename.c_str());
     if (!surface) {
         std::cerr << "Ładowanie pliku " + filename + " FAILED: " + SDL_GetError() + "\n";
         exit(1);
@@ -29,10 +30,10 @@ void Renderer::LoadTexture(const std::string & filename) {
     GLenum format;
     switch (surface->format->BytesPerPixel) {
     case 3:
-        format = GL_BGR;
+        format = GL_RGB;
         break;
     case 4:
-        format = GL_BGRA;
+        format = GL_RGBA;
         break;
     default:
         std::cerr << "Nieznany format pliku " + filename + "\n";
@@ -114,6 +115,13 @@ void Renderer::DrawQuad(double min_x, double min_y,
     glEnd();
 
     glPopAttrib();
+}
+
+void Renderer::DrawQuad(Position min_position, Position max_position,
+                        double r, double g, double b, double a) const {
+    DrawQuad(min_position.X(), min_position.Y(),
+             max_position.X(), max_position.Y(),
+             r, g, b, a);
 }
 
 void Renderer::SetProjection(size_t width, size_t height) {

@@ -1,8 +1,8 @@
-env = Environment();
-env.MergeFlags("-lSDL -lGL -lGLU -lSDL_mixer");
-env.MergeFlags("-g -ggdb");
-env.MergeFlags("-W -Wall -pedantic");
-env.Program("game", Glob("*.cpp"));
+env = Environment()
+env.MergeFlags("-lSDL -lGL -lGLU -lSDL_mixer -lSDL_image")
+env.MergeFlags("-g -ggdb")
+env.MergeFlags("-W -Wall -pedantic")
+env.Program("game", Glob("*.cpp") + Glob("editor/*.cpp") + Glob("gui/*.cpp"))
 
 # mozna takze skompilowac z linii polecen
-#  g++ *.cpp -lSDL -lSDL_mixer -lGL -lGLU -o game
+#  g++ *.cpp editor/*.cpp gui/*.cpp -lSDL -lSDL_image -lSDL_mixer -lGL -lGLU -o game

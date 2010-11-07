@@ -11,6 +11,8 @@
 #include "AppState.h"
 
 class LevelChoiceScreen;
+class Level;
+typedef boost::shared_ptr<Level> LevelPtr;
 
 class Game : public AppState, public boost::enable_shared_from_this<Game> {
 public:
@@ -19,6 +21,14 @@ public:
           m_stored_player_pos_x(9.0),
           m_level_name(level_name)  {
     }
+    explicit Game(LevelPtr level, PlayerPtr player) 
+        : m_player(player),
+          m_level(level),
+          m_stored_player_pos_x(9.0),
+          m_level_name(level->GetName())  {
+    }
+
+    ~Game();
 
     void Start();
     void Init();
@@ -48,7 +58,7 @@ public:
     void BindLevelChoiceScreen(const boost::shared_ptr<LevelChoiceScreen>& screen);
 
 private:
-    void SeepAndAddEntities(double dt);
+    void SweepAndAddEntities(double dt);
     void CheckPlayerEntitiesCollisions(double dt);
     void CheckEntityEntityCollisions(double dt);
     void CheckCollisionOfOnePair(EntityPtr fst_entity, ET::EntityType fst_type,
