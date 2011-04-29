@@ -160,12 +160,12 @@ bool Editor::Update(double dt) {
 }
 
 void Editor::ActionAtCoords(double x, double y) {
-    BrushPtr b = m_gui->GetActiveBrush();
-    if (b) {
+    BrushPtr brush = m_gui->GetActiveBrush();
+    if (brush) {
         if (InPaintingFieldMode()) {
-            SetFieldAt(static_cast<size_t>(x), static_cast<size_t>(y), b->GetFieldType());
+            SetFieldAt(static_cast<size_t>(x), static_cast<size_t>(y), brush->GetFieldType());
         } else if (InPaintingEntityMode()) {
-            const ET::EntityType entity_type = b->GetEntityType();
+            const ET::EntityType entity_type = brush->GetEntityType();
             assert(entity_type!=ET::UNKNOWN);
             assert(entity_type!=ET::COUNT);
             const std::string name = EntityTypeAsString(entity_type);
@@ -175,7 +175,7 @@ void Editor::ActionAtCoords(double x, double y) {
             m_entities.push_back(factory.CreateEntity(entity_data));
             // std::cout << "New entity: " << name << " " << x << " " << y << std::endl;
         } else if (InPaintingSpecialMode()) {
-            const Brush::ST::SpecialType special_type = b->GetSpecialType();
+            const Brush::ST::SpecialType special_type = brush->GetSpecialType();
             if (special_type == Brush::ST::Player) {
                 m_player_data = LevelEntityData("player", x, y);
             } else if (special_type == Brush::ST::Eraser) {
