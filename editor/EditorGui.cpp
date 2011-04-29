@@ -26,7 +26,7 @@ void EditorGui::Init() {
     ADD_BUTTON("PlatformTopLeft",      Position(.3, .5),  default_size, FT::PlatformTopLeft);
     ADD_BUTTON("PlatformTop",          Position(.4, .5),  default_size, FT::PlatformTop);
     ADD_BUTTON("PlatformTopRight",     Position(.5, .5),  default_size, FT::PlatformTopRight);
-    ADD_BUTTON("PlatformLeft",         Position(.3, .4),  default_size, FT::PlatformLeft); 
+    ADD_BUTTON("PlatformLeft",         Position(.3, .4),  default_size, FT::PlatformLeft);
     ADD_BUTTON("PlatformMid",          Position(.4, .4),  default_size, FT::PlatformMid);
     ADD_BUTTON("PlatformRight",        Position(.5, .4),  default_size, FT::PlatformRight);
     ADD_BUTTON("PlatformLeftRight",    Position(.4, .15), default_size, FT::PlatformLeftRight);
@@ -46,7 +46,7 @@ void EditorGui::Draw() {
             (*i)->Draw();
         }
     }
-    
+
     // "najechany" przycisk rysujemy osobno.
     if (m_hovered_button) {
         m_hovered_button->Draw();
@@ -62,20 +62,29 @@ void EditorGui::Update(double dt) {
 }
 
 bool EditorGui::OnMouseMove(double x, double y) {
-    m_hovered_button.reset();
     const Aabb cursor_aabb = Aabb(x, y, x+.02, y+0.02);
+    // Czy kursor znajduje się nad jakimś (zwykłym) pędzlem?
+    m_hovered_button.reset();
     for (BrushButtonContrainer::const_iterator i=m_buttons.begin(); i!=m_buttons.end(); ++i) {
         if ((*i)->IsVisible() && (*i)->GetAabb().Collides(cursor_aabb)) {
             m_hovered_button = *i;
         }
     }
-    return bool(m_hovered_button);
+    // Czy kursor znajduje się nad jakimś (multi) pędzlem?
+    m_hovered_multibrush_button.reset();
+    for (MultiBrushButtonContrainer::const_iterator i=m_multibrush_buttons.begin(); i!=m_multibrush_buttons.end(); ++i) {
+        if ((*i)->IsVisible() && (*i)->GetAabb().Collides(cursor_aabb)) {
+            m_hovered_multibrush_button = *i;
+        }
+    }
+    return bool(m_hovered_button) || bool(m_hovered_multibrush_button);
 }
 
 bool EditorGui::OnMouseDown(Uint8 /* button */, double /* x */, double /* y */) {
-    if (!m_hovered_button) {
+    if (!m_hovered_button && !m_hovered_multibrush_button) {
         return false;
     }
     m_active_brush = m_hovered_button->GetBrush();
+    m_active_multibrush = m_hovered_multibrush_button->GetMultiBrush();
     return true;
 }

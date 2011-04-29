@@ -13,7 +13,7 @@ typedef boost::shared_ptr<Editor> EditorPtr;
 
 class Editor : public AppState, public boost::enable_shared_from_this<Editor> {
 public:
-    explicit Editor(LevelPtr level) 
+    explicit Editor(LevelPtr level)
         : m_next_app_state(),
           m_in_game(false),
           m_gui(new EditorGui),
@@ -77,10 +77,11 @@ private:
     bool InPaintingEntityMode()  const { return m_brush && m_brush->IsEntity(); }
     bool InPaintingSpecialMode() const { return m_brush && m_brush->IsSpecial(); }
     BrushPtr GetBrush()          const { return m_brush; }
+    MultiBrushPtr GetMultiBrush() const { return m_multibrush; }
 
     // czy rysowany obiekt (pod pędzlem) powinien być przyciągane do siatki
     bool ShouldSnapToGrid()      const;
-        
+
     // metody do przełączania między trybem gry a trybem edytora
     void SwitchToGame()     { m_in_game = true; }
     void SwitchToEditor()   { m_in_game = false; m_game.reset(); }
@@ -104,6 +105,7 @@ private:
     GamePtr m_game;                     // instancja gry
 
     BrushPtr m_brush;                   // pędzel do rysowania
+    MultiBrushPtr m_multibrush;         // pędzel do złożonego rysowania
     EditorGuiPtr m_gui;                 // kontrolki do wybierania stawianych pól
     bool m_is_gui_visible;              // czy kontrolki są widoczne?
 

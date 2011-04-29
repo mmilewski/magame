@@ -3,7 +3,9 @@
 #include "../Text.h"
 #include "../Utils.h"
 #include "../Entity.h"
+#include <boost/pointer_cast.hpp>
 #include "Editor.h"
+
 
 void Editor::Start() {
     m_gui->Start();
@@ -80,7 +82,7 @@ void Editor::DrawEntitiesPlayerAndLevel(double viewer_x) {
             // nie rysujemy jego sprite'a. Przy przejściu do podglądu gry zostanie
             // dodany na domyślnej pozycji.
         }
-        
+
         // poziom
         double offset = m_viewer_offset_x;
         m_level_view.SetLevel(m_level, offset);
@@ -111,6 +113,7 @@ void Editor::DrawBrushAndGui(double viewer_x) {
                 }
                 Engine::Get().GetRenderer()->DrawQuad(position, position+size, 1,1,1,.4); // podświetlenie
                 GetBrush()->GetSprite()->DrawCurrentFrame(position, size);                // obiekt spod pędzla
+                GetMultiBrush()->Draw(position, size);                                    // obiekt spod pędzla
             }
             glPopMatrix();
         }
@@ -130,7 +133,7 @@ bool Editor::ShouldSnapToGrid() const {
         return true;
     return false;
 }
-    
+
 bool Editor::Update(double dt) {
     if (IsInGame()) {
         m_game->Update(dt);
@@ -188,6 +191,11 @@ void Editor::ActionAtCoords(double x, double y) {
             std::cerr << "Nie odnaleziono trybu rysowania" << std::endl;
             assert(false && "Nie odnaleziono trybu rysowania");
         }
+    }
+
+    MultiBrushPtr multibrush = m_gui->GetActiveMultiBrush();
+    if (multibrush) {
+        std::cout << "[ActionAtCoords] multibrush";
     }
 }
 

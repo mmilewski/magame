@@ -35,6 +35,8 @@ public:
         {
     }
 
+    virtual ~Brush() {}
+
     static BrushPtr New(SpritePtr sprite, FT::FieldType ft) {
         return BrushPtr(new Brush(sprite, ft));
     }
@@ -66,6 +68,31 @@ private:
     FT::FieldType m_field_type;
     ET::EntityType m_entity_type;
     ST::SpecialType m_special_type;
+};
+
+
+class MultiBrush;
+typedef boost::shared_ptr<MultiBrush> MultiBrushPtr;
+
+class MultiBrush {
+public:
+    explicit MultiBrush(SpritePtr sprite, Position start_point)
+        : m_sprite(sprite)
+        {
+    }
+
+    static MultiBrushPtr New(SpritePtr sprite, Position start_point) {
+        return MultiBrushPtr(new MultiBrush(sprite, start_point));
+    }
+
+    virtual void Draw(Position position, Size size) {
+        std::cout << "MultiBrush::Draw()" << std::endl;
+    }
+
+protected:
+    SpritePtr GetSprite() const { return m_sprite; }
+private:
+    SpritePtr m_sprite;
 };
 
 #endif

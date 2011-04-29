@@ -15,11 +15,16 @@ public:
     void Draw();
     void Update(double dt);
 
+    // Zwraca true jeśli zdarzenie przesunięcia myszy zostało obsłużone
     bool OnMouseMove(double x, double y);
+    // Zwraca true jeśli zdarzenie naciśnięcia klawisza myszy zostało obsłużone
     bool OnMouseDown(Uint8 button, double x, double y);
 
     BrushPtr GetActiveBrush() const {
         return m_active_brush;
+    }
+    MultiBrushPtr GetActiveMultiBrush() const {
+        return m_active_multibrush;
     }
 
 private:
@@ -27,6 +32,11 @@ private:
     BrushButtonContrainer m_buttons;
     BrushButtonPtr m_hovered_button;
     BrushPtr m_active_brush;
+
+    typedef std::vector<MultiBrushButtonPtr> MultiBrushButtonContrainer;
+    MultiBrushButtonContrainer m_multibrush_buttons;
+    MultiBrushButtonPtr m_hovered_multibrush_button;
+    MultiBrushPtr m_active_multibrush;
 };
 
 #endif

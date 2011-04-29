@@ -18,4 +18,18 @@ private:
     BrushPtr m_brush;
 };
 
+
+class MultiBrushButton;
+typedef boost::shared_ptr<MultiBrushButton> MultiBrushButtonPtr;
+
+class MultiBrushButton : public SpriteButton {
+public:
+    explicit MultiBrushButton(SpritePtr sprite, Position position, Size size, MultiBrushPtr MultiBrush)
+        : SpriteButton(sprite, position, size),
+          m_MultiBrush(MultiBrush)  {
+    }
+    MultiBrushPtr  GetMultiBrush()  const    { return m_MultiBrush; }
+private:
+    MultiBrushPtr m_MultiBrush;
+};
 #endif
