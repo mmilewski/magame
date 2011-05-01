@@ -7,6 +7,7 @@
 #include "../SpriteGrid.h"
 #include "../gui/Gui.h"
 #include "EditorGui.h"
+#include "EditorCommand.h"
 
 class Editor;
 typedef boost::shared_ptr<Editor> EditorPtr;
@@ -97,6 +98,8 @@ private:
 
     Editor* SetBrush(BrushPtr brush) { m_brush = brush; return this; }
 
+    void ReleaseAtCoords(double x, double y);
+    void MoveToCoords(double x, double y);
     void ActionAtCoords(double x, double y);
 
 private:
@@ -123,6 +126,9 @@ private:
     std::list<LevelEntityData> m_entities_to_create;  // opisy jednostek do stworzenia
 
     std::vector<bool> m_keys_down;
+
+    typedef std::list<EditorCommandPtr> EditorCommandsContainer;
+    EditorCommandsContainer m_commands;
 };
 
 #endif

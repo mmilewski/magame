@@ -122,5 +122,8 @@ void Sprite::ResetRepeat() {
 }
 
 SpritePtr Sprite::GetByName(const std::string& name) {
+    if (name == "multi_platform") {
+        return SpritePtr(new Sprite(Engine::Get().GetSpriteConfig()->Get("PlatformTop")));
+    }
     return SpritePtr(new Sprite(Engine::Get().GetSpriteConfig()->Get(name)));
 }

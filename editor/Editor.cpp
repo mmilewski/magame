@@ -4,6 +4,7 @@
 #include "../Utils.h"
 #include "../Entity.h"
 #include <boost/pointer_cast.hpp>
+#include "EditorCommand.h"
 #include "Editor.h"
 
 
@@ -112,7 +113,7 @@ void Editor::DrawBrushAndGui(double viewer_x) {
                                         static_cast<int>(m_pointer_y) * tile_height);
                 }
                 Engine::Get().GetRenderer()->DrawQuad(position, position+size, 1,1,1,.4); // podświetlenie
-                GetBrush()->GetSprite()->DrawCurrentFrame(position, size);                // obiekt spod pędzla
+                GetBrush()->Draw(position, size);
                 GetMultiBrush()->Draw(position, size);                                    // obiekt spod pędzla
             }
             glPopMatrix();
@@ -162,6 +163,23 @@ bool Editor::Update(double dt) {
     return !IsDone();
 }
 
+void Editor::ReleaseAtCoords(double x, double y) {
+    BrushPtr brush = m_gui->GetActiveBrush();
+    if (brush && (brush->GetSpecialType() == Brush::ST::Multi)) {
+        MultiBrushPtr multibrush = boost::dynamic_pointer_cast<MultiBrush>(brush);
+        std::cerr << "move at: " << x << ", " << y << std::endl;
+        multibrush->FinishAt(x, y);
+    }
+}
+
+void Editor::MoveToCoords(double x, double y) {
+    BrushPtr brush = m_gui->GetActiveBrush();
+    if (brush && (brush->GetSpecialType() == Brush::ST::Multi)) {
+        MultiBrushPtr multibrush = boost::dynamic_pointer_cast<MultiBrush>(brush);
+        multibrush->MoveTo(x, y);
+    }
+}
+
 void Editor::ActionAtCoords(double x, double y) {
     BrushPtr brush = m_gui->GetActiveBrush();
     if (brush) {
@@ -183,6 +201,14 @@ void Editor::ActionAtCoords(double x, double y) {
                 m_player_data = LevelEntityData("player", x, y);
             } else if (special_type == Brush::ST::Eraser) {
                 ClearFieldAt(static_cast<size_t>(x), static_cast<size_t>(y));
+            } else if (special_type == Brush::ST::Multi) {
+                std::cerr << "Akcja typu MULTI" << std::endl;
+                EditorCommandPtr command = brush->GetCommand();
+                command->Execute();
+                m_commands.push_back(command);
+
+                MultiBrushPtr multibrush = boost::dynamic_pointer_cast<MultiBrush>(brush);
+                multibrush->StartAt(x, y);
             } else {
                 std::cerr << "Niezdefiniowana akcja w trybie specjalnym" << std::endl;
             }
@@ -244,6 +270,7 @@ void Editor::ProcessEvents(const SDL_Event& event) {
         } else {
             m_pointer_x = MapWindowCoordToWorldX(m_pointer_window_x);
             m_pointer_y = MapWindowCoordToWorldY(m_pointer_window_y);
+            MoveToCoords(m_pointer_x, m_pointer_y);
         }
     } else if (event.type == SDL_MOUSEBUTTONDOWN) {
         m_pointer_window_x =       event.motion.x / static_cast<double>(Engine::Get().GetWindow()->GetWidth());
@@ -254,6 +281,10 @@ void Editor::ProcessEvents(const SDL_Event& event) {
             m_pointer_y = MapWindowCoordToWorldY(m_pointer_window_y);
             ActionAtCoords(m_pointer_x, m_pointer_y);
         }
+    } else if (event.type == SDL_MOUSEBUTTONUP) {
+        m_pointer_x = MapWindowCoordToWorldX(m_pointer_window_x);
+        m_pointer_y = MapWindowCoordToWorldY(m_pointer_window_y);
+        ReleaseAtCoords(m_pointer_x, m_pointer_y);
     }
 }
 
