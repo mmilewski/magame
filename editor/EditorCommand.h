@@ -2,6 +2,10 @@
 #define	__EDITORCOMMAND_H_INCLUDED__
 
 #include "../StdAfx.h"
+#include "../BasicMathTypes.h"
+#include "../Types.h"
+
+class Editor;
 
 class EditorCommand;
 typedef boost::shared_ptr<EditorCommand> EditorCommandPtr;
@@ -11,8 +15,8 @@ public:
     virtual ~EditorCommand() {}
 
 public:
-    virtual void Execute() = 0;
-    virtual void Undo() = 0;
+    virtual void Execute(Editor* editor) = 0;
+    virtual void Undo(Editor* editor) = 0;
 };
 
 
@@ -21,34 +25,21 @@ typedef boost::shared_ptr<PlatformEditorCommand> PlatformEditorCommandPtr;
 
 class PlatformEditorCommand : public EditorCommand {
 public:
-    explicit PlatformEditorCommand() : EditorCommand() {    
-    }
-    
-    virtual void Execute() {
-        std::cerr << "Executing PlatformEditorCommand" << std::endl;
-    }
-
-    virtual void Undo() {
-        std::cerr << "Undoing PlatformEditorCommand" << std::endl;
+    explicit PlatformEditorCommand(const Position& start, const Position& end)
+        : EditorCommand(),
+        m_beg(start), m_end(end) {
+        m_beg[0] = std::min(start.X(), end.X());
+        m_end[0] = std::max(start.X(), end.X());
+        m_beg[1] = std::min(start.Y(), end.Y());
+        m_end[1] = std::max(start.Y(), end.Y());
     }
 
-//    virtual void ActionAt(double x, double y) {
-//        m_startx = x;
-//        m_starty = y;
-//    }
-//
-//    virtual void ReleaseAt(double x, double y) {
-//        m_endx = x;
-//        m_endy = y;
-//    }
-//
-//    virtual void MoveAt(double x, double y) {
-//
-//    }
-//
-//private:
-//    double m_startx, m_starty;
-//    double m_endx, m_endy;
+    virtual void Execute(Editor* editor);
+    virtual void Undo(Editor* editor);
+
+public:
+    Position m_beg, m_end;   // Początek i koniec zaznaczenia. Wsp.świata
+    std::vector<FT::FieldType> m_saved_fields;  // zapisane pola planszy
 };
 
 #endif

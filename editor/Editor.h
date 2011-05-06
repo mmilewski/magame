@@ -54,18 +54,25 @@ private:
     // na współrzędne świata (przestrzeń świata)
     double MapWindowCoordToWorldX(double x) const;
     double MapWindowCoordToWorldY(double y) const;
+    Position MapWindowCoordsToWorld(const Position& coords) const;
+
+
+    friend class PlatformEditorCommand;
 
     // Czyści pole pod wskazanymi współrzędnymi (przestrzeń świata).
     // y -- bottom-up
     void ClearFieldAt(double x, double y);
+    void ClearFieldAt(const Position& pos);
 
     // Ustawia pole na wskazany typ
     // y -- bottom-up
     void SetFieldAt(double x, double y, FT::FieldType ft);
+    void SetFieldAt(const Position& pos, FT::FieldType ft);
 
     // Zwraca typ pola we wskazanych współrzędnych (przestrzeń świata).
     // y -- bottom-up
     FT::FieldType GetFieldAt(double x, double y) const;
+    FT::FieldType GetFieldAt(const Position& pos) const;
 
     // pokazuje/ukrywa gui
     void ToggleGui() { m_is_gui_visible = !m_is_gui_visible; }
@@ -97,9 +104,9 @@ private:
 
     Editor* SetBrush(BrushPtr brush) { m_brush = brush; return this; }
 
-    void ReleaseAtCoords(double x, double y);
-    void MoveToCoords(double x, double y);
-    void ActionAtCoords(double x, double y);
+    void ReleaseAtCoords(double x, double y);  // Wsp.świata
+    void MoveToCoords(double x, double y);     // Wsp.świata
+    void ActionAtCoords(double x, double y);   // Wsp.świata
 
 private:
     AppStatePtr m_next_app_state;

@@ -151,8 +151,8 @@ bool Editor::Update(double dt) {
         m_viewer_offset_x += dt * 28.24;
     }
 
-    // upewnij się że edytor nie zagląda poza lewą krawędź planszy. Znajdują się tam
-    // ujemne wartości na osi odciętych, co może powodować błędy w obliczeniach.
+    // upewnij się że edytor nie zagląda poza lewą krawędź planszy. Znajdują się
+    // tam ujemne wartości na osi odciętych, co może powodować błędy w obliczeniach
     const double tiles_in_row = 1.0/Engine::Get().GetRenderer()->GetTileWidth();
     m_viewer_offset_x = std::max(m_viewer_offset_x, tiles_in_row/2-1);
 
@@ -166,9 +166,12 @@ void Editor::ReleaseAtCoords(double x, double y) {
     BrushPtr brush = m_gui->GetActiveBrush();
     if (brush && (brush->GetSpecialType() == Brush::ST::Multi)) {
         MultiBrushPtr multibrush = boost::dynamic_pointer_cast<MultiBrush>(brush);
-        std::cerr << "move at: " << x << ", " << y << std::endl;
         multibrush->FinishAt(x, y);
     }
+
+    EditorCommandPtr command = brush->GetCommand();
+    command->Execute(this);
+    m_commands.push_back(command);
 }
 
 void Editor::MoveToCoords(double x, double y) {
@@ -193,7 +196,6 @@ void Editor::ActionAtCoords(double x, double y) {
             m_entities_to_create.push_back(entity_data);
             EntityFactory factory;
             m_entities.push_back(factory.CreateEntity(entity_data));
-            // std::cout << "New entity: " << name << " " << x << " " << y << std::endl;
         } else if (InPaintingSpecialMode()) {
             const Brush::ST::SpecialType special_type = brush->GetSpecialType();
             if (special_type == Brush::ST::Player) {
@@ -201,15 +203,10 @@ void Editor::ActionAtCoords(double x, double y) {
             } else if (special_type == Brush::ST::Eraser) {
                 ClearFieldAt(static_cast<size_t>(x), static_cast<size_t>(y));
             } else if (special_type == Brush::ST::Multi) {
-                std::cerr << "Akcja typu MULTI" << std::endl;
-                MultiBrushPtr multibrush = boost::dynamic_pointer_cast<MultiBrush>(brush);
-                multibrush->StartAt(x, y);
-                EditorCommandPtr command = brush->GetCommand();
-                command->Execute();
-                m_commands.push_back(command);
-
+                MultiBrushPtr mb = boost::dynamic_pointer_cast<MultiBrush>(brush);
+                mb->StartAt(x, y);
             } else {
-                std::cerr << "Niezdefiniowana akcja w trybie specjalnym" << std::endl;
+                std::cerr << "Niezdefiniowana akcja w trybie specjalnym\n";
             }
         }
         else {
@@ -244,11 +241,17 @@ void Editor::ProcessEvents(const SDL_Event& event) {
         return;
     }
 
+    double win_width = static_cast<double>(Engine::Get().GetWindow()->GetWidth());
+    double win_height= static_cast<double>(Engine::Get().GetWindow()->GetHeight());
     if (event.type == SDL_QUIT) {
         SetDone();
     } else if (event.type == SDL_KEYDOWN) {
         if (IsGuiHidden() || m_gui->OnKeyDown(event.key.keysym.sym)==false) {
             m_keys_down[event.key.keysym.sym] = true;
+        }
+        if (event.key.keysym.sym == SDLK_BACKSPACE && m_commands.empty()==false) {
+            m_commands.back()->Undo(this);
+            m_commands.pop_back();
         }
     } else if (event.type == SDL_KEYUP) {
         if (event.key.keysym.sym==SDLK_1) {
@@ -257,18 +260,19 @@ void Editor::ProcessEvents(const SDL_Event& event) {
             m_keys_down[event.key.keysym.sym] = false;
         }
     } else if (event.type == SDL_MOUSEMOTION) {
-        m_pointer_window_x =       event.motion.x / static_cast<double>(Engine::Get().GetWindow()->GetWidth());
-        m_pointer_window_y = 1.0 - event.motion.y / static_cast<double>(Engine::Get().GetWindow()->GetHeight());
+        m_pointer_window_x =       event.motion.x / win_width;
+        m_pointer_window_y = 1.0 - event.motion.y / win_height;
         if (IsGuiVisible() && m_gui->OnMouseMove(m_pointer_window_x, m_pointer_window_y)) {
-            m_pointer_x = m_pointer_y = 1000;   // przesuń kursor poza ekran (można to zrobić ładniej)
+            // przesuń kursor poza ekran (można to zrobić ładniej)
+            m_pointer_x = m_pointer_y = 1000;
         } else {
             m_pointer_x = MapWindowCoordToWorldX(m_pointer_window_x);
             m_pointer_y = MapWindowCoordToWorldY(m_pointer_window_y);
             MoveToCoords(m_pointer_x, m_pointer_y);
         }
     } else if (event.type == SDL_MOUSEBUTTONDOWN) {
-        m_pointer_window_x =       event.motion.x / static_cast<double>(Engine::Get().GetWindow()->GetWidth());
-        m_pointer_window_y = 1.0 - event.motion.y / static_cast<double>(Engine::Get().GetWindow()->GetHeight());
+        m_pointer_window_x =       event.motion.x / win_width;
+        m_pointer_window_y = 1.0 - event.motion.y / win_height;
         if (IsGuiVisible() && m_gui->OnMouseDown(event.button.button, m_pointer_window_x, m_pointer_window_y)) {
         } else {
             m_pointer_x = MapWindowCoordToWorldX(m_pointer_window_x);
@@ -293,8 +297,16 @@ double Editor::MapWindowCoordToWorldY(double y) const {
     return y/th;
 }
 
+Position Editor::MapWindowCoordsToWorld(const Position& coords) const {
+    return Position(MapWindowCoordToWorldX(coords.X()),
+                    MapWindowCoordToWorldY(coords.Y()));
+}
+
 void Editor::ClearFieldAt(double x, double y) {
     SetFieldAt(x, y, FT::None);
+}
+void Editor::ClearFieldAt(const Position& pos) {
+    ClearFieldAt(pos.X(), pos.Y());
 }
 
 void Editor::SetFieldAt(double x, double y, FT::FieldType ft) {
@@ -302,6 +314,13 @@ void Editor::SetFieldAt(double x, double y, FT::FieldType ft) {
     m_level->SetField(static_cast<size_t>(x), static_cast<size_t>(TopDown(y)), ft);
 }
 
+void Editor::SetFieldAt(const Position& pos, FT::FieldType ft) {
+    SetFieldAt(pos.X(), pos.Y(), ft);
+}
+
 FT::FieldType Editor::GetFieldAt(double x, double y) const {
     return m_level->Field(static_cast<size_t>(x), static_cast<size_t>(TopDown(y)));
+}
+FT::FieldType Editor::GetFieldAt(const Position& pos) const {
+    return GetFieldAt(pos.X(), pos.Y());
 }

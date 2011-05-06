@@ -20,8 +20,11 @@ struct Vector2
     void operator*=(double scalar) { x*=scalar; y*=scalar; }
     void operator/=(double scalar) { x/=scalar; y/=scalar; }
     double Length() const { return std::sqrt(x*x+y*y); }
+    Vector2 scale(double sx, double sy) { return Vector2(x*sx, y*sy); }
 private:
     double x, y;
 };
+
+std::ostream& operator<<(std::ostream& os, const Vector2& v);
 
 #endif // __VECTOR2_H_INCLUDED__
