@@ -11,7 +11,7 @@ std::ostream& operator<<(std::ostream& os, const Vector2& v) {
     return os;
 }
 
-void MultiBrush::DrawSketch(Position scr_position, Size scr_size) {
+void MultiBrush::DrawSketch(Position /* scr_position */, Size /* scr_size */) const {
     if (!IsActive()) {
         return;
     }

@@ -65,21 +65,21 @@ public:
 
     SpritePtr GetSprite() const { return m_sprite; }
 
-    virtual void Draw(Position scr_position, Size scr_size) {
+    virtual void Draw(Position scr_position, Size scr_size) const {
         DrawSketch(scr_position, scr_size);
         DrawIcon(scr_position, scr_size);
     }
 
-    virtual EditorCommandPtr GetCommand() { return EditorCommandPtr(); }
+    virtual EditorCommandPtr GetCommand() const { std::cerr << "Pusta komenda\n"; return EditorCommandPtr(); }
 
 protected:
     // Metoda do przesłonięcia w klasach pochodnych.
     // Rysowanie szkicu/podglądu.
-    virtual void DrawSketch(Position scr_position, Size scr_size) {
+    virtual void DrawSketch(Position /* scr_position */, Size /* scr_size */) const {
     }
 
     // Rysuje małego kafelka obok kursora.
-    void DrawIcon(Position scr_position, Size scr_size) {
+    void DrawIcon(Position scr_position, Size scr_size) const {
         GetSprite()->DrawCurrentFrame(scr_position, scr_size);
     }
 
@@ -100,46 +100,44 @@ typedef boost::shared_ptr<MultiBrush> MultiBrushPtr;
 
 class MultiBrush : public Brush {
 public:
-    explicit MultiBrush(SpritePtr sprite) : Brush(sprite, Brush::ST::Multi), m_is_active(false) {
+    explicit MultiBrush(SpritePtr sprite) 
+        : Brush(sprite, Brush::ST::Multi),
+          m_start(-1, -1),
+          m_end(-1, -1),
+          m_is_active(false) {
         // nop
     }
 
     static MultiBrushPtr New(SpritePtr sprite) {
+        std::cerr << "Creating new MultiBrush\n";
         return MultiBrushPtr(new MultiBrush(sprite));
     }
 
-    virtual void DrawSketch(Position scr_position, Size scr_size);
+    virtual void DrawSketch(Position scr_position, Size scr_size) const;
 
-    void StartAt(double x, double y) {
-        m_startx = m_endx = x;
-        m_starty = m_endy = y;
-        m_is_active = true;
-    }
+    void StartAt(const Position& pos) { m_start = m_end = pos; m_is_active = true; }
+    void StartAt(double x, double y)  { StartAt(Position(x, y)); }
 
-    void MoveTo(double x, double y) {
+    void MoveTo(const Position& pos) { if (IsActive()) m_end = pos; }
+    void MoveTo(double x, double y)  { MoveTo(Position(x, y)); }
+
+    void FinishAt(const Position& pos) {
         if (IsActive()) {
-            m_endx = x;
-            m_endy = y;
-        }
-    }
-
-    void FinishAt(double x, double y) {
-        if (IsActive()) {
-            m_endx = x;
-            m_endy = y;
+            m_end = pos;
             m_is_active = false;
         }
     }
+    void FinishAt(double x, double y)  { FinishAt(Position(x, y)); }
 
-    virtual EditorCommandPtr GetCommand() { return PlatformEditorCommandPtr(new PlatformEditorCommand); }
+    virtual EditorCommandPtr GetCommand() const { return PlatformEditorCommandPtr(new PlatformEditorCommand); }
 
 private:
-    Position GetStart() { return Position(m_startx, m_starty); }
-    Position GetEnd() { return Position(m_endx, m_endy); }
-    bool IsActive() { return m_is_active; }
+    Position GetStart() const { return m_start; }
+    Position GetEnd() const { return m_end; }
+    bool IsActive() const { return m_is_active; }
 
-    double m_startx, m_starty;
-    double m_endx, m_endy;
+    Position m_start;
+    Position m_end;
     bool m_is_active;
 };
 

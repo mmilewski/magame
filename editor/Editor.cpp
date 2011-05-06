@@ -114,7 +114,6 @@ void Editor::DrawBrushAndGui(double viewer_x) {
                 }
                 Engine::Get().GetRenderer()->DrawQuad(position, position+size, 1,1,1,.4); // podświetlenie
                 GetBrush()->Draw(position, size);
-                GetMultiBrush()->Draw(position, size);                                    // obiekt spod pędzla
             }
             glPopMatrix();
         }
@@ -203,12 +202,12 @@ void Editor::ActionAtCoords(double x, double y) {
                 ClearFieldAt(static_cast<size_t>(x), static_cast<size_t>(y));
             } else if (special_type == Brush::ST::Multi) {
                 std::cerr << "Akcja typu MULTI" << std::endl;
+                MultiBrushPtr multibrush = boost::dynamic_pointer_cast<MultiBrush>(brush);
+                multibrush->StartAt(x, y);
                 EditorCommandPtr command = brush->GetCommand();
                 command->Execute();
                 m_commands.push_back(command);
 
-                MultiBrushPtr multibrush = boost::dynamic_pointer_cast<MultiBrush>(brush);
-                multibrush->StartAt(x, y);
             } else {
                 std::cerr << "Niezdefiniowana akcja w trybie specjalnym" << std::endl;
             }
@@ -217,11 +216,6 @@ void Editor::ActionAtCoords(double x, double y) {
             std::cerr << "Nie odnaleziono trybu rysowania" << std::endl;
             assert(false && "Nie odnaleziono trybu rysowania");
         }
-    }
-
-    MultiBrushPtr multibrush = m_gui->GetActiveMultiBrush();
-    if (multibrush) {
-        std::cout << "[ActionAtCoords] multibrush";
     }
 }
 

@@ -78,7 +78,6 @@ private:
     bool InPaintingEntityMode()  const { return m_brush && m_brush->IsEntity(); }
     bool InPaintingSpecialMode() const { return m_brush && m_brush->IsSpecial(); }
     BrushPtr GetBrush()          const { return m_brush; }
-    MultiBrushPtr GetMultiBrush() const { return m_multibrush; }
 
     // czy rysowany obiekt (pod pędzlem) powinien być przyciągane do siatki
     bool ShouldSnapToGrid()      const;
@@ -108,7 +107,6 @@ private:
     GamePtr m_game;                     // instancja gry
 
     BrushPtr m_brush;                   // pędzel do rysowania
-    MultiBrushPtr m_multibrush;         // pędzel do złożonego rysowania
     EditorGuiPtr m_gui;                 // kontrolki do wybierania stawianych pól
     bool m_is_gui_visible;              // czy kontrolki są widoczne?
 

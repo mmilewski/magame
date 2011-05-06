@@ -44,6 +44,8 @@ void EditorGui::Init() {
 //    ADD_BUTTON("PlatformLeftRight",    Position(.4, .15), default_size, FT::PlatformLeftRight);
 //    ADD_BUTTON("PlatformLeftTopRight", Position(.4, .25), default_size, FT::PlatformLeftTopRight);
 
+#undef ADD_MULTIBUTTON
+#undef MULTIBUTTON
 #undef ADD_BUTTON
 #undef BUTTON
 }
@@ -80,23 +82,16 @@ bool EditorGui::OnMouseMove(double x, double y) {
     for (BrushButtonContrainer::const_iterator i=m_buttons.begin(); i!=m_buttons.end(); ++i) {
         if ((*i)->IsVisible() && (*i)->GetAabb().Collides(cursor_aabb)) {
             m_hovered_button = *i;
+            return true;
         }
     }
-    // Czy kursor znajduje się nad jakimś (multi) pędzlem?
-    m_hovered_multibrush_button.reset();
-    for (MultiBrushButtonContrainer::const_iterator i=m_multibrush_buttons.begin(); i!=m_multibrush_buttons.end(); ++i) {
-        if ((*i)->IsVisible() && (*i)->GetAabb().Collides(cursor_aabb)) {
-            m_hovered_multibrush_button = *i;
-        }
-    }
-    return bool(m_hovered_button) || bool(m_hovered_multibrush_button);
+    return false;
 }
 
 bool EditorGui::OnMouseDown(Uint8 /* button */, double /* x */, double /* y */) {
-    if (!m_hovered_button && !m_hovered_multibrush_button) {
+    if (!m_hovered_button) {
         return false;
     }
     m_active_brush = m_hovered_button->GetBrush();
-    m_active_multibrush = m_hovered_multibrush_button->GetMultiBrush();
     return true;
 }
