@@ -1,10 +1,8 @@
 #include "TileGridHelper.h"
 
 TileGridHelper::TileGridHelper(const Position& beg, const Position& end)
-: m_beg(beg), m_end(end) {
+    : m_beg(beg), m_end(end) {
 }
-
-// Przyciąga podany punkt do najbliższego punktu siatki
 
 TileGridHelper& TileGridHelper::SnapToGrid() {
     m_beg = Position(round(m_beg.X()), round(m_beg.Y()));
@@ -21,9 +19,6 @@ unsigned TileGridHelper::TilesVertically() const {
     const double epsilon = 0.00001;
     return static_cast<unsigned> (epsilon + (m_end[1] - m_beg[1]));
 }
-
-// Zmienia współrzędne podanych punktów tak, ze w beg znajdują się
-// minimalne (lewy dolny narożnik), a w end maksymalne (prawy górny narożnik).
 
 TileGridHelper& TileGridHelper::SortCoordsOfBox() {
     Position orga = m_beg, orgb = m_end;

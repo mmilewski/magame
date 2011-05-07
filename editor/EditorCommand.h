@@ -26,8 +26,7 @@ typedef boost::shared_ptr<PlatformEditorCommand> PlatformEditorCommandPtr;
 class PlatformEditorCommand : public EditorCommand {
 public:
     explicit PlatformEditorCommand(const Position& start, const Position& end)
-        : EditorCommand(),
-        m_beg(start), m_end(end) {
+      : m_beg(start), m_end(end) {
         m_beg[0] = std::min(start.X(), end.X());
         m_end[0] = std::max(start.X(), end.X());
         m_beg[1] = std::min(start.Y(), end.Y());
