@@ -1,6 +1,3 @@
-#include <limits>
-#include <cmath>
-
 #include "Editor.h"
 #include "EditorCommand.h"
 

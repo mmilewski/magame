@@ -70,7 +70,7 @@ public:
         DrawIcon(scr_position, scr_size);
     }
 
-    virtual EditorCommandPtr GetCommand() const { std::cerr << "Pusta komenda\n"; return EditorCommandPtr(); }
+    virtual EditorCommandPtr GetCommand() const { return EditorCommandPtr(); }
 
 protected:
     // Metoda do przesłonięcia w klasach pochodnych.
