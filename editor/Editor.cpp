@@ -170,8 +170,10 @@ void Editor::ReleaseAtCoords(double x, double y) {
     }
 
     EditorCommandPtr command = brush->GetCommand();
-    command->Execute(this);
-    m_commands.push_back(command);
+    if (command && command->IsReady()) {
+        command->Execute(this);
+        m_commands.push_back(command);
+    }
 }
 
 void Editor::MoveToCoords(double x, double y) {

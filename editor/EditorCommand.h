@@ -17,6 +17,12 @@ public:
 public:
     virtual void Execute(Editor* editor) = 0;
     virtual void Undo(Editor* editor) = 0;
+
+    // False, jeśli polecenie nie może zostać wykonane, bo np. przekazane
+    // parametry nie pozwalają na wykonanie sensownej akcji (wtedy Undo też by
+    // nie miało sensu).
+    virtual bool IsReady() const = 0;
+    bool IsNotReady() const { return !IsReady(); }
 };
 
 
@@ -26,7 +32,8 @@ typedef boost::shared_ptr<PlatformEditorCommand> PlatformEditorCommandPtr;
 class PlatformEditorCommand : public EditorCommand {
 public:
     explicit PlatformEditorCommand(const Position& start, const Position& end)
-      : m_beg(start), m_end(end) {
+      : m_is_ready(false),
+        m_beg(start), m_end(end) {
         m_beg[0] = std::min(start.X(), end.X());
         m_end[0] = std::max(start.X(), end.X());
         m_beg[1] = std::min(start.Y(), end.Y());
@@ -35,8 +42,10 @@ public:
 
     virtual void Execute(Editor* editor);
     virtual void Undo(Editor* editor);
+    virtual bool IsReady() const;
 
-public:
+private:
+    bool m_is_ready;         // Czy polecenie jest gotowe do wykonania
     Position m_beg, m_end;   // Początek i koniec zaznaczenia. Wsp.świata
     std::vector<FT::FieldType> m_saved_fields;  // zapisane pola planszy
 };
