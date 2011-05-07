@@ -68,15 +68,13 @@ void EditorGui::Update(double dt) {
 
 bool EditorGui::OnMouseMove(double x, double y) {
     const Aabb cursor_aabb = Aabb(x, y, x+.02, y+0.02);
-    // Czy kursor znajduje się nad jakimś (zwykłym) pędzlem?
     m_hovered_button.reset();
     for (BrushButtonContrainer::const_iterator i=m_buttons.begin(); i!=m_buttons.end(); ++i) {
         if ((*i)->IsVisible() && (*i)->GetAabb().Collides(cursor_aabb)) {
             m_hovered_button = *i;
-            return true;
         }
     }
-    return false;
+    return bool(m_hovered_button);
 }
 
 bool EditorGui::OnMouseDown(Uint8 /* button */, double /* x */, double /* y */) {

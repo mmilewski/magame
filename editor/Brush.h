@@ -78,7 +78,7 @@ protected:
     virtual void DrawSketch(Position /* scr_position */, Size /* scr_size */) const {
     }
 
-    // Rysuje małego kafelka obok kursora.
+    // Rysuje mały kafelek obok kursora.
     void DrawIcon(Position scr_position, Size scr_size) const {
         GetSprite()->DrawCurrentFrame(scr_position, scr_size);
     }
@@ -97,8 +97,6 @@ private:
 
 class MultiBrush;
 typedef boost::shared_ptr<MultiBrush> MultiBrushPtr;
-
-std::ostream& operator<<(std::ostream& os, const Vector2& v);
 
 class MultiBrush : public Brush {
 public:

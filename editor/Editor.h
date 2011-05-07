@@ -25,7 +25,6 @@ public:
           m_pointer_window_x(0), m_pointer_window_y(0),
           m_keys_down(SDLK_LAST, false)                    // Wszystkie klawisze puszczone
         {
-            // nop
             SetDone(false);
     }
 

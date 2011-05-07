@@ -15,6 +15,7 @@ public:
     // minimalne (lewy dolny narożnik), a w end maksymalne (prawy górny narożnik).
     TileGridHelper& SortCoordsOfBox();
 
+    // Wymagają posortowanych współrzędnych
     unsigned TilesHorizontally() const;
     unsigned TilesVertically() const;
 

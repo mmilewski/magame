@@ -7,7 +7,6 @@
 #include "EditorCommand.h"
 #include "Editor.h"
 
-
 void Editor::Start() {
     m_gui->Start();
 }
