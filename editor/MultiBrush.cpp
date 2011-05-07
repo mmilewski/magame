@@ -25,10 +25,11 @@ void MultiBrush::DrawSketch(Position /* scr_position */, Size /* scr_size */) co
              endWorld = tgh.End().scale(tile_width, tile_height);
     for (unsigned i = 0; i < tiles_ver; i++) {
         for (unsigned j = 0; j < tiles_hor; j++) {
-            DrawIcon(begWorld + Position(j*tile_width, i * tile_height),
-                     Size(tile_width, tile_height));
+            Sprite::GetByName("PlatformMid")->DrawCurrentFrame(
+                begWorld + Position(j*tile_width, i * tile_height),
+                Size(tile_width, tile_height));
         }
     }
 
-    Engine::Get().GetRenderer()->DrawQuad(begWorld, endWorld, 1,1,0, .8);
+    Engine::Get().GetRenderer()->DrawQuad(begWorld, endWorld, 1,1,0, .7);
 }

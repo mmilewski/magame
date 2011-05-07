@@ -56,7 +56,11 @@ private:
     double MapWindowCoordToWorldY(double y) const;
     Position MapWindowCoordsToWorld(const Position& coords) const;
 
-
+    // Dodaje polecenie do historii, a następnie je wykonuje
+    void RegisterAndExecuteCommand(EditorCommandPtr command);
+    
+    friend class SetFieldCommand;
+    friend class AddEntityCommand;
     friend class PlatformEditorCommand;
 
     // Czyści pole pod wskazanymi współrzędnymi (przestrzeń świata).

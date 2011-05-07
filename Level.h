@@ -18,6 +18,12 @@ struct LevelEntityData {
         return a.x < b.x;
     }
 
+    bool operator== (const LevelEntityData& other) const {
+       return name == other.name
+           && abs(x-other.x) < 0.001
+           && abs(y-other.y) < 0.001;
+    }
+
     std::string name;  // nazwa jednostki
     double x;          // położenie na osi odciętych
     double y;          // położenie na osi rzędnych
@@ -34,7 +40,7 @@ public:
 
     void SaveFieldsToFile(const std::string& filename);
     void SaveEntitiesToFile(const std::string& filename);
-    
+
     void LoadFromFile(const std::string& filename);
     void LoadEntitiesFromFile(const std::string& filename);
 

@@ -14,16 +14,16 @@ bool PlatformEditorCommand::IsReady() const {
     tgh.SnapToGrid().SortCoordsOfBox();
     unsigned tiles_hor = tgh.TilesHorizontally();
     unsigned tiles_ver = tgh.TilesVertically();
-    if (tiles_hor < 1 || tiles_ver < 1)  return false;
-    if (tiles_hor == 1 && tiles_ver < 2) return false;
-    if (tiles_ver == 1 && tiles_hor < 2) return false;
+    if (tiles_hor == 1) return false;   // szerokość == 1
+    if (tiles_hor < 1 || tiles_ver < 1) return false;    // mniej niż 1x1
+    if (tiles_ver == 1 && tiles_hor == 1) return false;  // dokładnie 1x1
     return true;
 }
 
 void PlatformEditorCommand::Execute(Editor* editor) {
-    if (IsReady()==false) {
+    if (IsReady() == false) {
         throw std::logic_error("PlatformEditorCommand: Nie można uruchomić "
-                               "polecenia, które nie jest gotowe.");
+                "polecenia, które nie jest gotowe.");
     }
     TileGridHelper tgh(m_beg, m_end);
     tgh.SnapToGrid().SortCoordsOfBox();
@@ -34,7 +34,7 @@ void PlatformEditorCommand::Execute(Editor* editor) {
     for (unsigned ver = 0; ver < tiles_ver; ver++) { // wypełnienie
         for (unsigned hor = 0; hor < tiles_hor; hor++) {
             m_saved_fields.push_back(
-                editor->GetFieldAt(tgh.Beg() + Position(hor, ver)));
+                    editor->GetFieldAt(tgh.Beg() + Position(hor, ver)));
         }
     }
 

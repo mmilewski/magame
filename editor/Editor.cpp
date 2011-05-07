@@ -184,29 +184,45 @@ void Editor::MoveToCoords(double x, double y) {
     }
 }
 
+void Editor::RegisterAndExecuteCommand(EditorCommandPtr command) {
+    if (command && command->IsReady()) {
+        m_commands.push_back(command);
+        command->Execute(this);
+    }
+}
+
 void Editor::ActionAtCoords(double x, double y) {
     BrushPtr brush = m_gui->GetActiveBrush();
     if (brush) {
         if (InPaintingFieldMode()) {
-            SetFieldAt(static_cast<size_t>(x), static_cast<size_t>(y), brush->GetFieldType());
+            RegisterAndExecuteCommand(
+                SetFieldCommandPtr(new SetFieldCommand(static_cast<size_t> (x),
+                                                       static_cast<size_t> (y),
+                                                       brush->GetFieldType()))
+            );
         } else if (InPaintingEntityMode()) {
             const ET::EntityType entity_type = brush->GetEntityType();
             assert(entity_type!=ET::UNKNOWN);
             assert(entity_type!=ET::COUNT);
             const std::string name = EntityTypeAsString(entity_type);
             const LevelEntityData entity_data(name, x, y);
-            m_entities_to_create.push_back(entity_data);
-            EntityFactory factory;
-            m_entities.push_back(factory.CreateEntity(entity_data));
+            RegisterAndExecuteCommand(
+                AddEntityCommandPtr(new AddEntityCommand(entity_data))
+            );
         } else if (InPaintingSpecialMode()) {
             const Brush::ST::SpecialType special_type = brush->GetSpecialType();
             if (special_type == Brush::ST::Player) {
                 m_player_data = LevelEntityData("player", x, y);
             } else if (special_type == Brush::ST::Eraser) {
-                ClearFieldAt(static_cast<size_t>(x), static_cast<size_t>(y));
+                RegisterAndExecuteCommand(
+                    SetFieldCommandPtr(new SetFieldCommand(static_cast<size_t> (x),
+                                                           static_cast<size_t> (y),
+                                                           FT::None))
+                );
             } else if (special_type == Brush::ST::Multi) {
                 MultiBrushPtr mb = boost::dynamic_pointer_cast<MultiBrush>(brush);
                 mb->StartAt(x, y);
+                // Polecenie zostanie dodane po zwolnieniu klawisza (-> ReleaseAt)
             } else {
                 std::cerr << "Niezdefiniowana akcja w trybie specjalnym\n";
             }
