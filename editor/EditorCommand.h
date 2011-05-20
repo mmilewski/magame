@@ -2,9 +2,6 @@
 #define	__EDITORCOMMAND_H_INCLUDED__
 
 #include "../StdAfx.h"
-#include "../BasicMathTypes.h"
-#include "../Types.h"
-#include "../Level.h"
 #include "../Entity.h"
 
 class Editor;

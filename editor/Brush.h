@@ -2,9 +2,8 @@
 #define __BRUSH_H_INCLUDED__
 
 #include "../StdAfx.h"
-#include "EditorCommand.h"
 #include "../Sprite.h"
-#include "../Engine.h"
+#include "EditorCommand.h"
 
 
 class Brush;

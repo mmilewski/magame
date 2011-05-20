@@ -11,13 +11,11 @@ TileGridHelper& TileGridHelper::SnapToGrid() {
 }
 
 unsigned TileGridHelper::TilesHorizontally() const {
-    const double epsilon = 0.00001;
-    return static_cast<unsigned> (epsilon + (m_end[0] - m_beg[0]));
+    return static_cast<unsigned>(round(m_end[0] - m_beg[0]));
 }
 
 unsigned TileGridHelper::TilesVertically() const {
-    const double epsilon = 0.00001;
-    return static_cast<unsigned> (epsilon + (m_end[1] - m_beg[1]));
+    return static_cast<unsigned>(round(m_end[1] - m_beg[1]));
 }
 
 TileGridHelper& TileGridHelper::SortCoordsOfBox() {

@@ -26,7 +26,7 @@ void MultiBrush::DrawSketch(Position /* scr_position */, Size /* scr_size */) co
     for (unsigned i = 0; i < tiles_ver; i++) {
         for (unsigned j = 0; j < tiles_hor; j++) {
             Sprite::GetByName("PlatformMid")->DrawCurrentFrame(
-                begWorld + Position(j*tile_width, i * tile_height),
+                begWorld + Position(j * tile_width, i * tile_height),
                 Size(tile_width, tile_height));
         }
     }

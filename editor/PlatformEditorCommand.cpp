@@ -20,18 +20,18 @@ bool PlatformEditorCommand::IsReady() const {
 void PlatformEditorCommand::Execute(Editor* editor) {
     if (IsReady() == false) {
         throw std::logic_error("PlatformEditorCommand: Nie można uruchomić "
-                "polecenia, które nie jest gotowe.");
+            "polecenia, które nie jest gotowe.");
     }
     TileGridHelper tgh(m_beg, m_end);
     tgh.SnapToGrid().SortCoordsOfBox();
-    unsigned tiles_hor = tgh.TilesHorizontally();
-    unsigned tiles_ver = tgh.TilesVertically();
+    const unsigned tiles_hor = tgh.TilesHorizontally();
+    const unsigned tiles_ver = tgh.TilesVertically();
 
     // Zapisz kafelki, które aktualnie występują na planszy
     for (unsigned ver = 0; ver < tiles_ver; ver++) { // wypełnienie
         for (unsigned hor = 0; hor < tiles_hor; hor++) {
             m_saved_fields.push_back(
-                    editor->GetFieldAt(tgh.Beg() + Position(hor, ver)));
+                editor->GetFieldAt(tgh.Beg() + Position(hor, ver)));
         }
     }
 

@@ -8,7 +8,7 @@ class TileGridHelper {
 public:
     explicit TileGridHelper(const Position& beg, const Position& end);
 
-    // Przyciąga podany punkt do najbliższego punktu siatki
+    // Przyciąga każdy z punktów punkt do najbliższego punktu siatki
     TileGridHelper& SnapToGrid();
 
     // Zmienia współrzędne podanych punktów tak, ze w beg znajdują się

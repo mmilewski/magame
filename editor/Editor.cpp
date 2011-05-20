@@ -4,7 +4,6 @@
 #include "../Utils.h"
 #include "../Entity.h"
 #include <boost/pointer_cast.hpp>
-#include "EditorCommand.h"
 #include "Editor.h"
 
 void Editor::Start() {
@@ -195,8 +194,8 @@ void Editor::ActionAtCoords(double x, double y) {
     if (brush) {
         if (InPaintingFieldMode()) {
             RegisterAndExecuteCommand(
-                SetFieldCommandPtr(new SetFieldCommand(static_cast<size_t> (x),
-                                                       static_cast<size_t> (y),
+                SetFieldCommandPtr(new SetFieldCommand(static_cast<size_t>(x),
+                                                       static_cast<size_t>(y),
                                                        brush->GetFieldType()))
             );
         } else if (InPaintingEntityMode()) {
@@ -214,8 +213,8 @@ void Editor::ActionAtCoords(double x, double y) {
                 m_player_data = LevelEntityData("player", x, y);
             } else if (special_type == Brush::ST::Eraser) {
                 RegisterAndExecuteCommand(
-                    SetFieldCommandPtr(new SetFieldCommand(static_cast<size_t> (x),
-                                                           static_cast<size_t> (y),
+                    SetFieldCommandPtr(new SetFieldCommand(static_cast<size_t>(x),
+                                                           static_cast<size_t>(y),
                                                            FT::None))
                 );
             } else if (special_type == Brush::ST::Multi) {
