@@ -162,7 +162,10 @@ bool Editor::Update(double dt) {
 
 void Editor::ReleaseAtCoords(double x, double y) {
     BrushPtr brush = m_gui->GetActiveBrush();
-    if (brush && (brush->GetSpecialType() == Brush::ST::Multi)) {
+    if (! brush) {
+        return;
+    }
+    if (brush->GetSpecialType() == Brush::ST::Multi) {
         MultiBrushPtr multibrush = boost::dynamic_pointer_cast<MultiBrush>(brush);
         multibrush->FinishAt(x, y);
     }
@@ -176,7 +179,10 @@ void Editor::ReleaseAtCoords(double x, double y) {
 
 void Editor::MoveToCoords(double x, double y) {
     BrushPtr brush = m_gui->GetActiveBrush();
-    if (brush && (brush->GetSpecialType() == Brush::ST::Multi)) {
+    if (! brush) {
+        return;
+    }
+    if (brush->GetSpecialType() == Brush::ST::Multi) {
         MultiBrushPtr multibrush = boost::dynamic_pointer_cast<MultiBrush>(brush);
         multibrush->MoveTo(x, y);
     }
