@@ -1,3 +1,6 @@
+EnsurePythonVersion(2, 6)
+EnsureSConsVersion(2, 0)
+
 env = Environment()
 
 env.Append(CPPPATH = ['/data/include/boost/', '/usr/include/', ])
