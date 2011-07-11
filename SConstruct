@@ -1,8 +1,16 @@
-env = Environment()
-env.MergeFlags("-lSDL -lGL -lGLU -lSDL_mixer -lSDL_image")
-env.MergeFlags("-g -ggdb")
-env.MergeFlags("-W -Wall -pedantic")
-env.Program("game", Glob("*.cpp") + Glob("editor/*.cpp") + Glob("gui/*.cpp"))
+EnsurePythonVersion(2, 6)
+EnsureSConsVersion(2, 0)
 
-# mozna takze skompilowac z linii polecen
-#  g++ *.cpp editor/*.cpp gui/*.cpp -lSDL -lSDL_image -lSDL_mixer -lGL -lGLU -o game
+env = Environment()
+
+env.Append(CPPPATH = ['/data/include/boost/', '/usr/include/', ])
+env.Append(LIBPATH = [])
+
+env.Append(CPPDEFINES = {'DEBUG_BUILD' : '1'})
+
+env.Append(CPPFLAGS = Split('-W -Wall -Wextra -Woverloaded-virtual -pedantic'))
+env.Append(CPPFLAGS = Split('-std=c++0x -g -ggdb'))
+
+env.Append(LIBS = Split('SDL SDL_mixer SDL_image GL GLU'))
+
+env.Program("game", Glob("*.cpp") + Glob("editor/*.cpp") + Glob("gui/*.cpp"))

@@ -15,7 +15,9 @@ public:
     void Draw();
     void Update(double dt);
 
+    // Zwraca true jeśli zdarzenie przesunięcia myszy zostało obsłużone
     bool OnMouseMove(double x, double y);
+    // Zwraca true jeśli zdarzenie naciśnięcia klawisza myszy zostało obsłużone
     bool OnMouseDown(Uint8 button, double x, double y);
 
     BrushPtr GetActiveBrush() const {

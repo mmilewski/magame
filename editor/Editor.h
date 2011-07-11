@@ -7,13 +7,14 @@
 #include "../SpriteGrid.h"
 #include "../gui/Gui.h"
 #include "EditorGui.h"
+#include "EditorCommand.h"
 
 class Editor;
 typedef boost::shared_ptr<Editor> EditorPtr;
 
 class Editor : public AppState, public boost::enable_shared_from_this<Editor> {
 public:
-    explicit Editor(LevelPtr level) 
+    explicit Editor(LevelPtr level)
         : m_next_app_state(),
           m_in_game(false),
           m_gui(new EditorGui),
@@ -24,7 +25,6 @@ public:
           m_pointer_window_x(0), m_pointer_window_y(0),
           m_keys_down(SDLK_LAST, false)                    // Wszystkie klawisze puszczone
         {
-            // nop
             SetDone(false);
     }
 
@@ -53,18 +53,29 @@ private:
     // na współrzędne świata (przestrzeń świata)
     double MapWindowCoordToWorldX(double x) const;
     double MapWindowCoordToWorldY(double y) const;
+    Position MapWindowCoordsToWorld(const Position& coords) const;
+
+    // Dodaje polecenie do historii, a następnie je wykonuje
+    void RegisterAndExecuteCommand(EditorCommandPtr command);
+    
+    friend class SetFieldCommand;
+    friend class AddEntityCommand;
+    friend class PlatformEditorCommand;
 
     // Czyści pole pod wskazanymi współrzędnymi (przestrzeń świata).
     // y -- bottom-up
     void ClearFieldAt(double x, double y);
+    void ClearFieldAt(const Position& pos);
 
     // Ustawia pole na wskazany typ
     // y -- bottom-up
     void SetFieldAt(double x, double y, FT::FieldType ft);
+    void SetFieldAt(const Position& pos, FT::FieldType ft);
 
     // Zwraca typ pola we wskazanych współrzędnych (przestrzeń świata).
     // y -- bottom-up
     FT::FieldType GetFieldAt(double x, double y) const;
+    FT::FieldType GetFieldAt(const Position& pos) const;
 
     // pokazuje/ukrywa gui
     void ToggleGui() { m_is_gui_visible = !m_is_gui_visible; }
@@ -80,7 +91,7 @@ private:
 
     // czy rysowany obiekt (pod pędzlem) powinien być przyciągane do siatki
     bool ShouldSnapToGrid()      const;
-        
+
     // metody do przełączania między trybem gry a trybem edytora
     void SwitchToGame()     { m_in_game = true; }
     void SwitchToEditor()   { m_in_game = false; m_game.reset(); }
@@ -96,7 +107,9 @@ private:
 
     Editor* SetBrush(BrushPtr brush) { m_brush = brush; return this; }
 
-    void ActionAtCoords(double x, double y);
+    void ReleaseAtCoords(double x, double y);  // Wsp.świata
+    void MoveToCoords(double x, double y);     // Wsp.świata
+    void ActionAtCoords(double x, double y);   // Wsp.świata
 
 private:
     AppStatePtr m_next_app_state;
@@ -121,6 +134,9 @@ private:
     std::list<LevelEntityData> m_entities_to_create;  // opisy jednostek do stworzenia
 
     std::vector<bool> m_keys_down;
+
+    typedef std::list<EditorCommandPtr> EditorCommandsContainer;
+    EditorCommandsContainer m_commands;
 };
 
 #endif

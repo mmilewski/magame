@@ -158,6 +158,12 @@ Aabb Level::GetFieldAabb(size_t x, size_t y) const {
     const size_t v_tiles_count = renderer->GetVerticalTilesOnScreenCount();
     y = v_tiles_count - y;  // odbij y w pionie (y=0 będzie na dole)
 
+    if (y == 0) {
+        // odjęcie jedynki, gdy y==0 spowoduje przekręcenie się licznika. W tym przypadku
+        // możemy zwrócić śmieć, gdyż wtedy postać i tak jest pod poniżej pierwszego kafelka,
+        // a zatem za chwilę umrze.
+        return Aabb(x, y, x + 1, y + 1);
+    }
     Aabb box = Aabb(x, y-1, x + 1, y);
     return box;
 }
