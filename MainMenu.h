@@ -11,6 +11,7 @@ private:
             None,
             NewGame,
             HallOfFame,
+            Editor,
             Quit
         };
     };

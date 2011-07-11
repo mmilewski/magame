@@ -3,6 +3,7 @@
 #include "../Text.h"
 #include "../Utils.h"
 #include "../Entity.h"
+#include "../MainMenu.h"
 #include <boost/pointer_cast.hpp>
 #include "Editor.h"
 
@@ -142,6 +143,7 @@ bool Editor::Update(double dt) {
     }
 
     if (m_keys_down[SDLK_ESCAPE]) {
+        m_next_app_state.reset(new MainMenu);
         SetDone(true);
     } else if (m_keys_down[SDLK_LEFT]) {
         m_viewer_offset_x -= dt * 28.19;
