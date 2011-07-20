@@ -49,7 +49,7 @@ public:
     void CollisionUnderPlayer(EntityPtr entity);
 
     void AddScores(int scores) { m_total_scores += scores; }
-    int  GetScores() const     { return m_total_scores; }
+    int  GetScores() const     { return m_total_scores - m_bullet_pay; }
 
     // wystrzel pocisk
     void FireBullet();
@@ -95,6 +95,11 @@ public:
         m_level_width = level->GetWidth();
         m_is_level_completed = false;
     }
+    
+private:
+    void PayForBullet() {
+        m_bullet_pay += 15;
+    }
 
 private:
     enum { DefaultXVelocity = 4, DefaultYVelocity = 20,
@@ -107,6 +112,8 @@ private:
     size_t m_level_width;     // szerokość poziomu (w kaflach)
 
     int m_total_scores;       // łączne zdobyte punkty
+    int m_bullet_pay;         // opłata za wystrzelenie pocisków
+
     bool m_is_immortal;       // czy jest nieśmiertelny
     double m_immortal_duration;  // czas przez który postać już jest nieśmiertelna
     int m_lifes;                 // liczba żyć posiadanych przez postać

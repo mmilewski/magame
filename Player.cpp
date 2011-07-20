@@ -13,6 +13,7 @@ Player::Player(double x, double y, size_t level_width, size_t lifes = DefaultLif
       m_jump_allowed(true),
       m_level_width(level_width),
       m_total_scores(score),
+      m_bullet_pay(0),
       m_is_immortal(false),
       m_lifes(lifes),
       m_twin_shot_enabled(false),
@@ -210,6 +211,12 @@ void Player::CollisionUnderPlayer(EntityPtr entity) {
 }
 
 void Player::FireBullet() {
+    // nalicz opłatę za wystrzelenie pocisków
+    PayForBullet();
+    if (IsTwinShotEnabled()) {
+        PayForBullet();
+    }
+    
     // GetX() oraz GetY() zwracają położenie lewego dolnego
     // narożnika postaci. W zależności od prędkości i stanu
     // postaci dodajemy pocisk po odpowiedniej stronie.
