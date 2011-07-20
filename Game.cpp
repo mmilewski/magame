@@ -33,7 +33,9 @@ void Game::ProcessEvents(const SDL_Event& event) {
     } else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_d) {
         m_player->StopRunning();
     } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_s) {
-        m_player->FireBullet();
+        if (m_player->CanShoot()) {
+            m_player->FireBullet();
+        }
     } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_UP) {
         m_player->Jump();
     } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_LEFT) {
@@ -120,8 +122,15 @@ void Game::CheckPlayerEntitiesCollisions(double dt) {
         if (entity_type == ET::PlayerBullet) {
             // postać nie koliduje ze swoimi pociskami
             continue;
+        } else if (entity_type == ET::SingleShot) {
+            // gracz wziął bonus "zwykłe strzelanie"
+            if (m_player->GetAabb().Collides(entity->GetAabb())) {
+                m_player->EnableShooting();
+                entity->SetIsDead(true);
+            }
+            continue;
         } else if (entity_type == ET::TwinShot) {
-            // czy gracz wziął bonus TwinShot
+            // gracz wziął bonus "podwójne strzelanie"
             if (m_player->GetAabb().Collides(entity->GetAabb())) {
                 m_player->EnableTwinShot();
                 entity->SetIsDead(true);

@@ -4,6 +4,7 @@
 std::string EntityTypeAsString(ET::EntityType et) {
     switch (et) {
     case ET::PlayerBullet : return "player_bullet";
+    case ET::SingleShot   : return "singleshot_upgrade";
     case ET::TwinShot     : return "twinshot_upgrade";
     case ET::Mush         : return "mush";
 

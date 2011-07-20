@@ -70,7 +70,12 @@ public:
 
     bool IsImmortal() const { return m_is_immortal; }
 
-    void EnableTwinShot()          { m_twin_shot_enabled = true; }
+    void EnableShooting()          { m_shooting_enabled = true; }
+    void DisableShooting()         { m_shooting_enabled = false; }
+    bool CanShoot() const          { return m_shooting_enabled; }
+    bool CannotShoot() const       { return !CanShoot(); }
+
+    void EnableTwinShot()          { EnableShooting(); m_twin_shot_enabled = true; }
     void DisableTwinShot()         { m_twin_shot_enabled = false; }
     bool IsTwinShotEnabled() const { return m_twin_shot_enabled; }
 
@@ -118,6 +123,7 @@ private:
     double m_immortal_duration;  // czas przez który postać już jest nieśmiertelna
     int m_lifes;                 // liczba żyć posiadanych przez postać
 
+    bool m_shooting_enabled;     // czy gracz może strzelać
     bool m_twin_shot_enabled;    // czy upgrade twin shot jest dostępny
 
     bool m_is_level_completed;   // czy aktualny poziom został zakończony

@@ -80,6 +80,7 @@ namespace ET {
 
         Mush,
         PlayerBullet,
+        SingleShot,
         TwinShot,
 
         COUNT

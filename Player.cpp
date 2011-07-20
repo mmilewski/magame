@@ -16,6 +16,7 @@ Player::Player(double x, double y, size_t level_width, size_t lifes = DefaultLif
       m_bullet_pay(0),
       m_is_immortal(false),
       m_lifes(lifes),
+      m_shooting_enabled(false),
       m_twin_shot_enabled(false),
       m_is_level_completed(false),
       m_max_x_pos(std::max(x, 9.0)) {
