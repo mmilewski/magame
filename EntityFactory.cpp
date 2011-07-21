@@ -4,6 +4,7 @@
 #include "MushEntity.h"
 #include "PlayerBulletEntity.h"
 #include "TwinShotUpgrade.h"
+#include "Misc.h"                // Orb
 #include "EntityFactory.h"
 
 
@@ -30,6 +31,10 @@ EntityPtr EntityFactory::CreateEntity(ET::EntityType type, double x, double y) {
         ptr.reset(new TwinShotUpgrade(x, y));
         SpritePtr bullet = GetSpriteByName("twinshot_upgrade");
         ptr->SetSprites(bullet, bullet, bullet);
+    } else if (type == ET::Orb) {
+        ptr.reset(new Orb(x, y));
+        SpritePtr bullet = GetSpriteByName("orb");
+        ptr->SetSprites(bullet, bullet, bullet);
     }
 
     if (!ptr) {
@@ -44,9 +49,12 @@ EntityPtr EntityFactory::CreateEntity(const std::string& name, double x, double 
         return CreateEntity(ET::Mush, x, y);
     } else if (name == "player_bullet") {
         return CreateEntity(ET::PlayerBullet, x, y);
-    } else if(name=="twinshot_upgrade") {
+    } else if (name=="twinshot_upgrade") {
         return CreateEntity(ET::TwinShot, x, y);
+    } else if (name=="orb") {
+        return CreateEntity(ET::Orb, x, y);
     }
+
     std::cerr << "fabryka nie umie stworzyć żądanej jednostki: " << name << std::endl;
     return EntityPtr();
 }

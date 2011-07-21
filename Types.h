@@ -82,6 +82,7 @@ namespace ET {
         PlayerBullet,
         SingleShot,
         TwinShot,
+        Orb,
 
         COUNT
     };

@@ -7,6 +7,7 @@ std::string EntityTypeAsString(ET::EntityType et) {
     case ET::SingleShot   : return "singleshot_upgrade";
     case ET::TwinShot     : return "twinshot_upgrade";
     case ET::Mush         : return "mush";
+    case ET::Orb          : return "orb";
 
     case ET::UNKNOWN      : return "unknown";
     case ET::COUNT        : assert(false && "count nie jest typem jednostki"); break;

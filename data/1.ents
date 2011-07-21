@@ -4,6 +4,13 @@
 # ale po co jej szukać gdzieś w pliku?
 player 1 2
 
+# kasa, kasa, kasa!
+orb 2 8
+orb 3 7
+orb 4 7
+orb 5 7
+orb 6 7
+
 # pozostałe obiekty
 mush 2 1
 mush 4 1

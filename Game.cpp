@@ -125,6 +125,7 @@ void Game::CheckPlayerEntitiesCollisions(double dt) {
         } else if (entity_type == ET::SingleShot) {
             // gracz wziął bonus "zwykłe strzelanie"
             if (m_player->GetAabb().Collides(entity->GetAabb())) {
+                m_player->AddScores(40);
                 m_player->EnableShooting();
                 entity->SetIsDead(true);
             }
@@ -132,7 +133,15 @@ void Game::CheckPlayerEntitiesCollisions(double dt) {
         } else if (entity_type == ET::TwinShot) {
             // gracz wziął bonus "podwójne strzelanie"
             if (m_player->GetAabb().Collides(entity->GetAabb())) {
+                m_player->AddScores(40);
                 m_player->EnableTwinShot();
+                entity->SetIsDead(true);
+            }
+            continue;
+        } else if (entity_type == ET::Orb) {
+            // gracz wziął kulę (oznaczającą dodatkowe punkty)
+            if (m_player->GetAabb().Collides(entity->GetAabb())) {
+                m_player->AddScores(130);
                 entity->SetIsDead(true);
             }
             continue;
@@ -189,7 +198,7 @@ void Game::CheckCollisionOfOnePair(EntityPtr fst_entity, ET::EntityType fst_type
         std::swap(fst_type, snd_type);   \
     }
 
-    SWAP_IF( ET::PlayerBullet, ET::Mush )
+    SWAP_IF( ET::PlayerBullet, ET::Mush );
 
     // w tym miejscu wiemy, że jeżeli nastąpiła kolizja Mush z PlayerBullet,
     // to jednostka Mush będzie pod fst_entity a PlayerBullet pod snd_entity
