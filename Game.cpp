@@ -119,13 +119,16 @@ void Game::CheckPlayerEntitiesCollisions(double dt) {
         EntityPtr entity = *it;
         const ET::EntityType entity_type = entity->GetType();
 
+        const int score_for_bonus = 40;   // punkty za wzięcie bonusu
+        const int score_for_orb = 130;    // punkty za wzięcie kuli z punktami
+
         if (entity_type == ET::PlayerBullet) {
             // postać nie koliduje ze swoimi pociskami
             continue;
         } else if (entity_type == ET::SingleShot) {
             // gracz wziął bonus "zwykłe strzelanie"
             if (m_player->GetAabb().Collides(entity->GetAabb())) {
-                m_player->AddScores(40);
+                m_player->AddScores(score_for_bonus);
                 m_player->EnableShooting();
                 entity->SetIsDead(true);
             }
@@ -133,15 +136,23 @@ void Game::CheckPlayerEntitiesCollisions(double dt) {
         } else if (entity_type == ET::TwinShot) {
             // gracz wziął bonus "podwójne strzelanie"
             if (m_player->GetAabb().Collides(entity->GetAabb())) {
-                m_player->AddScores(40);
+                m_player->AddScores(score_for_bonus);
                 m_player->EnableTwinShot();
+                entity->SetIsDead(true);
+            }
+            continue;
+        } else if (entity_type == ET::HigherJump) {
+            // gracz wziął bonus "wyższe skakanie"
+            if (m_player->GetAabb().Collides(entity->GetAabb())) {
+                m_player->AddScores(score_for_bonus);
+                m_player->IncreseJumpHeightBonus(3);
                 entity->SetIsDead(true);
             }
             continue;
         } else if (entity_type == ET::Orb) {
             // gracz wziął kulę (oznaczającą dodatkowe punkty)
             if (m_player->GetAabb().Collides(entity->GetAabb())) {
-                m_player->AddScores(130);
+                m_player->AddScores(score_for_orb);
                 entity->SetIsDead(true);
             }
             continue;

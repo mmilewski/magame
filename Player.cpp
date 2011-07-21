@@ -18,18 +18,19 @@ Player::Player(double x, double y, size_t level_width, size_t lifes = DefaultLif
       m_lifes(lifes),
       m_shooting_enabled(false),
       m_twin_shot_enabled(false),
+      m_jump_height_bonus(0),
       m_is_level_completed(false),
       m_max_x_pos(std::max(x, 9.0)) {
     SetDefaultMovement();
 }
 
-void Player::Jump(double y_velocity) {
+void Player::Jump(double extra_y_velocity) {
     // wykonaj skok o ile jest taka możliwość
     if (m_jump_allowed) {
         m_jump_allowed = false;
         m_is_on_ground = false;
         // początkowa prędkość i przyspieszenie
-        SetYVelocity(y_velocity);
+        SetYVelocity(GetDefaultYVelocity() + m_jump_height_bonus + extra_y_velocity);
         SetYAcceleration(DefaultYAcceleration);
         Engine::Get().GetSound()->PlaySfx("jump");
     }
@@ -206,7 +207,7 @@ void Player::CollisionOverPlayer(EntityPtr /* entity */) {
 
 void Player::CollisionUnderPlayer(EntityPtr entity) {
     AllowToJump();
-    Jump(GetDefaultYVelocity() + 6);
+    Jump(6);
     AddScores(entity->GetScoresWhenKilled() * 2);
     entity->KilledByPlayer();
 }

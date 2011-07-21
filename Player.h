@@ -27,7 +27,8 @@ public:
     void Run()                      { m_running_factor = 2.0; }
     void StopRunning()              { m_running_factor = 1.0; }
     double GetRunningFactor() const { return m_running_factor; }
-    void Jump(double y_velocity = DefaultYVelocity);
+    void Jump(double extra_y_velocity=0);
+
     void SetDefaultMovement()  {
         m_is_on_ground = m_jump_allowed = false;
         m_can_go_right = m_can_go_left = true;
@@ -79,6 +80,9 @@ public:
     void DisableTwinShot()         { m_twin_shot_enabled = false; }
     bool IsTwinShotEnabled() const { return m_twin_shot_enabled; }
 
+    void IncreseJumpHeightBonus(int by)  { m_jump_height_bonus += by; }
+    void DropJumpHeightBonus()           { m_jump_height_bonus = 0; }
+
     bool MoveMap() {
         const size_t screen_tiles_count = Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount();
         const size_t half_screen_tiles_count = screen_tiles_count/2;
@@ -125,6 +129,7 @@ private:
 
     bool m_shooting_enabled;     // czy gracz może strzelać
     bool m_twin_shot_enabled;    // czy upgrade twin shot jest dostępny
+    int m_jump_height_bonus;     // bonus do prędkości pionowej podczas skoku
 
     bool m_is_level_completed;   // czy aktualny poziom został zakończony
 

@@ -13,4 +13,13 @@ public:
     ET::EntityType GetType() const { return ET::Orb; }
 };
 
+class HigherJumpUpgrade : public Entity {
+public:
+    HigherJumpUpgrade(double x, double y)
+        : Entity(x,y, 0, 0) {
+    }
+
+    ET::EntityType GetType() const { return ET::HigherJump; }
+};
+
 #endif

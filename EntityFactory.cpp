@@ -31,6 +31,10 @@ EntityPtr EntityFactory::CreateEntity(ET::EntityType type, double x, double y) {
         ptr.reset(new TwinShotUpgrade(x, y));
         SpritePtr bullet = GetSpriteByName("twinshot_upgrade");
         ptr->SetSprites(bullet, bullet, bullet);
+    } else if (type == ET::HigherJump) {
+        ptr.reset(new HigherJumpUpgrade(x, y));
+        SpritePtr bullet = GetSpriteByName("higherjump_upgrade");
+        ptr->SetSprites(bullet, bullet, bullet);
     } else if (type == ET::Orb) {
         ptr.reset(new Orb(x, y));
         SpritePtr bullet = GetSpriteByName("orb");
@@ -51,6 +55,8 @@ EntityPtr EntityFactory::CreateEntity(const std::string& name, double x, double 
         return CreateEntity(ET::PlayerBullet, x, y);
     } else if (name=="twinshot_upgrade") {
         return CreateEntity(ET::TwinShot, x, y);
+    } else if (name=="higherjump_upgrade") {
+        return CreateEntity(ET::HigherJump, x, y);
     } else if (name=="orb") {
         return CreateEntity(ET::Orb, x, y);
     }
