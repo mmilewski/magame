@@ -148,7 +148,7 @@ void Game::CheckPlayerEntitiesCollisions(double dt) {
             // gracz wziął bonus "wyższe skakanie"
             if (m_player->GetAabb().Collides(entity->GetAabb())) {
                 m_player->AddScores(score_for_bonus);
-                m_player->IncreseJumpHeightBonus(3);
+                m_player->IncreaseJumpHeightBonus(3);
                 entity->SetIsDead(true);
             }
             continue;

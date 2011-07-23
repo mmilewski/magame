@@ -80,8 +80,8 @@ public:
     void DisableTwinShot()         { m_twin_shot_enabled = false; }
     bool IsTwinShotEnabled() const { return m_twin_shot_enabled; }
 
-    void IncreseJumpHeightBonus(int by)  { m_jump_height_bonus += by; }
-    void DropJumpHeightBonus()           { m_jump_height_bonus = 0; }
+    void IncreaseJumpHeightBonus(int by)  { m_jump_height_bonus += by; }
+    void DropJumpHeightBonus()            { m_jump_height_bonus = 0; }
 
     bool MoveMap() {
         const size_t screen_tiles_count = Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount();
