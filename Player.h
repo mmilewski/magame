@@ -105,6 +105,10 @@ public:
         m_is_level_completed = false;
     }
     
+    bool ShouldBeRespawned() const   { return m_should_be_respawned; }
+
+    void RespawnFrom(boost::shared_ptr<Player> saved_player);
+
 private:
     void PayForBullet() {
         m_bullet_pay += 15;
@@ -134,6 +138,8 @@ private:
     bool m_is_level_completed;   // czy aktualny poziom został zakończony
 
     double m_max_x_pos;
+    
+    bool m_should_be_respawned;  // czy gracz powinien zostać przywrócony na zapisaną pozycję
 };
 
 typedef boost::shared_ptr<Player> PlayerPtr;

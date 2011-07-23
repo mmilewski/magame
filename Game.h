@@ -17,15 +17,17 @@ typedef boost::shared_ptr<Level> LevelPtr;
 class Game : public AppState, public boost::enable_shared_from_this<Game> {
 public:
     explicit Game(const std::string& level_name, PlayerPtr player) 
-        : m_player(player),
+        : m_should_load_when_active_again(false),
+          m_player(player),
           m_stored_player_pos_x(9.0),
-          m_level_name(level_name)  {
+          m_level_name(level_name) {
     }
     explicit Game(LevelPtr level, PlayerPtr player) 
-        : m_player(player),
+        : m_should_load_when_active_again(false),
+          m_player(player),
           m_level(level),
           m_stored_player_pos_x(9.0),
-          m_level_name(level->GetName())  {
+          m_level_name(level->GetName()) {
     }
 
     ~Game();
@@ -65,6 +67,11 @@ private:
                                  EntityPtr snd_entity, ET::EntityType snd_type, double dt);
 
     void SaveGame(PlayerPtr player);
+    void LoadGame();
+
+    PlayerPtr m_saved_player;
+    double m_saved_stored_player_pos_x;
+    bool m_should_load_when_active_again;
 
     PlayerPtr m_player;
     std::vector<EntityPtr> m_entities;                // jednostki w grze
@@ -77,7 +84,6 @@ private:
     std::string m_level_name;
     AppStatePtr m_next_app_state;
     
-
     boost::shared_ptr<LevelChoiceScreen> m_level_choice_screen;
 };
 

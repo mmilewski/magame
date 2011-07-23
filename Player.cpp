@@ -20,7 +20,8 @@ Player::Player(double x, double y, size_t level_width, size_t lifes = DefaultLif
       m_twin_shot_enabled(false),
       m_jump_height_bonus(0),
       m_is_level_completed(false),
-      m_max_x_pos(std::max(x, 9.0)) {
+      m_max_x_pos(std::max(x, 9.0)),
+      m_should_be_respawned(false) {
     SetDefaultMovement();
 }
 
@@ -74,6 +75,12 @@ void Player::CheckCollisionsWithLevel(double dt, LevelPtr level) {
 }
 
 void Player::Update(double dt, LevelPtr level) {
+    if (ShouldBeRespawned()) {
+        std::cerr << "Gracz nie powinien być aktualizowany jeżeli ustawiona """
+                  << "jest flaga should_be_respawned" << std::endl;
+        m_should_be_respawned = false;
+    }
+
     CheckCollisionsWithLevel(dt, level);
 
     // wylicz nową prędkość oraz połóżenie na osi OY
@@ -119,7 +126,7 @@ void Player::Update(double dt, LevelPtr level) {
     const size_t half_screen_tiles_count = (Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount()-1)/2;
     if (m_x < m_max_x_pos - half_screen_tiles_count) {
         m_x = m_max_x_pos - half_screen_tiles_count; // można się wrócić tylko do tych części mapy, które się już widziało
-    } 
+    }
     if (m_x > m_level_width - half_screen_tiles_count - 2) {
         m_max_x_pos = m_level_width - half_screen_tiles_count - 2;
     }
@@ -218,7 +225,7 @@ void Player::FireBullet() {
     if (IsTwinShotEnabled()) {
         PayForBullet();
     }
-    
+
     // GetX() oraz GetY() zwracają położenie lewego dolnego
     // narożnika postaci. W zależności od prędkości i stanu
     // postaci dodajemy pocisk po odpowiedniej stronie.
@@ -252,10 +259,24 @@ void Player::LooseLife() {
     m_is_immortal = true;
     m_immortal_duration = 0;
 
-    // ustaw graczowi nową pozycję (respawn)
-    SetPosition(2, 2);
+    // zażądaj ustawienia gracza w punkcie zapisu
+    m_should_be_respawned = true;
 }
 
 void Player::LevelCompleted() {
     m_is_level_completed = true;
+}
+
+void Player::RespawnFrom(boost::shared_ptr<Player> saved_player) {
+    m_state = PS::Stand;
+    m_shooting_enabled = saved_player->CanShoot() || saved_player->IsTwinShotEnabled();
+    m_twin_shot_enabled = false;
+    m_max_x_pos = saved_player->m_max_x_pos;
+    SetPosition(saved_player->GetX(), saved_player->GetY());
+    SetVelocity(0, 0);
+    SetXAcceleration(saved_player->GetXAcceleration());
+    SetYAcceleration(saved_player->GetYAcceleration());
+    SetDefaultMovement();
+
+    m_should_be_respawned = false;
 }

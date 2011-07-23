@@ -11,6 +11,7 @@
 #include "LevelChoiceScreen.h"
 #include "Creator.h"
 #include "SavePoint.h"
+#include "TransitionEffect.h"
 
 
 Game::~Game() {
@@ -54,9 +55,22 @@ void Game::ProcessEvents(const SDL_Event& event) {
 
 void Game::Start() {
     Engine::Get().GetSound()->PlayMusic("game");
+    if (m_should_load_when_active_again) {
+        m_player->RespawnFrom(m_saved_player);
+        m_stored_player_pos_x = m_saved_stored_player_pos_x;
+        m_should_load_when_active_again = false;
+    } else {
+        SaveGame(m_player);
+    }
+    SetDone(false);
+    m_next_app_state.reset();
 }
 
 void Game::Init() {
+    if (m_should_load_when_active_again) {
+        return;
+    }
+
     Engine& engine = Engine::Get();
 
     if (!m_level) {
@@ -97,7 +111,7 @@ void Game::Init() {
     const LevelEntityData player_data = m_level->GetPlayerData();
     if (!m_player) {
         if (player_data.name == "player") {
-            m_player.reset(new Player(player_data.x, player_data.y, m_level->GetWidth(), 
+            m_player.reset(new Player(player_data.x, player_data.y, m_level->GetWidth(),
                                       3, 0));
             m_player->SetSprites(SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_left"))),
                                  SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_right"))),
@@ -290,16 +304,16 @@ void Game::ExecuteCreators() {
 }
 
 void Game::SweepAndAddEntities(double /* dt */) {
-    // oznacz jednostki, które są za lewą krawędzią ekranu jako martwe
-    const double distance_of_deletion = Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount();
-    for (std::vector<EntityPtr>::iterator it = m_entities.begin(); it != m_entities.end(); ++it) {
-        EntityPtr e = *it;
-        if (e->GetX() + distance_of_deletion < m_player->GetX()) {
-            e->SetIsDead(true);
-        }
-    }
+//    // oznacz jednostki, które są za lewą krawędzią ekranu jako martwe
+//    const double distance_of_deletion = Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount();
+//    for (std::vector<EntityPtr>::iterator it = m_entities.begin(); it != m_entities.end(); ++it) {
+//        EntityPtr e = *it;
+//        if (e->GetX() + distance_of_deletion < m_player->GetX()) {
+//            e->SetIsDead(true);
+//        }
+//    }
 
-    // usuń martwe jednostki - O(n^2). Można w O(n), ale trzeba napisać 
+    // usuń martwe jednostki - O(n^2). Można w O(n), ale trzeba napisać
     // funktor - google(erase remove idiom).
     for (size_t i = 0; i < m_entities.size(); ++i) {
         if (m_entities.at(i)->IsDead()) {
@@ -364,6 +378,10 @@ bool Game::Update(double dt) {
 
     // uaktualnij obiekt reprezentujący gracza
     m_player->Update(dt, m_level);
+    if (m_player->ShouldBeRespawned()) {
+        LoadGame();
+        SetDone();
+    }
 
     // uaktualnij stan jednostek
     for (std::vector<EntityPtr>::iterator it = m_entities.begin(); it != m_entities.end(); ++it) {
@@ -404,7 +422,7 @@ void Game::Draw() {
             double player_x = -(m_stored_player_pos_x * Engine::Get().GetRenderer()->GetTileWidth() - 0.45);
             glTranslated(player_x, 0, 0);
             glMatrixMode(GL_MODELVIEW);
-    
+
             m_level_view.SetLevel(m_level, m_stored_player_pos_x);
             m_level_view.Draw(m_stored_player_pos_x);
 
@@ -432,6 +450,16 @@ void Game::Draw() {
 
 void Game::SaveGame(PlayerPtr player) {
     std::cout << "Zapisywanie gry...\n";
-    
+    m_saved_player.reset(new Player(*(m_player.get())));
+    m_saved_stored_player_pos_x = m_stored_player_pos_x;
     std::cout << "Gra zapisana" << std::endl;
+}
+
+void Game::LoadGame() {
+    std::cout << "Wznawianie gry" << std::endl;
+    m_should_load_when_active_again = true;
+
+    GamePtr game = shared_from_this();
+    tefPtr fadeout = TransitionEffect::PrepareFadeOut(game).to(game).duration(1).delay(.2, .2).Build();
+    m_next_app_state = fadeout;
 }
