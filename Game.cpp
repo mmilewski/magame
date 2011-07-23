@@ -1,3 +1,5 @@
+#include <boost/pointer_cast.hpp>
+
 #include "StdAfx.h"
 
 #include "Game.h"
@@ -8,6 +10,7 @@
 #include "ScoreSubmit.h"
 #include "LevelChoiceScreen.h"
 #include "Creator.h"
+#include "SavePoint.h"
 
 
 Game::~Game() {
@@ -154,6 +157,16 @@ void Game::CheckPlayerEntitiesCollisions(double dt) {
             if (m_player->GetAabb().Collides(entity->GetAabb())) {
                 m_player->AddScores(score_for_orb);
                 entity->SetIsDead(true);
+            }
+            continue;
+        } else if (entity_type == ET::SavePoint) {
+            // gracz zapisał grę
+            if (m_player->GetAabb().Collides(entity->GetAabb())) {
+                SavePointPtr sp = boost::dynamic_pointer_cast<SavePoint>(entity);
+                if (sp && sp->IsInactive()) {
+                    SaveGame(m_player);
+                    sp->Activate();
+                }
             }
             continue;
         }
@@ -415,4 +428,10 @@ void Game::Draw() {
     if (IsSwapAfterDraw()) {
         SDL_GL_SwapBuffers();
     }
+}
+
+void Game::SaveGame(PlayerPtr player) {
+    std::cout << "Zapisywanie gry...\n";
+    
+    std::cout << "Gra zapisana" << std::endl;
 }

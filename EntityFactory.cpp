@@ -6,6 +6,7 @@
 #include "TwinShotUpgrade.h"
 #include "Misc.h"                // Orb
 #include "EntityFactory.h"
+#include "SavePoint.h"
 
 
 EntityFactory::EntityFactory() {
@@ -29,20 +30,26 @@ EntityPtr EntityFactory::CreateEntity(ET::EntityType type, double x, double y) {
         ptr->SetSprites(bullet, bullet, bullet);
     } else if (type == ET::TwinShot) {
         ptr.reset(new TwinShotUpgrade(x, y));
-        SpritePtr bullet = GetSpriteByName("twinshot_upgrade");
-        ptr->SetSprites(bullet, bullet, bullet);
+        SpritePtr sprite = GetSpriteByName("twinshot_upgrade");
+        ptr->SetSprites(sprite, sprite, sprite);
     } else if (type == ET::HigherJump) {
         ptr.reset(new HigherJumpUpgrade(x, y));
-        SpritePtr bullet = GetSpriteByName("higherjump_upgrade");
-        ptr->SetSprites(bullet, bullet, bullet);
+        SpritePtr sprite = GetSpriteByName("higherjump_upgrade");
+        ptr->SetSprites(sprite, sprite, sprite);
     } else if (type == ET::Orb) {
         ptr.reset(new Orb(x, y));
-        SpritePtr bullet = GetSpriteByName("orb");
-        ptr->SetSprites(bullet, bullet, bullet);
+        SpritePtr sprite = GetSpriteByName("orb");
+        ptr->SetSprites(sprite, sprite, sprite);
+    } else if (type == ET::SavePoint) {
+        SavePointPtr savepoint(new SavePoint(x,y));
+        SpritePtr sprite_on = GetSpriteByName("savepoint_on");
+        SpritePtr sprite_off = GetSpriteByName("savepoint_off");
+        savepoint->SetSprites(sprite_on, sprite_off);
+        ptr = savepoint;
     }
 
     if (!ptr) {
-        std::cerr << "fabryka nie umie stworzyć żądanej jednostki: " << type << ", " << x << ", " << y << std::endl;
+        std::cerr << "fabryka nie umie stworzyć żądanej jednostki na podstawie typu: " << type << ", " << x << ", " << y << std::endl;
     }
     return ptr;
 }
@@ -59,9 +66,11 @@ EntityPtr EntityFactory::CreateEntity(const std::string& name, double x, double 
         return CreateEntity(ET::HigherJump, x, y);
     } else if (name=="orb") {
         return CreateEntity(ET::Orb, x, y);
+    } else if (name=="savepoint") {
+        return CreateEntity(ET::SavePoint, x, y);
     }
 
-    std::cerr << "fabryka nie umie stworzyć żądanej jednostki: " << name << std::endl;
+    std::cerr << "fabryka nie umie stworzyć żądanej jednostki na podstawie nazwy: " << name << std::endl;
     return EntityPtr();
 }
 

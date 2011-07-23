@@ -64,6 +64,8 @@ private:
     void CheckCollisionOfOnePair(EntityPtr fst_entity, ET::EntityType fst_type,
                                  EntityPtr snd_entity, ET::EntityType snd_type, double dt);
 
+    void SaveGame(PlayerPtr player);
+
     PlayerPtr m_player;
     std::vector<EntityPtr> m_entities;                // jednostki w grze
     std::list<LevelEntityData> m_entities_to_create;  // opisy jednostek do stworzenia

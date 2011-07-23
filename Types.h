@@ -84,6 +84,8 @@ namespace ET {
         TwinShot,
         HigherJump,
         Orb,
+        
+        SavePoint,
 
         COUNT
     };
