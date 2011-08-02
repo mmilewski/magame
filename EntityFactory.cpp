@@ -46,6 +46,10 @@ EntityPtr EntityFactory::CreateEntity(ET::EntityType type, double x, double y) {
         SpritePtr sprite_off = GetSpriteByName("savepoint_off");
         savepoint->SetSprites(sprite_on, sprite_off);
         ptr = savepoint;
+    } else if (type == ET::Thorns) {
+        ptr.reset(new Thorns(x, y));
+        SpritePtr sprite = GetSpriteByName("thorns");
+        ptr->SetSprites(sprite, sprite, sprite);
     }
 
     if (!ptr) {

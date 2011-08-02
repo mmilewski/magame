@@ -2,7 +2,7 @@
 
 # pozycja gracza - nie musi być na początku
 # ale po co jej szukać gdzieś w pliku?
-player 1 2
+player 1 4
 
 # kasa, kasa, kasa!
 orb 2 8
@@ -12,9 +12,6 @@ orb 5 7
 orb 6 7
 
 # pozostałe obiekty
-mush 2 1
-mush 4 1
-mush 5 1
 
 mush 10 2
 mush 12 4
@@ -31,3 +28,6 @@ mush 39 7
 twinshot_upgrade 4 3
 higherjump_upgrade 8 10
 savepoint 17 10
+
+thorns 2 1
+thorns 3 1

@@ -75,12 +75,6 @@ void Player::CheckCollisionsWithLevel(double dt, LevelPtr level) {
 }
 
 void Player::Update(double dt, LevelPtr level) {
-    if (ShouldBeRespawned()) {
-        std::cerr << "Gracz nie powinien być aktualizowany jeżeli ustawiona """
-                  << "jest flaga should_be_respawned" << std::endl;
-        m_should_be_respawned = false;
-    }
-
     CheckCollisionsWithLevel(dt, level);
 
     // wylicz nową prędkość oraz połóżenie na osi OY

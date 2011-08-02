@@ -86,6 +86,7 @@ namespace ET {
         Orb,
 
         SavePoint,
+        Thorns,
 
         COUNT
     };

@@ -183,6 +183,12 @@ void Game::CheckPlayerEntitiesCollisions(double dt) {
                 }
             }
             continue;
+        } else if (entity_type == ET::Thorns) {
+            // gracz wpadł na kolce
+            if (m_player->GetAabb().Collides(entity->GetAabb())) {
+                m_player->LooseLife();
+            }
+            continue;
         }
 
         // nieśmiertelna postać nie koliduje z innymi jednostkami,

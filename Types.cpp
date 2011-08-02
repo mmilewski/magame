@@ -26,6 +26,7 @@ void EnsureEntityTypeToStringMapping() {
     // inne
     Insert(ET::PlayerBullet, "player_bullet");
     Insert(ET::SavePoint, "savepoint");
+    Insert(ET::Thorns, "thorns");
 }
 
 std::string EntityTypeAsString(ET::EntityType et) {
