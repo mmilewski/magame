@@ -4,13 +4,16 @@
 std::map<ET::EntityType, std::string> et_to_str;
 std::map<std::string, ET::EntityType> str_to_et;
 
-
 void Insert(ET::EntityType et, std::string str) {
     et_to_str[et] = str;
     str_to_et[str] = et;
 }
 
 void EnsureEntityTypeToStringMapping() {
+    if (!et_to_str.empty() || !str_to_et.empty()) {
+        return;
+    }
+
     // bonusy
     Insert(ET::SingleShot, "singleshot_upgrade");
     Insert(ET::TwinShot, "twinshot_upgrade");
