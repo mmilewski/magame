@@ -57,7 +57,8 @@ EntityPtr EntityFactory::CreateEntity(ET::EntityType type, double x, double y) {
 
 EntityPtr EntityFactory::CreateEntity(const std::string& name, double x, double y) {
     try {
-        return CreateEntity(StringAsEntityType(name), x, y);
+        ET::EntityType et = StringAsEntityType(name);
+        return CreateEntity(et, x, y);
     } catch (std::invalid_argument& ex) {
         std::cerr << "fabryka nie umie stworzyć żądanej jednostki na podstawie nazwy: " << name
                 << " : " << ex.what() << std::endl;
