@@ -26,7 +26,7 @@ namespace FT {
 
         // NOTE: jeżeli chcesz zmienić poniższą listę, upewnij się, że funkcja
         // Level::IsFieldCollidable zwróci poprawną wartość
-        
+
         None = 0,
         EndOfLevel = 1,
 
@@ -84,7 +84,7 @@ namespace ET {
         TwinShot,
         HigherJump,
         Orb,
-        
+
         SavePoint,
 
         COUNT
@@ -92,6 +92,7 @@ namespace ET {
 }
 
 std::string EntityTypeAsString(ET::EntityType et);
+ET::EntityType StringAsEntityType(std::string str);
 
 // typ fade effectu
 namespace TransitionEffectType {

@@ -56,22 +56,13 @@ EntityPtr EntityFactory::CreateEntity(ET::EntityType type, double x, double y) {
 
 
 EntityPtr EntityFactory::CreateEntity(const std::string& name, double x, double y) {
-    if (name == "mush") {
-        return CreateEntity(ET::Mush, x, y);
-    } else if (name == "player_bullet") {
-        return CreateEntity(ET::PlayerBullet, x, y);
-    } else if (name=="twinshot_upgrade") {
-        return CreateEntity(ET::TwinShot, x, y);
-    } else if (name=="higherjump_upgrade") {
-        return CreateEntity(ET::HigherJump, x, y);
-    } else if (name=="orb") {
-        return CreateEntity(ET::Orb, x, y);
-    } else if (name=="savepoint") {
-        return CreateEntity(ET::SavePoint, x, y);
+    try {
+        return CreateEntity(StringAsEntityType(name), x, y);
+    } catch (std::invalid_argument& ex) {
+        std::cerr << "fabryka nie umie stworzyć żądanej jednostki na podstawie nazwy: " << name
+                << " : " << ex.what() << std::endl;
+        return EntityPtr();
     }
-
-    std::cerr << "fabryka nie umie stworzyć żądanej jednostki na podstawie nazwy: " << name << std::endl;
-    return EntityPtr();
 }
 
 EntityPtr EntityFactory::CreateEntity(const LevelEntityData& entity_data) {
