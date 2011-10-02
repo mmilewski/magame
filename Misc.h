@@ -39,8 +39,6 @@ typedef boost::shared_ptr<Thorns> ThornsPtr;
 
 class Arrow : public Entity {
 public:
-    enum FlyingDirection { Left, Right };
-
     Arrow(double x, double y)
         : Entity(x, y, 0, 0),
         m_last_known_state(ES::GoLeft)
