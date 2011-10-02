@@ -9,7 +9,7 @@ SavePoint::SavePoint(double x, double y)
 
 }
 
-void SavePoint::Update(double dt, LevelPtr level) {
+void SavePoint::Update(double dt, LevelPtr /* level */) {
     m_sprite_active->Update(dt);
     m_sprite_inactive->Update(dt);
 }

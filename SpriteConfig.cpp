@@ -40,6 +40,10 @@ SpriteConfig::SpriteConfig() {
     Insert("savepoint_on",        SpriteConfigData(DL::Entity, 4, 0.1,  4*32, 17 * 32, 32, 32, true, false));
 
     Insert("thorns",              SpriteConfigData(DL::Entity, 5, 0.3,  5*32, 18 * 32, 32, 32, true, false));
+    Insert("arrow_right",         SpriteConfigData(DL::Entity, 1, 1,    8*32,  1 * 32, 32, 32, true, false));
+    Insert("arrow_left",          SpriteConfigData(DL::Entity, 1, 1,    8*32,  2 * 32, 32, 32, true, false));
+    Insert("arrow_trigger_right", SpriteConfigData(DL::Entity, 1, 1,    8*32,  3 * 32, 32, 32, true, false));
+    Insert("arrow_trigger_left",  SpriteConfigData(DL::Entity, 1, 1,    8*32,  4 * 32, 32, 32, true, false));
 
     Insert("gui_eraser",     SpriteConfigData(DL::Entity, 1, 1,  10*32, 12*32, 32, 32, true, false));
 }

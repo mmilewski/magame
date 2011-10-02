@@ -183,45 +183,46 @@ void Game::CheckPlayerEntitiesCollisions(double dt) {
                 }
             }
             continue;
-        } else if (entity_type == ET::Thorns) {
+        } else if (entity_type == ET::Thorns && !m_player->IsImmortal()) {
             // gracz wpadł na kolce
             if (m_player->GetAabb().Collides(entity->GetAabb())) {
                 m_player->LooseLife();
             }
             continue;
-        }
-
-        // nieśmiertelna postać nie koliduje z innymi jednostkami,
-        // ale może zbierać np. upgrade'y (patrz wyżej)
-        if (m_player->IsImmortal()) {
+        } else if (entity_type == ET::Arrow && !m_player->IsImmortal()) {
+            // gracz został ugodzony strzałą
+            if (m_player->GetAabb().Collides(entity->GetAabb())) {
+                std::cout << "kolizja gracz <-> arrow" << std::endl;
+                m_player->LooseLife();
+            }
+            continue;
+        } else if (entity_type == ET::ArrowTrigger) {
             continue;
         }
 
-        entity->SetDefaultMovement();
-        Aabb entity_box = entity->GetAabb();
-
-        // sprawdź czy wystąpiła kolizja. Jeżeli tak to gracz, zdecyduje o losie
-        // swoim i jednostki. Zauważmy, że jeżeli wystąpi kolizja poniżej gracza
-        // (naskoczenie na jednostkę), to pozostałe nie będą sprawdzane.
-        if (player_box_y.IsOver(entity_box)) {
-            // naskoczenie na jednostkę
-            m_player->CollisionUnderPlayer(entity);
-            player_box_y = m_player->GetNextVerticalAabb(dt);
-        }
-        else if (player_box_x.IsOnLeftOf(entity_box)) {
-            m_player->ForbidGoingRight();
-            m_player->CollisionOnRight(entity);
-            player_box_x = m_player->GetNextHorizontalAabb(dt);
-        }
-        else if (player_box_x.IsOnRightOf(entity_box)) {
-            m_player->ForbidGoingLeft();
-            m_player->CollisionOnLeft(entity);
-            player_box_x = m_player->GetNextHorizontalAabb(dt);
-        }
-        else if (player_box_y.IsUnder(entity_box)) {
-            m_player->Fall();
-            m_player->CollisionOverPlayer(entity);
-            player_box_y = m_player->GetNextVerticalAabb(dt);
+        if (entity_type == ET::Mush && !m_player->IsImmortal()) {
+            // sprawdź czy wystąpiła kolizja. Jeżeli tak to gracz, zdecyduje o 
+            // losie swoim i jednostki. Zauważmy, że jeżeli wystąpi kolizja 
+            // poniżej gracza (naskoczenie na jednostkę), to pozostałe 
+            // nie będą sprawdzane.
+            Aabb entity_box = entity->GetAabb();
+            if (player_box_y.IsOver(entity_box)) {
+                // naskoczenie na jednostkę
+                m_player->CollisionUnderPlayer(entity);
+                player_box_y = m_player->GetNextVerticalAabb(dt);
+            } else if (player_box_x.IsOnLeftOf(entity_box)) {
+                m_player->ForbidGoingRight();
+                m_player->CollisionOnRight(entity);
+                player_box_x = m_player->GetNextHorizontalAabb(dt);
+            } else if (player_box_x.IsOnRightOf(entity_box)) {
+                m_player->ForbidGoingLeft();
+                m_player->CollisionOnLeft(entity);
+                player_box_x = m_player->GetNextHorizontalAabb(dt);
+            } else if (player_box_y.IsUnder(entity_box)) {
+                m_player->Fall();
+                m_player->CollisionOverPlayer(entity);
+                player_box_y = m_player->GetNextVerticalAabb(dt);
+            }
         }
     }
 }
@@ -243,6 +244,8 @@ void Game::CheckCollisionOfOnePair(EntityPtr fst_entity, ET::EntityType fst_type
     }
 
     SWAP_IF( ET::PlayerBullet, ET::Mush );
+    SWAP_IF( ET::Mush, ET::Arrow );
+    SWAP_IF( ET::Arrow, ET::PlayerBullet );
 
     // w tym miejscu wiemy, że jeżeli nastąpiła kolizja Mush z PlayerBullet,
     // to jednostka Mush będzie pod fst_entity a PlayerBullet pod snd_entity
@@ -251,6 +254,17 @@ void Game::CheckCollisionOfOnePair(EntityPtr fst_entity, ET::EntityType fst_type
         snd_entity->SetIsDead(true);
         m_player->AddScores(fst_entity->GetScoresWhenKilled());
         fst_entity->KilledWithBullet();
+    }
+    
+    if (fst_type == ET::Arrow && snd_type == ET::Mush) {
+        fst_entity->SetIsDead(true);
+        snd_entity->SetIsDead(true);
+    }
+    
+    if (fst_type == ET::PlayerBullet && snd_type == ET::Arrow) {
+        fst_entity->SetIsDead(true);
+        snd_entity->SetIsDead(true);
+        m_player->AddScores(snd_entity->GetScoresWhenKilled());
     }
 
     if (fst_type == ET::Mush && snd_type == ET::Mush) {
@@ -310,15 +324,6 @@ void Game::ExecuteCreators() {
 }
 
 void Game::SweepAndAddEntities(double /* dt */) {
-//    // oznacz jednostki, które są za lewą krawędzią ekranu jako martwe
-//    const double distance_of_deletion = Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount();
-//    for (std::vector<EntityPtr>::iterator it = m_entities.begin(); it != m_entities.end(); ++it) {
-//        EntityPtr e = *it;
-//        if (e->GetX() + distance_of_deletion < m_player->GetX()) {
-//            e->SetIsDead(true);
-//        }
-//    }
-
     // usuń martwe jednostki - O(n^2). Można w O(n), ale trzeba napisać
     // funktor - google(erase remove idiom).
     for (size_t i = 0; i < m_entities.size(); ++i) {
@@ -454,7 +459,7 @@ void Game::Draw() {
     }
 }
 
-void Game::SaveGame(PlayerPtr player) {
+void Game::SaveGame(PlayerPtr /* player */) {
     std::cout << "Zapisywanie gry...\n";
     m_saved_player.reset(new Player(*(m_player.get())));
     m_saved_stored_player_pos_x = m_stored_player_pos_x;

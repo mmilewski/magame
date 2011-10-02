@@ -22,11 +22,18 @@ void EnsureEntityTypeToStringMapping() {
 
     // przeciwnicy
     Insert(ET::Mush, "mush");
+    Insert(ET::Arrow, "arrow");
 
     // inne
     Insert(ET::PlayerBullet, "player_bullet");
     Insert(ET::SavePoint, "savepoint");
     Insert(ET::Thorns, "thorns");
+
+
+// w pliku poziomu występuj `arrow_trigger_left` oraz `_right`, żeby określić
+// w którą stronę ma być zwrócony wyzwalacz. Przez to musi on posiadać ifa w
+// EntityFactory -- parser pliku poziomu obsługuje tylko pozycję encji.
+//    Insert(ET::ArrowTrigger, "arrow_trigger");
 }
 
 std::string EntityTypeAsString(ET::EntityType et) {
@@ -45,7 +52,7 @@ ET::EntityType StringAsEntityType(std::string str) {
 
     if (str_to_et.find(str) == str_to_et.end()) {
         std::stringstream ss;
-        ss << "Nie znaleziono ciągu znaków dla " << str;
+        ss << "Nie znaleziono typu jednostki dla ciągu " << str;
         throw std::invalid_argument(ss.str());
     }
     return str_to_et.at(str);

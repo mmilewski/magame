@@ -87,6 +87,8 @@ namespace ET {
 
         SavePoint,
         Thorns,
+        Arrow,
+        ArrowTrigger,
 
         COUNT
     };

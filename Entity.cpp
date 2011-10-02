@@ -134,6 +134,31 @@ void Entity::CheckCollisionsWithLevel(double dt, LevelPtr level) {
     }
 }
 
+ES::EntityState Entity::SetStateFromVelocity(double velocity_x) {   
+    if (fabs(velocity_x) < 0.00001) {
+        m_state = ES::Stand;
+    } else if (velocity_x > 0.0) {
+        m_state = ES::GoRight;
+    } else {
+        m_state = ES::GoLeft;
+    }
+    return m_state;
+}
+
+void Entity::UpdateSpriteFromState(double dt) {
+    switch (m_state) {
+    case ES::Stand:
+        m_stop->Update(dt);
+        break;
+    case ES::GoLeft:
+        m_left->Update(dt);
+        break;
+    case ES::GoRight:
+        m_right->Update(dt);
+        break;
+    }
+}
+
 void Entity::Update(double dt, LevelPtr level) {
     // ustaw domyślny ruch i sprawdź czy co w świecie piszczy
     SetDefaultMovement();
@@ -166,27 +191,13 @@ void Entity::Update(double dt, LevelPtr level) {
     }
 
     // ustal stan ruchu gracza na podstawie prędkości
-    if (fabs(m_vx) < 0.00001) {
-        m_state = ES::Stand;
+    SetStateFromVelocity(m_vx);
+    if (m_state == ES::Stand) {
         m_vx = 0;
-    } else if (m_vx > 0.0) {
-        m_state = ES::GoRight;
-    } else {
-        m_state = ES::GoLeft;
     }
 
     // uaktualnij animację
-    switch (m_state) {
-    case ES::Stand:
-        m_stop->Update(dt);
-        break;
-    case ES::GoLeft:
-        m_left->Update(dt);
-        break;
-    case ES::GoRight:
-        m_right->Update(dt);
-        break;
-    }
+    UpdateSpriteFromState(dt);
 }
 
 void Entity::Draw() const {

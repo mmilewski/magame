@@ -50,6 +50,11 @@ EntityPtr EntityFactory::CreateEntity(ET::EntityType type, double x, double y) {
         ptr.reset(new Thorns(x, y));
         SpritePtr sprite = GetSpriteByName("thorns");
         ptr->SetSprites(sprite, sprite, sprite);
+    } else if (type == ET::Arrow) {
+        ptr.reset(new Arrow(x, y));
+        SpritePtr left = GetSpriteByName("arrow_left"),
+                  right = GetSpriteByName("arrow_right");
+        ptr->SetSprites(left, right, SpritePtr());
     }
 
     if (!ptr) {
@@ -58,9 +63,27 @@ EntityPtr EntityFactory::CreateEntity(ET::EntityType type, double x, double y) {
     return ptr;
 }
 
+EntityPtr CreateArrowTrigger(double x, double y, ArrowTrigger::Orientation ori) {
+    EntityPtr ptr;
+    ptr.reset(new ArrowTrigger(x, y, ori));
+    SpritePtr right = GetSpriteByName("arrow_trigger_right"),
+              left = GetSpriteByName("arrow_trigger_left");
+    ptr->SetSprites(left, right, right);
+    return ptr;
+}
 
-EntityPtr EntityFactory::CreateEntity(const std::string& name, double x, double y) {
+EntityPtr EntityFactory::CreateEntity(const std::string& name, 
+                                      double x, double y) {
     try {
+        // Specjalny przypadek dla wyzwalacza strzałek. Niestety parser pliku
+        // z jednostkami nie pozwala dostarczyć informacji innych niż pozycja
+        // początkowa.
+        if (name == "arrow_trigger_right") {
+            return CreateArrowTrigger(x, y, ArrowTrigger::Right);
+        } else if (name == "arrow_trigger_left") {
+            return CreateArrowTrigger(x, y, ArrowTrigger::Left);
+        }
+ 
         ET::EntityType et = StringAsEntityType(name);
         return CreateEntity(et, x, y);
     } catch (std::invalid_argument& ex) {
