@@ -61,6 +61,7 @@ public:
 
 private:
     void SweepAndAddEntities(double dt);
+    void HandleCollisionPlayerWithSolidEntity(PlayerPtr player, EntityPtr entity, double dt);
     void CheckPlayerEntitiesCollisions(double dt);
     void CheckEntityEntityCollisions(double dt);
     void CheckCollisionOfOnePair(EntityPtr fst_entity, ET::EntityType fst_type,

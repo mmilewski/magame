@@ -89,6 +89,7 @@ namespace ET {
         Thorns,
         Arrow,
         ArrowTrigger,
+        Column,
 
         COUNT
     };

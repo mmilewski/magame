@@ -44,6 +44,7 @@ SpriteConfig::SpriteConfig() {
     Insert("arrow_left",          SpriteConfigData(DL::Entity, 1, 1,    8*32,  2 * 32, 32, 32, true, false));
     Insert("arrow_trigger_right", SpriteConfigData(DL::Entity, 1, 1,    8*32,  3 * 32, 32, 32, true, false));
     Insert("arrow_trigger_left",  SpriteConfigData(DL::Entity, 1, 1,    8*32,  4 * 32, 32, 32, true, false));
+    Insert("column",              SpriteConfigData(DL::Entity, 1, 1,   10*32,  1 * 32, 32, 32, true, false));
 
     Insert("gui_eraser",     SpriteConfigData(DL::Entity, 1, 1,  10*32, 12*32, 32, 32, true, false));
 }

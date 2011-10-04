@@ -41,7 +41,7 @@ public:
     double GetNextXPosition(double dt) const { return GetX() + GetXVelocity() * dt * GetRunningFactor(); }
 
     // prostokąt otaczający jednostkę bez uwzględniania jej pozycji
-    Aabb GetBasicAabb() const { return Aabb(.1, 0, .7, .9);  }
+    Aabb GetBasicAabb() const { return Aabb(.2, 0, .75, .9);  }
 
     // obsługa kolizji z każdej strony
     void CollisionOnRight(EntityPtr entity);

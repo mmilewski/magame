@@ -55,6 +55,10 @@ EntityPtr EntityFactory::CreateEntity(ET::EntityType type, double x, double y) {
         SpritePtr left = GetSpriteByName("arrow_left"),
                   right = GetSpriteByName("arrow_right");
         ptr->SetSprites(left, right, SpritePtr());
+    } else if (type == ET::Column) {
+        ptr.reset(new Column(x, y));
+        SpritePtr sprite = GetSpriteByName("column");
+        ptr->SetSprites(sprite, sprite, sprite);
     }
 
     if (!ptr) {

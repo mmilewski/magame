@@ -28,6 +28,7 @@ void EnsureEntityTypeToStringMapping() {
     Insert(ET::PlayerBullet, "player_bullet");
     Insert(ET::SavePoint, "savepoint");
     Insert(ET::Thorns, "thorns");
+    Insert(ET::Column, "column");
 
 
 // w pliku poziomu występuj `arrow_trigger_left` oraz `_right`, żeby określić

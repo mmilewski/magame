@@ -12,6 +12,7 @@
 #include "Creator.h"
 #include "SavePoint.h"
 #include "TransitionEffect.h"
+#include "Misc.h"
 
 
 Game::~Game() {
@@ -127,6 +128,24 @@ void Game::Init() {
     }
 }
 
+void Game::HandleCollisionPlayerWithSolidEntity(PlayerPtr player, EntityPtr entity, double dt) {
+    Aabb entity_box = entity->GetNextAabb(dt);
+    Aabb player_box = player->GetNextAabb(dt);
+    Aabb player_curr_box = player->GetAabb();
+    if (player_box.IsUnder(entity_box)) {
+        player->Fall();
+    }
+    if (player_box.IsOver(entity_box)) {
+        player->PlayerOnGround();
+    }
+    if (player_curr_box.IsOnLeftOf(entity_box)) {
+        player->ForbidGoingRight();
+    }
+    if (player_curr_box.IsOnRightOf(entity_box)) {
+        player->ForbidGoingLeft();
+    }
+}
+
 void Game::CheckPlayerEntitiesCollisions(double dt) {
     // poziomy i pionowy aabb gracza w następnym 'kroku'
     Aabb player_box_x = m_player->GetNextHorizontalAabb(dt);
@@ -198,6 +217,10 @@ void Game::CheckPlayerEntitiesCollisions(double dt) {
             continue;
         } else if (entity_type == ET::ArrowTrigger) {
             continue;
+        } else if (entity_type == ET::Column) {
+            if (m_player->GetNextAabb(dt).Collides(entity->GetAabb())) {
+                HandleCollisionPlayerWithSolidEntity(m_player, entity, dt);
+            }
         }
 
         if (entity_type == ET::Mush && !m_player->IsImmortal()) {
@@ -244,8 +267,11 @@ void Game::CheckCollisionOfOnePair(EntityPtr fst_entity, ET::EntityType fst_type
     }
 
     SWAP_IF( ET::PlayerBullet, ET::Mush );
-    SWAP_IF( ET::Mush, ET::Arrow );
+    SWAP_IF( ET::PlayerBullet, ET::Column );
+    SWAP_IF( ET::Arrow, ET::Column );
+    SWAP_IF( ET::Arrow, ET::Mush );
     SWAP_IF( ET::Arrow, ET::PlayerBullet );
+    SWAP_IF( ET::Column, ET::Mush );
 
     // w tym miejscu wiemy, że jeżeli nastąpiła kolizja Mush z PlayerBullet,
     // to jednostka Mush będzie pod fst_entity a PlayerBullet pod snd_entity
@@ -256,11 +282,23 @@ void Game::CheckCollisionOfOnePair(EntityPtr fst_entity, ET::EntityType fst_type
         fst_entity->KilledWithBullet();
     }
     
-    if (fst_type == ET::Arrow && snd_type == ET::Mush) {
+    if (fst_type == ET::Column && snd_type == ET::PlayerBullet) {
+        snd_entity->NegateXVelocity();
+    }
+
+    if (fst_type == ET::Column && snd_type == ET::Arrow) {
+        snd_entity->StopMovement();
+    }
+
+    if (fst_type == ET::Mush && snd_type == ET::Arrow) {
         fst_entity->SetIsDead(true);
         snd_entity->SetIsDead(true);
     }
     
+    if (fst_type == ET::Mush && snd_type == ET::Column) {
+        fst_entity->NegateXVelocity();
+    }
+
     if (fst_type == ET::PlayerBullet && snd_type == ET::Arrow) {
         fst_entity->SetIsDead(true);
         snd_entity->SetIsDead(true);
@@ -453,6 +491,11 @@ void Game::Draw() {
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
+
+
+//    Aabb player_box = m_player->GetAabb();
+//    Engine::Get().GetRenderer()->DrawAabb(player_box);
+
 
     if (IsSwapAfterDraw()) {
         SDL_GL_SwapBuffers();

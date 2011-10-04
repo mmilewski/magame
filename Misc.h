@@ -47,7 +47,7 @@ public:
 
     virtual void Update(double dt, LevelPtr level);
     virtual ET::EntityType GetType()  const { return ET::Arrow; }
-    virtual Aabb GetBasicAabb()       const { return Aabb(0.05, 0.4, 0.95, 0.6); }
+    virtual Aabb GetBasicAabb()       const { return Aabb(0.05, 0.35, 0.95, 0.6); }
     virtual int GetScoresWhenKilled() const { return 50; }
     
 private:
@@ -76,7 +76,7 @@ public:
     void TriggerArrow();
     virtual void Update(double dt, LevelPtr level);
     virtual ET::EntityType GetType() const { return ET::ArrowTrigger; }
-    virtual Aabb GetBasicAabb()      const { return Aabb(0,0,1,1); }
+    virtual Aabb GetBasicAabb()      const { return Aabb(0, 0, .3 , 1); }
 
 private:
     double m_seconds_since_last_shot;     // czas od ostatniego strzału
@@ -84,6 +84,18 @@ private:
     Orientation m_orientation;            // zwrot wyzwalacza (lewo lub prawo)
 };
 typedef boost::shared_ptr<ArrowTrigger> ArrowTriggerPtr;
+
+
+class Column : public Entity {
+public:
+    Column(double x, double y)
+        : Entity(x, y, 0, 0) {
+    }
+
+    virtual ET::EntityType GetType() const { return ET::Column; }
+    virtual Aabb GetBasicAabb() const { return Aabb(.1, 0, .9, 1); }    
+};
+typedef boost::shared_ptr<Column> ColumnPtr;
 
 
 #endif

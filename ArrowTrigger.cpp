@@ -13,8 +13,6 @@ void ArrowTrigger::Update(double dt, LevelPtr /* level */) {
 }
 
 void ArrowTrigger::TriggerArrow() {
-    std::cout << "another arrow" << std::endl;
-    
     double vel_x = 3;
     if (m_orientation == Left) {
         vel_x *= -1;
