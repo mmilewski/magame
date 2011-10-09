@@ -33,6 +33,14 @@ void Editor::Init() {
     m_level_view.StoreSprite(FT::NcPlatformRight,        Sprite::GetByName("NcPlatformRight"));
 
     m_gui->Init();
+    
+    std::list<LevelEntityData> ents = m_level->GetAllEntitiesToCreate();
+    EntityFactory efactory;
+    for(std::list<LevelEntityData>::iterator it = ents.begin(); it != ents.end(); ++it) {
+        m_entities_to_create.push_back(*it);
+        m_entities.push_back(efactory.CreateEntity(*it));
+    }
+    m_player_data = m_level->GetPlayerData();
 }
 
 void Editor::Draw() {
