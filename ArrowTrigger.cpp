@@ -1,6 +1,13 @@
 #include "Misc.h"
 #include "Game.h"
 
+ArrowTrigger::ArrowTrigger(double x, double y, Orientation orientation)
+    : Entity(x, y, 0, 0),
+      m_seconds_since_last_shot(999.0),
+      m_cooldown(3.0),
+      m_orientation(orientation) {
+}
+
 void ArrowTrigger::Update(double dt, LevelPtr /* level */) {
     m_seconds_since_last_shot += dt;
     if (m_seconds_since_last_shot >= m_cooldown) {

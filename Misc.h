@@ -49,9 +49,10 @@ public:
     virtual ET::EntityType GetType()  const { return ET::Arrow; }
     virtual Aabb GetBasicAabb()       const { return Aabb(0.05, 0.35, 0.95, 0.6); }
     virtual int GetScoresWhenKilled() const { return 50; }
-    
+
 private:
     virtual void CheckCollisionsWithLevel(double dt, LevelPtr level);
+    void RememberLastKnownState();
 
 private:
     ES::EntityState m_last_known_state;   // ostatni stan inny niż ES::Stand
