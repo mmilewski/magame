@@ -110,6 +110,7 @@ public:
 protected:
     ES::EntityState SetStateFromVelocity(double velocity_x);
     void UpdateSpriteFromState(double dt);
+    void CalculateNextXPosition();
 
 private:
     double m_default_velocity_x;      // domyślna prędkość

@@ -8,15 +8,8 @@ ArrowTrigger::ArrowTrigger(double x, double y, Orientation orientation)
 }
 
 void Arrow::Update(double dt, LevelPtr level) {
-    // wylicz pozycję w poziomie (oś OX).
-    double next_x = GetNextXPosition(dt);
-    if (next_x < m_x && m_can_go_left) {
-        m_x = next_x;
-    } else if (next_x > m_x && m_can_go_right) {
-        m_x = next_x;
-    }
-
-    CheckCollisionsWithLevel(dt, level);    
+    CalculateNextXPosition();
+    CheckCollisionsWithLevel(dt, level);
     ES::EntityState state = SetStateFromVelocity(GetXVelocity());
     if (state == ES::Stand) {
         const double eps = 0.0001;
