@@ -106,11 +106,11 @@ public:
         return GetBasicAabb().Move(GetNextXPosition(dt), GetNextYPosition(dt),
                                    GetNextXPosition(dt), GetNextYPosition(dt) );
     }
-    
+
 protected:
     ES::EntityState SetStateFromVelocity(double velocity_x);
     void UpdateSpriteFromState(double dt);
-    void CalculateNextXPosition();
+    void CalculateNextXPosition(double dt);
 
 private:
     double m_default_velocity_x;      // domyślna prędkość

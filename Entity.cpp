@@ -160,7 +160,7 @@ void Entity::UpdateSpriteFromState(double dt) {
 }
 
 
-void Entity::CalculateNextXPosition() {
+void Entity::CalculateNextXPosition(double dt) {
     double next_x = GetNextXPosition(dt);
     if (next_x < m_x && m_can_go_left) {
         m_x = next_x;
@@ -189,7 +189,7 @@ void Entity::Update(double dt, LevelPtr level) {
     }
 
     // wylicz pozycję gracza w poziomie (oś OX).
-    CalculateNextXPosition();
+    CalculateNextXPosition(dt);
 
     // nie można wyjść poza mapę
     if (m_x < 1) {
