@@ -7,7 +7,8 @@
 #include "LevelChoiceScreen.h"
 #include "HallOfFame.h"
 #include "TransitionEffect.h"
-
+#include "Level.h"
+#include "editor/Editor.h"
 
 void MainMenu::Init() {
 
@@ -32,14 +33,18 @@ void MainMenu::Draw() {
     else if (m_selection == Sel::HallOfFame) {
         Engine::Get().GetRenderer()->DrawQuad(0.2, 0.49, 0.82, 0.56,  .3, 0.8, 0.2, .5);
     }
+    else if (m_selection == Sel::Editor) {
+        Engine::Get().GetRenderer()->DrawQuad(0.35, 0.39, 0.67, 0.46,  .3, 0.8, 0.2, .5);
+    }
     else if (m_selection == Sel::Quit) {
-        Engine::Get().GetRenderer()->DrawQuad(0.325, 0.39, 0.695, 0.46,  .3, 0.8, 0.2, .5);
+        Engine::Get().GetRenderer()->DrawQuad(0.325, 0.29, 0.695, 0.36,  .3, 0.8, 0.2, .5);
     }
 
     t.SetSize(0.05, 0.05);
     t.DrawText("nowa gra", 0.31, 0.6);
     t.DrawText("hall of fame", 0.21, 0.5);
-    t.DrawText("wyjscie", 0.335, 0.4);
+    t.DrawText("edytor", 0.36, 0.4);
+    t.DrawText("wyjscie", 0.335, 0.3);
 
     if (IsSwapAfterDraw()) {
         SDL_GL_SwapBuffers();
@@ -75,11 +80,18 @@ void MainMenu::ProcessEvents(const SDL_Event& event) {
             else if (m_selection == Sel::HallOfFame) {
                 HallOfFamePtr next_state = HallOfFame::New();
                 
-//                tefPtr fadein = TransitionEffect::Prepare(TransitionEffectType::FadeIn).to(next_state).duration(1).Build();
                 tefPtr fadein = TransitionEffect::PrepareFadeIn(next_state).duration(1).Build();
-//                tefPtr fadeout = TransitionEffect::Prepare(TransitionEffectType::PinWheelOut).states(shared_from_this(),fadein).duration(1.5).blades(2).rotation(90).delay(0,.3).Build();
                 tefPtr fadeout = TransitionEffect::PreparePinWheelOut().states(shared_from_this(),fadein).duration(1.5).blades(2).rotation(90).delay(0,.3).Build();
                 m_next_app_state = fadeout;
+            }
+            else if (m_selection == Sel::Editor) {
+                LevelPtr level(new Level());
+                level->LoadFromFile("data/new.lvl");
+                level->LoadEntitiesFromFile("data/new.ents");
+                EditorPtr editorState(new Editor(level));
+                tefPtr fadeout = TransitionEffect::PreparePinWheelOut().states(shared_from_this(),editorState).duration(1.0).blades(2).delay(0,.2).Build();
+                m_next_app_state = fadeout;
+
             }
             else if (m_selection == Sel::Quit) {
                 m_next_app_state.reset();

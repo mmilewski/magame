@@ -14,6 +14,7 @@ class Entity : public CreatorProducer {
 public:
     explicit Entity(double x, double y, double def_velocity_x, double def_velocity_y,
                     double def_acceleration_x = 0, double default_acceleration_y = 0);
+    virtual ~Entity() {}
 
     virtual ET::EntityType GetType() const = 0;
     virtual int GetScoresWhenKilled() const { return 0; }
@@ -105,6 +106,11 @@ public:
         return GetBasicAabb().Move(GetNextXPosition(dt), GetNextYPosition(dt),
                                    GetNextXPosition(dt), GetNextYPosition(dt) );
     }
+
+protected:
+    ES::EntityState SetStateFromVelocity(double velocity_x);
+    void UpdateSpriteFromState(double dt);
+    void CalculateNextXPosition(double dt);
 
 private:
     double m_default_velocity_x;      // domyślna prędkość

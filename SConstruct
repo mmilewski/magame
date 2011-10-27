@@ -3,7 +3,7 @@ EnsureSConsVersion(2, 0)
 
 env = Environment()
 
-env.Append(CPPPATH = ['/data/include/boost/', '/usr/include/', ])
+env.Append(CPPPATH = ['/opt/boost/include/', '/usr/include/', ])
 env.Append(LIBPATH = [])
 
 env.Append(CPPDEFINES = {'DEBUG_BUILD' : '1'})

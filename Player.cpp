@@ -13,21 +13,25 @@ Player::Player(double x, double y, size_t level_width, size_t lifes = DefaultLif
       m_jump_allowed(true),
       m_level_width(level_width),
       m_total_scores(score),
+      m_bullet_pay(0),
       m_is_immortal(false),
       m_lifes(lifes),
+      m_shooting_enabled(false),
       m_twin_shot_enabled(false),
+      m_jump_height_bonus(0),
       m_is_level_completed(false),
-      m_max_x_pos(std::max(x, 9.0)) {
+      m_max_x_pos(std::max(x, 9.0)),
+      m_should_be_respawned(false) {
     SetDefaultMovement();
 }
 
-void Player::Jump(double y_velocity) {
+void Player::Jump(double extra_y_velocity) {
     // wykonaj skok o ile jest taka możliwość
     if (m_jump_allowed) {
         m_jump_allowed = false;
         m_is_on_ground = false;
         // początkowa prędkość i przyspieszenie
-        SetYVelocity(y_velocity);
+        SetYVelocity(GetDefaultYVelocity() + m_jump_height_bonus + extra_y_velocity);
         SetYAcceleration(DefaultYAcceleration);
         Engine::Get().GetSound()->PlaySfx("jump");
     }
@@ -116,7 +120,7 @@ void Player::Update(double dt, LevelPtr level) {
     const size_t half_screen_tiles_count = (Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount()-1)/2;
     if (m_x < m_max_x_pos - half_screen_tiles_count) {
         m_x = m_max_x_pos - half_screen_tiles_count; // można się wrócić tylko do tych części mapy, które się już widziało
-    } 
+    }
     if (m_x > m_level_width - half_screen_tiles_count - 2) {
         m_max_x_pos = m_level_width - half_screen_tiles_count - 2;
     }
@@ -204,12 +208,18 @@ void Player::CollisionOverPlayer(EntityPtr /* entity */) {
 
 void Player::CollisionUnderPlayer(EntityPtr entity) {
     AllowToJump();
-    Jump(GetDefaultYVelocity() + 6);
+    Jump(6);
     AddScores(entity->GetScoresWhenKilled() * 2);
     entity->KilledByPlayer();
 }
 
 void Player::FireBullet() {
+    // nalicz opłatę za wystrzelenie pocisków
+    PayForBullet();
+    if (IsTwinShotEnabled()) {
+        PayForBullet();
+    }
+
     // GetX() oraz GetY() zwracają położenie lewego dolnego
     // narożnika postaci. W zależności od prędkości i stanu
     // postaci dodajemy pocisk po odpowiedniej stronie.
@@ -243,10 +253,24 @@ void Player::LooseLife() {
     m_is_immortal = true;
     m_immortal_duration = 0;
 
-    // ustaw graczowi nową pozycję (respawn)
-    SetPosition(2, 2);
+    // zażądaj ustawienia gracza w punkcie zapisu
+    m_should_be_respawned = true;
 }
 
 void Player::LevelCompleted() {
     m_is_level_completed = true;
+}
+
+void Player::RespawnFrom(boost::shared_ptr<Player> saved_player) {
+    m_state = PS::Stand;
+    m_shooting_enabled = saved_player->CanShoot() || saved_player->IsTwinShotEnabled();
+    m_twin_shot_enabled = false;
+    m_max_x_pos = saved_player->m_max_x_pos;
+    SetPosition(saved_player->GetX(), saved_player->GetY());
+    SetVelocity(0, 0);
+    SetXAcceleration(saved_player->GetXAcceleration());
+    SetYAcceleration(saved_player->GetYAcceleration());
+    SetDefaultMovement();
+
+    m_should_be_respawned = false;
 }

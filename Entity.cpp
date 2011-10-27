@@ -134,6 +134,42 @@ void Entity::CheckCollisionsWithLevel(double dt, LevelPtr level) {
     }
 }
 
+ES::EntityState Entity::SetStateFromVelocity(double velocity_x) {   
+    if (fabs(velocity_x) < 0.00001) {
+        m_state = ES::Stand;
+    } else if (velocity_x > 0.0) {
+        m_state = ES::GoRight;
+    } else {
+        m_state = ES::GoLeft;
+    }
+    return m_state;
+}
+
+void Entity::UpdateSpriteFromState(double dt) {
+    switch (m_state) {
+    case ES::Stand:
+        if (m_stop) m_stop->Update(dt);
+        break;
+    case ES::GoLeft:
+        if (m_left) m_left->Update(dt);
+        break;
+    case ES::GoRight:
+        if (m_right) m_right->Update(dt);
+        break;
+    }
+}
+
+
+void Entity::CalculateNextXPosition(double dt) {
+    double next_x = GetNextXPosition(dt);
+    if (next_x < m_x && m_can_go_left) {
+        m_x = next_x;
+    } else if (next_x > m_x && m_can_go_right) {
+        m_x = next_x;
+    }
+}
+
+
 void Entity::Update(double dt, LevelPtr level) {
     // ustaw domyślny ruch i sprawdź czy co w świecie piszczy
     SetDefaultMovement();
@@ -153,12 +189,7 @@ void Entity::Update(double dt, LevelPtr level) {
     }
 
     // wylicz pozycję gracza w poziomie (oś OX).
-    double next_x = GetNextXPosition(dt);
-    if (next_x < m_x && m_can_go_left) {
-        m_x = next_x;
-    } else if (next_x > m_x && m_can_go_right) {
-        m_x = next_x;
-    }
+    CalculateNextXPosition(dt);
 
     // nie można wyjść poza mapę
     if (m_x < 1) {
@@ -166,27 +197,13 @@ void Entity::Update(double dt, LevelPtr level) {
     }
 
     // ustal stan ruchu gracza na podstawie prędkości
-    if (fabs(m_vx) < 0.00001) {
-        m_state = ES::Stand;
+    SetStateFromVelocity(m_vx);
+    if (m_state == ES::Stand) {
         m_vx = 0;
-    } else if (m_vx > 0.0) {
-        m_state = ES::GoRight;
-    } else {
-        m_state = ES::GoLeft;
     }
 
     // uaktualnij animację
-    switch (m_state) {
-    case ES::Stand:
-        m_stop->Update(dt);
-        break;
-    case ES::GoLeft:
-        m_left->Update(dt);
-        break;
-    case ES::GoRight:
-        m_right->Update(dt);
-        break;
-    }
+    UpdateSpriteFromState(dt);
 }
 
 void Entity::Draw() const {
@@ -219,13 +236,13 @@ void Entity::Draw() const {
 //    std::cout << "[Entity::Draw] " << pos_x << " " << pos_y << std::endl;
     switch (m_state) {
     case ES::Stand:
-        m_stop->DrawCurrentFrame(pos_x, pos_y, tile_width, tile_height);
+        if (m_stop) m_stop->DrawCurrentFrame(pos_x, pos_y, tile_width, tile_height);
         break;
     case ES::GoLeft:
-        m_left->DrawCurrentFrame(pos_x, pos_y, tile_width, tile_height);
+        if (m_left) m_left->DrawCurrentFrame(pos_x, pos_y, tile_width, tile_height);
         break;
     case ES::GoRight:
-        m_right->DrawCurrentFrame(pos_x, pos_y, tile_width, tile_height);
+        if (m_right) m_right->DrawCurrentFrame(pos_x, pos_y, tile_width, tile_height);
         break;
     }
 

@@ -4,7 +4,9 @@
 #include "MushEntity.h"
 #include "PlayerBulletEntity.h"
 #include "TwinShotUpgrade.h"
+#include "Misc.h"                // Orb
 #include "EntityFactory.h"
+#include "SavePoint.h"
 
 
 EntityFactory::EntityFactory() {
@@ -28,27 +30,71 @@ EntityPtr EntityFactory::CreateEntity(ET::EntityType type, double x, double y) {
         ptr->SetSprites(bullet, bullet, bullet);
     } else if (type == ET::TwinShot) {
         ptr.reset(new TwinShotUpgrade(x, y));
-        SpritePtr bullet = GetSpriteByName("twinshot_upgrade");
-        ptr->SetSprites(bullet, bullet, bullet);
+        SpritePtr sprite = GetSpriteByName("twinshot_upgrade");
+        ptr->SetSprites(sprite, sprite, sprite);
+    } else if (type == ET::HigherJump) {
+        ptr.reset(new HigherJumpUpgrade(x, y));
+        SpritePtr sprite = GetSpriteByName("higherjump_upgrade");
+        ptr->SetSprites(sprite, sprite, sprite);
+    } else if (type == ET::Orb) {
+        ptr.reset(new Orb(x, y));
+        SpritePtr sprite = GetSpriteByName("orb");
+        ptr->SetSprites(sprite, sprite, sprite);
+    } else if (type == ET::SavePoint) {
+        SavePointPtr savepoint(new SavePoint(x,y));
+        SpritePtr sprite_on = GetSpriteByName("savepoint_on");
+        SpritePtr sprite_off = GetSpriteByName("savepoint_off");
+        savepoint->SetSprites(sprite_on, sprite_off);
+        ptr = savepoint;
+    } else if (type == ET::Thorns) {
+        ptr.reset(new Thorns(x, y));
+        SpritePtr sprite = GetSpriteByName("thorns");
+        ptr->SetSprites(sprite, sprite, sprite);
+    } else if (type == ET::Arrow) {
+        ptr.reset(new Arrow(x, y));
+        SpritePtr left = GetSpriteByName("arrow_left"),
+                  right = GetSpriteByName("arrow_right");
+        ptr->SetSprites(left, right, SpritePtr());
+    } else if (type == ET::Column) {
+        ptr.reset(new Column(x, y));
+        SpritePtr sprite = GetSpriteByName("column");
+        ptr->SetSprites(sprite, sprite, sprite);
     }
 
     if (!ptr) {
-        std::cerr << "fabryka nie umie stworzyć żądanej jednostki: " << type << ", " << x << ", " << y << std::endl;
+        std::cerr << "fabryka nie umie stworzyć żądanej jednostki na podstawie typu: " << type << ", " << x << ", " << y << std::endl;
     }
     return ptr;
 }
 
+EntityPtr CreateArrowTrigger(double x, double y, ArrowTrigger::Orientation ori) {
+    EntityPtr ptr;
+    ptr.reset(new ArrowTrigger(x, y, ori));
+    SpritePtr right = GetSpriteByName("arrow_trigger_right"),
+              left = GetSpriteByName("arrow_trigger_left");
+    ptr->SetSprites(left, right, right);
+    return ptr;
+}
 
-EntityPtr EntityFactory::CreateEntity(const std::string& name, double x, double y) {
-    if (name == "mush") {
-        return CreateEntity(ET::Mush, x, y);
-    } else if (name == "player_bullet") {
-        return CreateEntity(ET::PlayerBullet, x, y);
-    } else if(name=="twinshot_upgrade") {
-        return CreateEntity(ET::TwinShot, x, y);
+EntityPtr EntityFactory::CreateEntity(const std::string& name, 
+                                      double x, double y) {
+    try {
+        // Specjalny przypadek dla wyzwalacza strzałek. Niestety parser pliku
+        // z jednostkami nie pozwala dostarczyć informacji innych niż pozycja
+        // początkowa.
+        if (name == "arrow_trigger_right") {
+            return CreateArrowTrigger(x, y, ArrowTrigger::Right);
+        } else if (name == "arrow_trigger_left") {
+            return CreateArrowTrigger(x, y, ArrowTrigger::Left);
+        }
+ 
+        ET::EntityType et = StringAsEntityType(name);
+        return CreateEntity(et, x, y);
+    } catch (std::invalid_argument& ex) {
+        std::cerr << "fabryka nie umie stworzyć żądanej jednostki na podstawie nazwy: " << name
+                << " : " << ex.what() << std::endl;
+        return EntityPtr();
     }
-    std::cerr << "fabryka nie umie stworzyć żądanej jednostki: " << name << std::endl;
-    return EntityPtr();
 }
 
 EntityPtr EntityFactory::CreateEntity(const LevelEntityData& entity_data) {

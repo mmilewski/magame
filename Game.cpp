@@ -1,3 +1,5 @@
+#include <boost/pointer_cast.hpp>
+
 #include "StdAfx.h"
 
 #include "Game.h"
@@ -8,6 +10,9 @@
 #include "ScoreSubmit.h"
 #include "LevelChoiceScreen.h"
 #include "Creator.h"
+#include "SavePoint.h"
+#include "TransitionEffect.h"
+#include "Misc.h"
 
 
 Game::~Game() {
@@ -33,7 +38,9 @@ void Game::ProcessEvents(const SDL_Event& event) {
     } else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_d) {
         m_player->StopRunning();
     } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_s) {
-        m_player->FireBullet();
+        if (m_player->CanShoot()) {
+            m_player->FireBullet();
+        }
     } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_UP) {
         m_player->Jump();
     } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_LEFT) {
@@ -49,9 +56,22 @@ void Game::ProcessEvents(const SDL_Event& event) {
 
 void Game::Start() {
     Engine::Get().GetSound()->PlayMusic("game");
+    if (m_should_load_when_active_again) {
+        m_player->RespawnFrom(m_saved_player);
+        m_stored_player_pos_x = m_saved_stored_player_pos_x;
+        m_should_load_when_active_again = false;
+    } else {
+        SaveGame(m_player);
+    }
+    SetDone(false);
+    m_next_app_state.reset();
 }
 
 void Game::Init() {
+    if (m_should_load_when_active_again) {
+        return;
+    }
+
     Engine& engine = Engine::Get();
 
     if (!m_level) {
@@ -92,7 +112,7 @@ void Game::Init() {
     const LevelEntityData player_data = m_level->GetPlayerData();
     if (!m_player) {
         if (player_data.name == "player") {
-            m_player.reset(new Player(player_data.x, player_data.y, m_level->GetWidth(), 
+            m_player.reset(new Player(player_data.x, player_data.y, m_level->GetWidth(),
                                       3, 0));
             m_player->SetSprites(SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_left"))),
                                  SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_right"))),
@@ -108,6 +128,24 @@ void Game::Init() {
     }
 }
 
+void Game::HandleCollisionPlayerWithSolidEntity(PlayerPtr player, EntityPtr entity, double dt) {
+    Aabb entity_box = entity->GetNextAabb(dt);
+    Aabb player_box = player->GetNextAabb(dt);
+    Aabb player_curr_box = player->GetAabb();
+    if (player_box.IsUnder(entity_box)) {
+        player->Fall();
+    }
+    if (player_box.IsOver(entity_box)) {
+        player->PlayerOnGround();
+    }
+    if (player_curr_box.IsOnLeftOf(entity_box)) {
+        player->ForbidGoingRight();
+    }
+    if (player_curr_box.IsOnRightOf(entity_box)) {
+        player->ForbidGoingLeft();
+    }
+}
+
 void Game::CheckPlayerEntitiesCollisions(double dt) {
     // poziomy i pionowy aabb gracza w następnym 'kroku'
     Aabb player_box_x = m_player->GetNextHorizontalAabb(dt);
@@ -117,49 +155,97 @@ void Game::CheckPlayerEntitiesCollisions(double dt) {
         EntityPtr entity = *it;
         const ET::EntityType entity_type = entity->GetType();
 
+        const int score_for_bonus = 40;   // punkty za wzięcie bonusu
+        const int score_for_orb = 130;    // punkty za wzięcie kuli z punktami
+
         if (entity_type == ET::PlayerBullet) {
             // postać nie koliduje ze swoimi pociskami
             continue;
-        } else if (entity_type == ET::TwinShot) {
-            // czy gracz wziął bonus TwinShot
+        } else if (entity_type == ET::SingleShot) {
+            // gracz wziął bonus "zwykłe strzelanie"
             if (m_player->GetAabb().Collides(entity->GetAabb())) {
+                m_player->AddScores(score_for_bonus);
+                m_player->EnableShooting();
+                entity->SetIsDead(true);
+            }
+            continue;
+        } else if (entity_type == ET::TwinShot) {
+            // gracz wziął bonus "podwójne strzelanie"
+            if (m_player->GetAabb().Collides(entity->GetAabb())) {
+                m_player->AddScores(score_for_bonus);
                 m_player->EnableTwinShot();
                 entity->SetIsDead(true);
             }
             continue;
-        }
-
-        // nieśmiertelna postać nie koliduje z innymi jednostkami,
-        // ale może zbierać np. upgrade'y (patrz wyżej)
-        if (m_player->IsImmortal()) {
+        } else if (entity_type == ET::HigherJump) {
+            // gracz wziął bonus "wyższe skakanie"
+            if (m_player->GetAabb().Collides(entity->GetAabb())) {
+                m_player->AddScores(score_for_bonus);
+                m_player->IncreaseJumpHeightBonus(3);
+                entity->SetIsDead(true);
+            }
             continue;
+        } else if (entity_type == ET::Orb) {
+            // gracz wziął kulę (oznaczającą dodatkowe punkty)
+            if (m_player->GetAabb().Collides(entity->GetAabb())) {
+                m_player->AddScores(score_for_orb);
+                entity->SetIsDead(true);
+            }
+            continue;
+        } else if (entity_type == ET::SavePoint) {
+            // gracz zapisał grę
+            if (m_player->GetAabb().Collides(entity->GetAabb())) {
+                SavePointPtr sp = boost::dynamic_pointer_cast<SavePoint>(entity);
+                if (sp && sp->IsInactive()) {
+                    SaveGame(m_player);
+                    sp->Activate();
+                }
+            }
+            continue;
+        } else if (entity_type == ET::Thorns && !m_player->IsImmortal()) {
+            // gracz wpadł na kolce
+            if (m_player->GetAabb().Collides(entity->GetAabb())) {
+                m_player->LooseLife();
+            }
+            continue;
+        } else if (entity_type == ET::Arrow && !m_player->IsImmortal()) {
+            // gracz został ugodzony strzałą
+            if (m_player->GetAabb().Collides(entity->GetAabb())) {
+                std::cout << "kolizja gracz <-> arrow" << std::endl;
+                m_player->LooseLife();
+            }
+            continue;
+        } else if (entity_type == ET::ArrowTrigger) {
+            continue;
+        } else if (entity_type == ET::Column) {
+            if (m_player->GetNextAabb(dt).Collides(entity->GetAabb())) {
+                HandleCollisionPlayerWithSolidEntity(m_player, entity, dt);
+            }
         }
 
-        entity->SetDefaultMovement();
-        Aabb entity_box = entity->GetAabb();
-
-        // sprawdź czy wystąpiła kolizja. Jeżeli tak to gracz, zdecyduje o losie
-        // swoim i jednostki. Zauważmy, że jeżeli wystąpi kolizja poniżej gracza
-        // (naskoczenie na jednostkę), to pozostałe nie będą sprawdzane.
-        if (player_box_y.IsOver(entity_box)) {
-            // naskoczenie na jednostkę
-            m_player->CollisionUnderPlayer(entity);
-            player_box_y = m_player->GetNextVerticalAabb(dt);
-        }
-        else if (player_box_x.IsOnLeftOf(entity_box)) {
-            m_player->ForbidGoingRight();
-            m_player->CollisionOnRight(entity);
-            player_box_x = m_player->GetNextHorizontalAabb(dt);
-        }
-        else if (player_box_x.IsOnRightOf(entity_box)) {
-            m_player->ForbidGoingLeft();
-            m_player->CollisionOnLeft(entity);
-            player_box_x = m_player->GetNextHorizontalAabb(dt);
-        }
-        else if (player_box_y.IsUnder(entity_box)) {
-            m_player->Fall();
-            m_player->CollisionOverPlayer(entity);
-            player_box_y = m_player->GetNextVerticalAabb(dt);
+        if (entity_type == ET::Mush && !m_player->IsImmortal()) {
+            // sprawdź czy wystąpiła kolizja. Jeżeli tak to gracz, zdecyduje o 
+            // losie swoim i jednostki. Zauważmy, że jeżeli wystąpi kolizja 
+            // poniżej gracza (naskoczenie na jednostkę), to pozostałe 
+            // nie będą sprawdzane.
+            Aabb entity_box = entity->GetAabb();
+            if (player_box_y.IsOver(entity_box)) {
+                // naskoczenie na jednostkę
+                m_player->CollisionUnderPlayer(entity);
+                player_box_y = m_player->GetNextVerticalAabb(dt);
+            } else if (player_box_x.IsOnLeftOf(entity_box)) {
+                m_player->ForbidGoingRight();
+                m_player->CollisionOnRight(entity);
+                player_box_x = m_player->GetNextHorizontalAabb(dt);
+            } else if (player_box_x.IsOnRightOf(entity_box)) {
+                m_player->ForbidGoingLeft();
+                m_player->CollisionOnLeft(entity);
+                player_box_x = m_player->GetNextHorizontalAabb(dt);
+            } else if (player_box_y.IsUnder(entity_box)) {
+                m_player->Fall();
+                m_player->CollisionOverPlayer(entity);
+                player_box_y = m_player->GetNextVerticalAabb(dt);
+            }
         }
     }
 }
@@ -180,7 +266,12 @@ void Game::CheckCollisionOfOnePair(EntityPtr fst_entity, ET::EntityType fst_type
         std::swap(fst_type, snd_type);   \
     }
 
-    SWAP_IF( ET::PlayerBullet, ET::Mush )
+    SWAP_IF( ET::PlayerBullet, ET::Mush );
+    SWAP_IF( ET::PlayerBullet, ET::Column );
+    SWAP_IF( ET::Arrow, ET::Column );
+    SWAP_IF( ET::Arrow, ET::Mush );
+    SWAP_IF( ET::Arrow, ET::PlayerBullet );
+    SWAP_IF( ET::Column, ET::Mush );
 
     // w tym miejscu wiemy, że jeżeli nastąpiła kolizja Mush z PlayerBullet,
     // to jednostka Mush będzie pod fst_entity a PlayerBullet pod snd_entity
@@ -189,6 +280,29 @@ void Game::CheckCollisionOfOnePair(EntityPtr fst_entity, ET::EntityType fst_type
         snd_entity->SetIsDead(true);
         m_player->AddScores(fst_entity->GetScoresWhenKilled());
         fst_entity->KilledWithBullet();
+    }
+    
+    if (fst_type == ET::Column && snd_type == ET::PlayerBullet) {
+        snd_entity->NegateXVelocity();
+    }
+
+    if (fst_type == ET::Column && snd_type == ET::Arrow) {
+        snd_entity->StopMovement();
+    }
+
+    if (fst_type == ET::Mush && snd_type == ET::Arrow) {
+        fst_entity->SetIsDead(true);
+        snd_entity->SetIsDead(true);
+    }
+    
+    if (fst_type == ET::Mush && snd_type == ET::Column) {
+        fst_entity->NegateXVelocity();
+    }
+
+    if (fst_type == ET::PlayerBullet && snd_type == ET::Arrow) {
+        fst_entity->SetIsDead(true);
+        snd_entity->SetIsDead(true);
+        m_player->AddScores(snd_entity->GetScoresWhenKilled());
     }
 
     if (fst_type == ET::Mush && snd_type == ET::Mush) {
@@ -248,16 +362,7 @@ void Game::ExecuteCreators() {
 }
 
 void Game::SweepAndAddEntities(double /* dt */) {
-    // oznacz jednostki, które są za lewą krawędzią ekranu jako martwe
-    const double distance_of_deletion = Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount();
-    for (std::vector<EntityPtr>::iterator it = m_entities.begin(); it != m_entities.end(); ++it) {
-        EntityPtr e = *it;
-        if (e->GetX() + distance_of_deletion < m_player->GetX()) {
-            e->SetIsDead(true);
-        }
-    }
-
-    // usuń martwe jednostki - O(n^2). Można w O(n), ale trzeba napisać 
+    // usuń martwe jednostki - O(n^2). Można w O(n), ale trzeba napisać
     // funktor - google(erase remove idiom).
     for (size_t i = 0; i < m_entities.size(); ++i) {
         if (m_entities.at(i)->IsDead()) {
@@ -322,6 +427,10 @@ bool Game::Update(double dt) {
 
     // uaktualnij obiekt reprezentujący gracza
     m_player->Update(dt, m_level);
+    if (m_player->ShouldBeRespawned()) {
+        LoadGame();
+        SetDone();
+    }
 
     // uaktualnij stan jednostek
     for (std::vector<EntityPtr>::iterator it = m_entities.begin(); it != m_entities.end(); ++it) {
@@ -362,7 +471,7 @@ void Game::Draw() {
             double player_x = -(m_stored_player_pos_x * Engine::Get().GetRenderer()->GetTileWidth() - 0.45);
             glTranslated(player_x, 0, 0);
             glMatrixMode(GL_MODELVIEW);
-    
+
             m_level_view.SetLevel(m_level, m_stored_player_pos_x);
             m_level_view.Draw(m_stored_player_pos_x);
 
@@ -383,7 +492,28 @@ void Game::Draw() {
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
 
+
+//    Aabb player_box = m_player->GetAabb();
+//    Engine::Get().GetRenderer()->DrawAabb(player_box);
+
+
     if (IsSwapAfterDraw()) {
         SDL_GL_SwapBuffers();
     }
+}
+
+void Game::SaveGame(PlayerPtr /* player */) {
+    std::cout << "Zapisywanie gry...\n";
+    m_saved_player.reset(new Player(*(m_player.get())));
+    m_saved_stored_player_pos_x = m_stored_player_pos_x;
+    std::cout << "Gra zapisana" << std::endl;
+}
+
+void Game::LoadGame() {
+    std::cout << "Wznawianie gry" << std::endl;
+    m_should_load_when_active_again = true;
+
+    GamePtr game = shared_from_this();
+    tefPtr fadeout = TransitionEffect::PrepareFadeOut(game).to(game).duration(1).delay(.2, .2).Build();
+    m_next_app_state = fadeout;
 }

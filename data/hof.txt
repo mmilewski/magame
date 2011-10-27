@@ -6,5 +6,5 @@ marcin 6000
 marcin 5000
 marcin 4000
 lukasz 3000
-lukasz 2000
+marcin 2000
 marcin 1000

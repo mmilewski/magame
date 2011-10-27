@@ -27,7 +27,8 @@ public:
     void Run()                      { m_running_factor = 2.0; }
     void StopRunning()              { m_running_factor = 1.0; }
     double GetRunningFactor() const { return m_running_factor; }
-    void Jump(double y_velocity = DefaultYVelocity);
+    void Jump(double extra_y_velocity=0);
+
     void SetDefaultMovement()  {
         m_is_on_ground = m_jump_allowed = false;
         m_can_go_right = m_can_go_left = true;
@@ -40,7 +41,7 @@ public:
     double GetNextXPosition(double dt) const { return GetX() + GetXVelocity() * dt * GetRunningFactor(); }
 
     // prostokąt otaczający jednostkę bez uwzględniania jej pozycji
-    Aabb GetBasicAabb() const { return Aabb(.1, 0, .7, .9);  }
+    Aabb GetBasicAabb() const { return Aabb(.2, 0, .75, .9);  }
 
     // obsługa kolizji z każdej strony
     void CollisionOnRight(EntityPtr entity);
@@ -49,7 +50,7 @@ public:
     void CollisionUnderPlayer(EntityPtr entity);
 
     void AddScores(int scores) { m_total_scores += scores; }
-    int  GetScores() const     { return m_total_scores; }
+    int  GetScores() const     { return m_total_scores - m_bullet_pay; }
 
     // wystrzel pocisk
     void FireBullet();
@@ -70,9 +71,17 @@ public:
 
     bool IsImmortal() const { return m_is_immortal; }
 
-    void EnableTwinShot()          { m_twin_shot_enabled = true; }
+    void EnableShooting()          { m_shooting_enabled = true; }
+    void DisableShooting()         { m_shooting_enabled = false; }
+    bool CanShoot() const          { return m_shooting_enabled; }
+    bool CannotShoot() const       { return !CanShoot(); }
+
+    void EnableTwinShot()          { EnableShooting(); m_twin_shot_enabled = true; }
     void DisableTwinShot()         { m_twin_shot_enabled = false; }
     bool IsTwinShotEnabled() const { return m_twin_shot_enabled; }
+
+    void IncreaseJumpHeightBonus(int by)  { m_jump_height_bonus += by; }
+    void DropJumpHeightBonus()            { m_jump_height_bonus = 0; }
 
     bool MoveMap() {
         const size_t screen_tiles_count = Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount();
@@ -95,6 +104,15 @@ public:
         m_level_width = level->GetWidth();
         m_is_level_completed = false;
     }
+    
+    bool ShouldBeRespawned() const   { return m_should_be_respawned; }
+
+    void RespawnFrom(boost::shared_ptr<Player> saved_player);
+
+private:
+    void PayForBullet() {
+        m_bullet_pay += 15;
+    }
 
 private:
     enum { DefaultXVelocity = 4, DefaultYVelocity = 20,
@@ -107,15 +125,21 @@ private:
     size_t m_level_width;     // szerokość poziomu (w kaflach)
 
     int m_total_scores;       // łączne zdobyte punkty
+    int m_bullet_pay;         // opłata za wystrzelenie pocisków
+
     bool m_is_immortal;       // czy jest nieśmiertelny
     double m_immortal_duration;  // czas przez który postać już jest nieśmiertelna
     int m_lifes;                 // liczba żyć posiadanych przez postać
 
+    bool m_shooting_enabled;     // czy gracz może strzelać
     bool m_twin_shot_enabled;    // czy upgrade twin shot jest dostępny
+    int m_jump_height_bonus;     // bonus do prędkości pionowej podczas skoku
 
     bool m_is_level_completed;   // czy aktualny poziom został zakończony
 
     double m_max_x_pos;
+    
+    bool m_should_be_respawned;  // czy gracz powinien zostać przywrócony na zapisaną pozycję
 };
 
 typedef boost::shared_ptr<Player> PlayerPtr;

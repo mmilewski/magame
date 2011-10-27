@@ -3,6 +3,7 @@
 #include "../Text.h"
 #include "../Utils.h"
 #include "../Entity.h"
+#include "../MainMenu.h"
 #include <boost/pointer_cast.hpp>
 #include "Editor.h"
 
@@ -32,6 +33,14 @@ void Editor::Init() {
     m_level_view.StoreSprite(FT::NcPlatformRight,        Sprite::GetByName("NcPlatformRight"));
 
     m_gui->Init();
+    
+    std::list<LevelEntityData> ents = m_level->GetAllEntitiesToCreate();
+    EntityFactory efactory;
+    for(std::list<LevelEntityData>::iterator it = ents.begin(); it != ents.end(); ++it) {
+        m_entities_to_create.push_back(*it);
+        m_entities.push_back(efactory.CreateEntity(*it));
+    }
+    m_player_data = m_level->GetPlayerData();
 }
 
 void Editor::Draw() {
@@ -142,6 +151,7 @@ bool Editor::Update(double dt) {
     }
 
     if (m_keys_down[SDLK_ESCAPE]) {
+        m_next_app_state.reset(new MainMenu);
         SetDone(true);
     } else if (m_keys_down[SDLK_LEFT]) {
         m_viewer_offset_x -= dt * 28.19;
