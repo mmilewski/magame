@@ -71,8 +71,6 @@ void Game::Init() {
         return;
     }
 
-    Engine& engine = Engine::Get();
-
     if (!m_level) {
         // ładowanie poziomu i sprite'ów planszy
         m_level.reset(new Level());
@@ -113,6 +111,7 @@ void Game::Init() {
         if (player_data.name == "player") {
             m_player.reset(new Player(player_data.x, player_data.y, m_level->GetWidth(),
                                       3, 0));
+            Engine& engine = Engine::Get();
             m_player->SetSprites(SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_left"))),
                                  SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_right"))),
                                  SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_stop"))) );
