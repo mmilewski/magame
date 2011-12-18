@@ -4,10 +4,10 @@
 
 
 #include "Utils.h"
-#include "Player.h"
+#include "entity/Player.h"
 #include "Level.h"
 #include "SpriteGrid.h"
-#include "Entity.h"
+#include "entity/Entity.h"
 #include "AppState.h"
 
 class LevelChoiceScreen;

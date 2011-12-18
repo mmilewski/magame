@@ -1,6 +1,6 @@
 #include "Editor.h"
 #include "EditorCommand.h"
-#include "../EntityFactory.h"
+#include "entity/EntityFactory.h"
 #include <algorithm>  // remove
 
 void AddEntityCommand::Execute(Editor* editor) {

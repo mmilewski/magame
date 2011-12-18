@@ -1,8 +1,8 @@
 #ifndef __BRUSH_H_INCLUDED__
 #define __BRUSH_H_INCLUDED__
 
-#include "../StdAfx.h"
-#include "../Sprite.h"
+#include "StdAfx.h"
+#include "Sprite.h"
 #include "EditorCommand.h"
 
 

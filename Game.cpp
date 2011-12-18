@@ -1,18 +1,17 @@
-#include <boost/pointer_cast.hpp>
-
 #include "StdAfx.h"
+#include <boost/pointer_cast.hpp>
 
 #include "Game.h"
 #include "Engine.h"
-#include "EntityFactory.h"
+#include "entity/EntityFactory.h"
 #include "Text.h"
 #include "HallOfFame.h"
 #include "ScoreSubmit.h"
 #include "LevelChoiceScreen.h"
 #include "Creator.h"
-#include "SavePoint.h"
+#include "entity/SavePoint.h"
 #include "TransitionEffect.h"
-#include "Misc.h"
+#include "entity/Misc.h"
 
 
 Game::~Game() {

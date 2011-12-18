@@ -4,7 +4,7 @@
 
 #include "SpriteConfig.h"
 #include "Renderer.h"
-#include "EntityFactory.h"
+#include "entity/EntityFactory.h"
 #include "Sound.h"
 #include "Window.h"
 

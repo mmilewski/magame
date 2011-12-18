@@ -1,8 +1,8 @@
 #ifndef __EDITORCOMMAND_H_INCLUDED__
 #define	__EDITORCOMMAND_H_INCLUDED__
 
-#include "../StdAfx.h"
-#include "../Entity.h"
+#include "StdAfx.h"
+#include "entity/Entity.h"
 
 class Editor;
 

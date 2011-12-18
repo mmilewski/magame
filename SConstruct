@@ -3,7 +3,7 @@ EnsureSConsVersion(2, 0)
 
 env = Environment()
 
-env.Append(CPPPATH = ['/opt/boost/include/', '/usr/include/', ])
+env.Append(CPPPATH = ['./', '/opt/boost/include/', '/usr/include/', ])
 env.Append(LIBPATH = [])
 
 env.Append(CPPDEFINES = {'DEBUG_BUILD' : '1'})
@@ -13,4 +13,7 @@ env.Append(CPPFLAGS = Split('-std=c++0x -g -ggdb'))
 
 env.Append(LIBS = Split('SDL SDL_mixer SDL_image GL GLU'))
 
-env.Program("game", Glob("*.cpp") + Glob("editor/*.cpp") + Glob("gui/*.cpp"))
+files = Glob("*.cpp")
+for directory in ['editor', 'gui', 'entity']:
+    files = files + Glob(directory + "/*.cpp")
+env.Program("game", files)

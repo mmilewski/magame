@@ -1,9 +1,9 @@
-#include "../StdAfx.h"
-#include "../Engine.h"
-#include "../Text.h"
-#include "../Utils.h"
-#include "../Entity.h"
-#include "../MainMenu.h"
+#include "StdAfx.h"
+#include "Engine.h"
+#include "Text.h"
+#include "Utils.h"
+#include "entity/Entity.h"
+#include "MainMenu.h"
 #include <boost/pointer_cast.hpp>
 #include "Editor.h"
 
