@@ -8,8 +8,9 @@ env.Append(LIBPATH = [])
 
 env.Append(CPPDEFINES = {'DEBUG_BUILD' : '1'})
 
-env.Append(CPPFLAGS = Split('-W -Wall -Wextra -Woverloaded-virtual -pedantic'))
 env.Append(CPPFLAGS = Split('-std=c++0x -g -ggdb'))
+env.Append(CPPFLAGS = Split('-W -Wall -Wextra -pedantic -Woverloaded-virtual -Wnon-virtual-dtor -Wpointer-arith'))
+env.Append(CPPFLAGS = Split('-Wno-long-long -Wundef -Wcast-align -Wcomment -Winit-self -Wchar-subscripts'))
 
 env.Append(LIBS = Split('SDL SDL_mixer SDL_image GL GLU'))
 
