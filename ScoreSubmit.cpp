@@ -109,8 +109,8 @@ void ScoreSubmit::StoreInFile() {
         while (hofReader >> e.name >> e.points) {
             entries.push_back(e);
         }
+        hofReader.close();
     }
-
     {
         Entry player_entry;
         player_entry.points = m_points;
@@ -121,14 +121,15 @@ void ScoreSubmit::StoreInFile() {
         }
         entries.push_back(player_entry);
     }
-
-    std::sort(entries.begin(), entries.end(), [](Entry a, Entry b){return a.points > b.points;});
-
-    std::ofstream hofWriter("data/hof.txt");
-    for (size_t i = 0; i < 10 && i < entries.size(); ++i) {
-        hofWriter << entries.at(i).name << " " << entries.at(i).points << "\n";
+    {
+        const unsigned max_records_to_save = 10;
+        std::sort(entries.begin(), entries.end(), [](Entry a, Entry b){return a.points > b.points;});
+        std::ofstream hofWriter("data/hof.txt");
+        for (size_t i = 0; i < max_records_to_save && i < entries.size(); ++i) {
+            hofWriter << entries.at(i).name << " " << entries.at(i).points << "\n";
+        }
+        hofWriter.close();
     }
-    hofWriter.close();
 }
 
 void ScoreSubmit::Init() {
