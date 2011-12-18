@@ -11,10 +11,12 @@ TileGridHelper& TileGridHelper::SnapToGrid() {
 }
 
 unsigned TileGridHelper::TilesHorizontally() const {
+    assert(m_end[0] >= m_beg[0] && "Wspolrzedne powinny byc posortowane");
     return static_cast<unsigned>(round(m_end[0] - m_beg[0]));
 }
 
 unsigned TileGridHelper::TilesVertically() const {
+    assert(m_end[1] >= m_beg[1] && "Wspolrzedne powinny byc posortowane");
     return static_cast<unsigned>(round(m_end[1] - m_beg[1]));
 }
 

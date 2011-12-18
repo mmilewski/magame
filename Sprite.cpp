@@ -10,7 +10,6 @@ Sprite::Sprite(const SpriteConfigData& data) :
 
 }
 
-
 void Sprite::SetCurrentFrame(size_t frame_num) {
     m_current_frame = frame_num;
     m_current_frame_duration = 0.0;

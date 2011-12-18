@@ -3,7 +3,6 @@
 #include "StdAfx.h"
 
 
-
 /**
  * Zamienia liczbę number na  odpowiadający jej ciąg znaków.
  */

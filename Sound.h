@@ -12,6 +12,7 @@ public:
     void PlaySfx(const std::string& name);
 
     void HaltMusic();
+
 private:
     void LoadMusic(const std::string& name, const std::string& filename);
     void LoadSfx(const std::string& name, const std::string& filename);

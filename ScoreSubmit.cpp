@@ -132,7 +132,6 @@ void ScoreSubmit::StoreInFile() {
 }
 
 void ScoreSubmit::Init() {
-
 }
 
 void ScoreSubmit::Start() {

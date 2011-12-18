@@ -98,7 +98,7 @@ namespace ET {
 std::string EntityTypeAsString(ET::EntityType et);
 ET::EntityType StringAsEntityType(std::string str);
 
-// typ fade effectu
+// typ efekty przejscia
 namespace TransitionEffectType {
     enum Type {
         UNKNOWN,

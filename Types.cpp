@@ -16,12 +16,12 @@ void EnsureEntityTypeToStringMapping() {
 
     // bonusy
     Insert(ET::SingleShot, "singleshot_upgrade");
-    Insert(ET::TwinShot, "twinshot_upgrade");
+    Insert(ET::TwinShot,   "twinshot_upgrade");
     Insert(ET::HigherJump, "higherjump_upgrade");
     Insert(ET::Orb, "orb");
 
     // przeciwnicy
-    Insert(ET::Mush, "mush");
+    Insert(ET::Mush,  "mush");
     Insert(ET::Arrow, "arrow");
 
     // inne
@@ -30,7 +30,7 @@ void EnsureEntityTypeToStringMapping() {
     Insert(ET::Thorns, "thorns");
     Insert(ET::Column, "column");
 
-
+// !! NOTE:
 // w pliku poziomu występuj `arrow_trigger_left` oraz `_right`, żeby określić
 // w którą stronę ma być zwrócony wyzwalacz. Przez to musi on posiadać ifa w
 // EntityFactory -- parser pliku poziomu obsługuje tylko pozycję encji.
