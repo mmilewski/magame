@@ -360,16 +360,9 @@ void Game::ExecuteCreators() {
 }
 
 void Game::SweepAndAddEntities(double /* dt */) {
-    // usuń martwe jednostki - O(n^2). Można w O(n), ale trzeba napisać
-    // funktor - google(erase remove idiom).
-    for (size_t i = 0; i < m_entities.size(); ++i) {
-        if (m_entities.at(i)->IsDead()) {
-            for (size_t c = i; c < m_entities.size() - 1; ++c) {
-                m_entities.at(c) = m_entities.at(c + 1);
-            }
-            m_entities.resize(m_entities.size() - 1);
-        }
-    }
+    // usuń martwe jednostki
+    auto isEntityDead = [](EntityPtr e) { return e->IsDead(); };
+    m_entities.erase(std::remove_if(m_entities.begin(), m_entities.end(), isEntityDead), m_entities.end());
 
     // dodaj kolejne jednostki z listy do gry
     const double distance_of_creation = Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount();
@@ -490,10 +483,8 @@ void Game::Draw() {
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
 
-
 //    Aabb player_box = m_player->GetAabb();
 //    Engine::Get().GetRenderer()->DrawAabb(player_box);
-
 
     if (IsSwapAfterDraw()) {
         SDL_GL_SwapBuffers();

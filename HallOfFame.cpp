@@ -25,8 +25,7 @@ void HallOfFame::Draw() {
     t.DrawText("Hall Of Fame", 0.01, 0.9);
 
     t.SetSize(0.035, 0.035);
-    double y = 0.7;
-    double x = 0.15;
+    double x = 0.15, y = 0.7;
     for (size_t i = 0; i < m_entries.size(); ++i) {
         t.DrawText(m_entries.at(i).name, x, y);
         t.DrawNumber(m_entries.at(i).points, x+0.4, y, 8);
@@ -49,11 +48,9 @@ void HallOfFame::ProcessEvents(const SDL_Event& event) {
 }
 
 void HallOfFame::Init() {
-
 }
 
 void HallOfFame::Start() {
-
 }
 
 void HallOfFame::LoadFromFile() {

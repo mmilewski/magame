@@ -103,7 +103,6 @@ void MainMenu::ProcessEvents(const SDL_Event& event) {
 //            TransitionEffectPtr fadeout = TransitionEffect::Prepare(TransitionEffectType::FadeOut).from(shared_from_this()).Build();
             TransitionEffectPtr fadeout = TransitionEffect::PrepareFadeOut(shared_from_this()).Build();
             m_next_app_state = fadeout;
-//            m_next_app_state.reset();
             SetDone();
         }
     }

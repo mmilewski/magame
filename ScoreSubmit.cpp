@@ -30,9 +30,7 @@ void ScoreSubmit::Draw() {
     
     t.DrawText(m_player_nickname, 0.25, 0.6);
     
-
     t.SetSize(0.05, 0.05);
-
     for (char ch = 'a'; ch <= 'z'; ++ch) {
         std::pair<double, double> pos = LetterPosition(ch);
         if (ch == m_highlighted_char) {
@@ -99,43 +97,38 @@ void ScoreSubmit::ProcessEvents(const SDL_Event& event) {
 }
 
 void ScoreSubmit::StoreInFile() {
-    std::fstream hof("data/hof.txt");
-    if (!hof) {
-        std::cerr << "Nie moge odczytac Hall of Fame\n";
-        return;
-    }
-
     std::vector<Entry> entries;
-    Entry e;
-    while (hof >> e.name >> e.points) {
-        entries.push_back(e);
-    }
 
-    Entry new_e;
-    for (size_t i = 0; i < m_player_nickname.size(); ++i) {
-        if (m_player_nickname.at(i) != '_') {
-            new_e.name += m_player_nickname.at(i);
+    {
+        std::ifstream hofReader("data/hof.txt");
+        if (!hofReader) {
+            std::cerr << "Nie moge odczytac Hall of Fame\n";
+            return;
+        }
+        Entry e;
+        while (hofReader >> e.name >> e.points) {
+            entries.push_back(e);
         }
     }
-    new_e.points = m_points;
-    entries.push_back(new_e);
 
-    int j = entries.size() - 1;
-    while (j > 0) {
-        if (entries.at(j-1).points < entries.at(j).points) {
-            std::swap(entries.at(j-1), entries.at(j));
+    {
+        Entry player_entry;
+        player_entry.points = m_points;
+        for (size_t i = 0; i < m_player_nickname.size(); ++i) {
+            if (m_player_nickname.at(i) != '_') {
+                player_entry.name += m_player_nickname.at(i);
+            }
         }
-        --j;
+        entries.push_back(player_entry);
     }
 
-    hof.close();
-    hof.clear();
+    std::sort(entries.begin(), entries.end(), [](Entry a, Entry b){return a.points > b.points;});
 
-    hof.open("data/hof.txt", std::ios::out);
+    std::ofstream hofWriter("data/hof.txt");
     for (size_t i = 0; i < 10 && i < entries.size(); ++i) {
-        hof << entries.at(i).name << " " << entries.at(i).points << "\n";
+        hofWriter << entries.at(i).name << " " << entries.at(i).points << "\n";
     }
-    hof.close();
+    hofWriter.close();
 }
 
 void ScoreSubmit::Init() {

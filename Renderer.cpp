@@ -11,7 +11,6 @@ void Renderer::LoadTexture(const std::string & filename) {
     std::cout << "Ładowanie obrazka z pliku " + filename + "\n";
 
     // załaduj z pliku
-    // SDL_Surface* surface = SDL_LoadBMP(filename.c_str());
     SDL_Surface* surface = IMG_Load(filename.c_str());
     if (!surface) {
         std::cerr << "Ładowanie pliku " + filename + " FAILED: " + SDL_GetError() + "\n";
@@ -19,11 +18,11 @@ void Renderer::LoadTexture(const std::string & filename) {
     }
 
     // sprawdź wymiary - czy są potęgą 2
-    const int width = surface->w;
+    const int width  = surface->w;
     const int height = surface->h;
     if (((width & (width - 1)) != 0) || ((height & (height - 1)) != 0)) {
-        std::cerr << "Obrazek " + filename + " ma nieprawidłowe wymiary (powinny być potęgą 2): " << width << "x"
-                << height << "\n";
+        std::cerr << "Obrazek " + filename + " ma nieprawidłowe wymiary (powinny być potęgą 2): "
+                  << width << "x" << height << "\n";
         exit(1);
     }
 
