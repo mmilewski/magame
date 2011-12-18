@@ -26,10 +26,6 @@ public:
     void SetPlayer(PlayerPtr player);
 
 private:
-
-    // następny węzeł (dowolny, z którym jest połączenie). Lub node, jeżeli nie ma połączeń
-    int NextNode(size_t node) const;
-
     // zwraca nazwę poziomu dla wskazanego węzła
     std::string NodeToLevelName(int node);
 

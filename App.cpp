@@ -16,12 +16,10 @@ void App::ProcessEvents() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
 //         if (event.type == SDL_KEYDOWN && event.key.keysym.sym==SDLK_e) {
-
 //             m_app_state.reset(new Show);
 //             m_app_state->Init();
 //             m_app_state->Start();
 //             return;
-
 //         } 
 //         else if (event.type == SDL_KEYDOWN && event.key.keysym.sym==SDLK_q) {
 //             exit(0);
@@ -80,10 +78,10 @@ void App::Run() {
         // time update
         size_t ticks = SDL_GetTicks();
         double delta_time = (ticks - last_ticks) / 1000.0;
-        last_ticks = ticks;
 
         // update & render
-        if (delta_time > 0) {
+        if (delta_time > 0.0001) {
+            last_ticks = ticks;
             Update(delta_time);
         }
         Draw();

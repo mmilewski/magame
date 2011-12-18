@@ -51,8 +51,6 @@ public:
         m_entities.push_back(entity);
     }
 
-    LevelPtr GetLevel() const { return m_level; }
-
     AppStatePtr NextAppState() const {
         return m_next_app_state;
     }

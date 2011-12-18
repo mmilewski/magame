@@ -161,10 +161,6 @@ void LevelChoiceScreen::Draw() {
         } else {
             m_entry_disabled_sprite->DrawCurrentFrame(x, y, m_tile_width, m_tile_height);
         }
-//        Engine::Get().Renderer()->DrawSprite(
-//                i * 32, 14 * 32, 32, 32,
-//                x, y,
-//                point_width, point_height, DL::Foreground);
     }
 
     // narysuj postać
@@ -173,7 +169,6 @@ void LevelChoiceScreen::Draw() {
                                     m_tile_width,
                                     m_tile_height);
 
-
     // // Aby zobaczyć jak działa powtarzanie sprite'ów odkomentuj poniższy kawałek kodu
     // // narysuj postać
     // m_face_sprite->SetRepeat(m_tile_width, m_tile_width);
@@ -181,7 +176,6 @@ void LevelChoiceScreen::Draw() {
     //                                 m_face_pos[1] - m_tile_height / 2,
     //                                 m_tile_width * 3.5,
     //                                 m_tile_height * 2.75);
-
 
     // tekst na górze ekranu
     Text t;
@@ -197,25 +191,9 @@ void LevelChoiceScreen::Draw() {
 // zwraca znak x
 int sgn(double x) {
     return x ? (x > 0 ? 1 : -1) : 0;
-//    if (x < 0) return -1;
-//    if (x > 0) return 1;
-//    return 0;
-}
-
-int LevelChoiceScreen::NextNode(size_t node) const {
-    if (false == m_connections.at(node).empty()) {
-        return m_connections.at(node).at(rand() % m_connections.at(node).size());
-    }
-    return node;
 }
 
 bool LevelChoiceScreen::Update(double dt) {
-//    if (from_node == to_node) {
-//        to_node = NextNode(to_node);
-//    }
-//    assert(from_node!=to_node && "from == to :/");
-//    std::cout << from_node << " " << to_node << std::endl;
-
     // uaktualnij położenie twarzy postaci
     const double face_velocity_x = .6;   // prędkość twarzy w poziomie i pionie
     const double face_velocity_y = .5;
@@ -236,7 +214,6 @@ bool LevelChoiceScreen::Update(double dt) {
     // uaktualnij położenie na podstawie prędkości
     m_face_pos[0] += vel_x * dt;
     m_face_pos[1] += vel_y * dt;
-
 
     // uaktualnij animacje
     m_horizontal_road_sprite->Update(dt);
