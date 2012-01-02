@@ -1,11 +1,11 @@
 #include "StdAfx.h"
+
 #include "Engine.h"
-#include "Text.h"
+#include "video/Text.h"
 #include "Utils.h"
 #include "entity/Entity.h"
 #include "MainMenu.h"
-#include <boost/pointer_cast.hpp>
-#include "Editor.h"
+#include "editor/Editor.h"
 
 void Editor::Start() {
     m_gui->Start();

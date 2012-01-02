@@ -1,7 +1,7 @@
 #include "Editor.h"
 #include "EditorCommand.h"
 
-#include "../TileGridHelper.h"
+#include "TileGridHelper.h"
 
 bool PlatformEditorCommand::IsReady() const {
     if (m_beg.X() < 0 || m_beg.Y() < 0 || m_end.X() < 0 || m_end.Y() < 0) {

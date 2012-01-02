@@ -2,7 +2,7 @@
 #define __BRUSH_H_INCLUDED__
 
 #include "StdAfx.h"
-#include "Sprite.h"
+#include "video/Sprite.h"
 #include "EditorCommand.h"
 
 

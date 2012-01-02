@@ -15,6 +15,6 @@ env.Append(CPPFLAGS = Split('-Wno-long-long -Wundef -Wcast-align -Wcomment -Wini
 env.Append(LIBS = Split('SDL SDL_mixer SDL_image GL GLU'))
 
 files = Glob("*.cpp")
-for directory in ['editor', 'gui', 'entity']:
+for directory in ['editor', 'entity', 'gui', 'math', 'video']:
     files = files + Glob(directory + "/*.cpp")
 env.Program("game", files)

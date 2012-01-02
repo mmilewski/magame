@@ -2,12 +2,12 @@
 #define __ENTITY_H__
 #include "StdAfx.h"
 
-#include "Aabb.h"
-#include "Sprite.h"
+#include "math/Aabb.h"
+#include "video/Sprite.h"
 #include "Types.h"
 #include "Engine.h"
 #include "Level.h"
-#include "CreatorProducer.h"
+#include "entity/CreatorProducer.h"
 
 
 class Entity : public CreatorProducer {

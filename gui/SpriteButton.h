@@ -2,7 +2,7 @@
 #define __SPRITEBUTTON_H__INCLUDED__
 
 #include "GuiWidget.h"
-#include "../Sprite.h"
+#include "video/Sprite.h"
 
 class SpriteButton;
 typedef boost::shared_ptr<SpriteButton> SpriteButtonPtr;

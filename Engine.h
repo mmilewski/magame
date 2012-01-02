@@ -2,11 +2,11 @@
 #define ENGINE_H_
 #include "StdAfx.h"
 
-#include "SpriteConfig.h"
-#include "Renderer.h"
+#include "video/SpriteConfig.h"
+#include "video/Renderer.h"
 #include "entity/EntityFactory.h"
 #include "Sound.h"
-#include "Window.h"
+#include "video/Window.h"
 
 class Engine {
 public:

@@ -6,7 +6,7 @@
 #include "Utils.h"
 #include "entity/Player.h"
 #include "Level.h"
-#include "SpriteGrid.h"
+#include "video/SpriteGrid.h"
 #include "entity/Entity.h"
 #include "AppState.h"
 

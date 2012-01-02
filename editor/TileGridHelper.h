@@ -2,7 +2,7 @@
 #define	TILEGRIDHELPER_H
 
 #include "StdAfx.h"
-#include "BasicMathTypes.h"
+#include "math/BasicMathTypes.h"
 
 class TileGridHelper {
 public:

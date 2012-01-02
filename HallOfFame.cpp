@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 
 #include "HallOfFame.h"
-#include "Text.h"
+#include "video/Text.h"
 #include "Engine.h"
 #include "MainMenu.h"
 

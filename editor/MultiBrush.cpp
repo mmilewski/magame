@@ -1,4 +1,4 @@
-#include "../TileGridHelper.h"
+#include "TileGridHelper.h"
 #include "Brush.h"
 
 void MultiBrush::DrawSketch(Position /* scr_position */, Size /* scr_size */) const {

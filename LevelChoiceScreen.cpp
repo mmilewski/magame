@@ -7,9 +7,9 @@
 #include "LevelChoiceScreen.h"
 #include "MainMenu.h"
 #include "Game.h"
-#include "Sprite.h"
-#include "SpriteConfig.h"
-#include "Text.h"
+#include "video/Sprite.h"
+#include "video/SpriteConfig.h"
+#include "video/Text.h"
 
 
 LevelChoiceScreen::LevelChoiceScreen(PlayerPtr player) :

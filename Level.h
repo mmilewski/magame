@@ -2,7 +2,7 @@
 #define __LEVEL_H__
 #include "StdAfx.h"
 
-#include "Aabb.h"
+#include "math/Aabb.h"
 #include "Types.h"
 
 // Dane dotyczące jednostki wczytane np. z pliku. Na ich podstawie
@@ -14,14 +14,14 @@ struct LevelEntityData {
     LevelEntityData(const std::string& name, double x, double y)
         :  name(name), x(x), y(y) {   }
 
-    bool operator() (const LevelEntityData& a, const LevelEntityData& b) {
-        return a.x < b.x;
-    }
-
     bool operator== (const LevelEntityData& other) const {
        return name == other.name
            && abs(x-other.x) < 0.001
            && abs(y-other.y) < 0.001;
+    }
+
+    static bool OrderByX(LevelEntityData& a, LevelEntityData& b) {
+        return a.x < b.x;
     }
 
     std::string name;  // nazwa jednostki
@@ -63,8 +63,8 @@ public:
     bool IsFieldCollidable(int x, int y) const;
     bool IsFieldNotCollidable(int x, int y) const;
 
-    bool        GetLoaded() const { return m_loaded; }
-    std::string GetName()   const { return m_name; }
+    bool        Loaded()  const { return m_loaded; }
+    std::string GetName() const { return m_name; }
 
 private:
     std::string m_name;

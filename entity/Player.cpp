@@ -1,10 +1,10 @@
 #include "StdAfx.h"
 
-#include "PlayerBulletCreator.h"
-#include "Utils.h"
 #include "Engine.h"
-#include "Player.h"
-#include "Text.h"
+#include "Utils.h"
+#include "entity/PlayerBulletCreator.h"
+#include "entity/Player.h"
+#include "video/Text.h"
 
 Player::Player(double x, double y, size_t level_width, size_t lifes = DefaultLifesCount, size_t score = 0)
     : Entity(x, y, DefaultXVelocity, DefaultYVelocity, DefaultXAcceleration, DefaultYAcceleration),

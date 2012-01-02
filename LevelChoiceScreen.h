@@ -3,7 +3,7 @@
 #include "StdAfx.h"
 
 #include "AppState.h"
-#include "Sprite.h"
+#include "video/Sprite.h"
 
 // zapowiedź klasy (forward declaration)
 class Player;

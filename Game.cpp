@@ -1,17 +1,17 @@
 #include "StdAfx.h"
-#include <boost/pointer_cast.hpp>
 
-#include "Game.h"
 #include "Engine.h"
+#include "video/Text.h"
+#include "video/Sprite.h"
 #include "entity/EntityFactory.h"
-#include "Text.h"
+#include "entity/Creator.h"
+#include "entity/SavePoint.h"
+#include "entity/Misc.h"
+#include "TransitionEffect.h"
 #include "HallOfFame.h"
 #include "ScoreSubmit.h"
 #include "LevelChoiceScreen.h"
-#include "Creator.h"
-#include "entity/SavePoint.h"
-#include "TransitionEffect.h"
-#include "entity/Misc.h"
+#include "Game.h"
 
 
 Game::~Game() {
@@ -75,7 +75,7 @@ void Game::Init() {
         // ładowanie poziomu i sprite'ów planszy
         m_level.reset(new Level());
         m_level->LoadFromFile("data/" + m_level_name + ".lvl");
-        if (!m_level->GetLoaded()) {
+        if (!m_level->Loaded()) {
             m_level_name = "1";
             m_level->LoadFromFile("data/" + m_level_name + ".lvl");
         }

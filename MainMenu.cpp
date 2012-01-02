@@ -1,9 +1,8 @@
 #include "StdAfx.h"
 
 #include "MainMenu.h"
-#include "Text.h"
+#include "video/Text.h"
 #include "Engine.h"
-//#include "Game.h"
 #include "LevelChoiceScreen.h"
 #include "HallOfFame.h"
 #include "TransitionEffect.h"

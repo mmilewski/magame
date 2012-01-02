@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 
-#include "Sprite.h"
+#include "video/Sprite.h"
 #include "SavePoint.h"
 
 SavePoint::SavePoint(double x, double y)

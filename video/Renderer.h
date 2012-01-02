@@ -2,8 +2,8 @@
 #define RENDERER_H_
 #include "StdAfx.h"
 
-#include "BasicMathTypes.h"
-#include "Aabb.h"
+#include "math/BasicMathTypes.h"
+#include "math/Aabb.h"
 #include "Types.h"
 
 class Renderer {

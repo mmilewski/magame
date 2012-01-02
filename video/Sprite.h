@@ -2,7 +2,7 @@
 #define SPRITE_H_
 #include "StdAfx.h"
 
-#include "BasicMathTypes.h"
+#include "math/BasicMathTypes.h"
 #include "SpriteConfig.h"
 
 class Sprite;
