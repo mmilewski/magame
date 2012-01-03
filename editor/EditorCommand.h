@@ -32,7 +32,8 @@ class PlatformEditorCommand : public EditorCommand {
 public:
     explicit PlatformEditorCommand(const Position& start, const Position& end)
       : m_is_ready(false),
-        m_beg(start), m_end(end) {
+        m_beg(start), m_end(end),
+        m_saved_fields() {
     }
 
     virtual void Execute(Editor* editor);
@@ -54,13 +55,15 @@ public:
     explicit SetFieldCommand(const Position& pos, FT::FieldType field)
       : m_is_ready(false),
         m_pos(pos),
-        m_field(field) {
+        m_field(field),
+        m_saved_field(FT::None) {
     }
 
     explicit SetFieldCommand(size_t x, size_t y, FT::FieldType field)
       : m_is_ready(false),
         m_pos(Position(x, y)),
-        m_field(field) {
+        m_field(field),
+        m_saved_field(FT::None) {
     }
 
     virtual void Execute(Editor* editor);
@@ -80,7 +83,8 @@ typedef boost::shared_ptr<AddEntityCommand> AddEntityCommandPtr;
 class AddEntityCommand : public EditorCommand {
 public:
     explicit AddEntityCommand(const LevelEntityData& entity_data)
-      : m_entity_data(entity_data) {
+      : m_entity_data(entity_data),
+        m_entity() {
     }
 
     virtual void Execute(Editor* editor);

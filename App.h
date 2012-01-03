@@ -2,10 +2,12 @@
 
 #include "Game.h"
 
-class App {
+class App : boost::noncopyable {
 public:
     explicit App(bool fullscreen_mode) 
-        : m_fullscreen(fullscreen_mode) {
+        : m_fullscreen(fullscreen_mode),
+          m_screen(NULL),
+          m_app_state() {
     }
 
     void Run();

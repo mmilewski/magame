@@ -10,24 +10,40 @@
 #include "entity/Entity.h"
 #include "AppState.h"
 
-class LevelChoiceScreen;
+#include <LevelChoiceScreen.h>
+
 class Level;
 typedef boost::shared_ptr<Level> LevelPtr;
 
 class Game : public AppState, public boost::enable_shared_from_this<Game> {
 public:
     explicit Game(const std::string& level_name, PlayerPtr player) 
-        : m_should_load_when_active_again(false),
+        : m_saved_player(),
+          m_saved_stored_player_pos_x(1.0),
+          m_should_load_when_active_again(false),
           m_player(player),
+          m_entities(),
+          m_entities_to_create(),
+          m_level(),
+          m_level_view(),
           m_stored_player_pos_x(9.0),
-          m_level_name(level_name) {
+          m_level_name(level_name),
+          m_next_app_state(),
+          m_level_choice_screen() {
     }
     explicit Game(LevelPtr level, PlayerPtr player) 
-        : m_should_load_when_active_again(false),
+        : m_saved_player(),
+          m_saved_stored_player_pos_x(1.0),
+          m_should_load_when_active_again(false),
           m_player(player),
+          m_entities(),
+          m_entities_to_create(),
           m_level(level),
+          m_level_view(),
           m_stored_player_pos_x(9.0),
-          m_level_name(level->GetName()) {
+          m_level_name(level->GetName()),
+          m_next_app_state(),
+          m_level_choice_screen() {
     }
 
     ~Game();
@@ -83,7 +99,7 @@ private:
     std::string m_level_name;
     AppStatePtr m_next_app_state;
     
-    boost::shared_ptr<LevelChoiceScreen> m_level_choice_screen;
+    LevelChoiceScreenPtr m_level_choice_screen;
 };
 
 typedef boost::shared_ptr<Game> GamePtr;

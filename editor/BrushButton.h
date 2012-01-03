@@ -14,6 +14,7 @@ public:
           m_brush(brush)  {
     }
     BrushPtr  GetBrush()  const    { return m_brush; }
+
 private:
     BrushPtr m_brush;
 };

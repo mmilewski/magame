@@ -7,6 +7,8 @@
 // Klasa bazowa dla klas, które będą dodawać kreatory
 class CreatorProducer {
 public:
+    virtual ~CreatorProducer() {}
+
     void AddCreator(CreatorPtr creator) {
         m_creators.push_back(creator);
     }

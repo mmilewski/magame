@@ -16,7 +16,7 @@ void App::ProcessEvents() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
 //         if (event.type == SDL_KEYDOWN && event.key.keysym.sym==SDLK_e) {
-//             m_app_state.reset(new Show);
+//             m_app_state.reset(new demo::Show);
 //             m_app_state->Init();
 //             m_app_state->Start();
 //             return;

@@ -3,6 +3,7 @@
 #include "AppState.h"
 #include "Types.h"
 
+
 class TransitionEffect;
 typedef boost::shared_ptr<TransitionEffect> TransitionEffectPtr;
 
@@ -15,7 +16,8 @@ typedef boost::shared_ptr<TransitionEffect> tefPtr;
 typedef boost::shared_ptr<tefFluent> tefFluentPtr;
 
 
-class TransitionEffect : public AppState {
+class TransitionEffect : public AppState,
+                         boost::noncopyable {
     TransitionEffectType::Type m_effect_type;     // typ efektu
     AppStatePtr m_from_state;             // stan, z którego robimy przejście
     AppStatePtr m_to_state;               // stan, do którego robimy przejœcie. Zostanie zwrócony po zakończeniu efektu
@@ -37,6 +39,8 @@ class TransitionEffect : public AppState {
 public:
     TransitionEffect(TransitionEffectType::Type effect_type)
         : m_effect_type(effect_type),
+          m_from_state(),
+          m_to_state(),
           m_duration(1),
           m_delay_before(0),
           m_delay_after(0),
@@ -52,9 +56,21 @@ public:
     }
 
     TransitionEffect(AppStatePtr from_state, AppStatePtr to_state, double duration)
-        : m_from_state(from_state),
+        : m_effect_type(TransitionEffectType::UNKNOWN),
+          m_from_state(from_state),
           m_to_state(to_state),
-          m_duration(duration) {
+          m_duration(duration),
+          m_delay_before(0),
+          m_delay_after(0),
+          m_start_fade_alpha(0),
+          m_end_fade_alpha(0),
+          m_blades_count(0),
+          m_rot_angle(0),
+          m_current_fade_alpha(0),
+          m_quadric(0),
+          m_sweep_angle(0),
+          m_current_rot_angle(0),
+          m_timer(0) {
     }
     
     ~TransitionEffect();

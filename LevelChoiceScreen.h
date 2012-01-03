@@ -9,8 +9,11 @@
 class Player;
 typedef boost::shared_ptr<Player> PlayerPtr;
 
+class LevelChoiceScreen;
+typedef boost::shared_ptr<LevelChoiceScreen> LevelChoiceScreenPtr;
 
-class LevelChoiceScreen: public AppState, public boost::enable_shared_from_this<LevelChoiceScreen> {
+class LevelChoiceScreen: public AppState,
+                         public boost::enable_shared_from_this<LevelChoiceScreen> {
 public:
     explicit LevelChoiceScreen(PlayerPtr player);
     virtual ~LevelChoiceScreen();
@@ -75,7 +78,7 @@ private:
     double m_tile_height;            // wysokość kafla na ekranie
 
     PlayerPtr m_player;             // wskaźnik na gracza, który przekażemy do instancji gry
-    boost::shared_ptr<AppState> m_next_app_state;
+    AppStatePtr m_next_app_state;
 };
 
 #endif

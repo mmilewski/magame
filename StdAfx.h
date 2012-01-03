@@ -31,6 +31,7 @@
 #include <boost/operators.hpp>
 #include <boost/bind.hpp>
 #include <boost/pointer_cast.hpp>
+#include <boost/noncopyable.hpp>
 
 #include <string>
 #include <vector> 

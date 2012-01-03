@@ -9,7 +9,8 @@
 class Renderer {
 public:
     explicit Renderer() 
-        : m_tile_width(0.05),
+        : m_texture(0xCAFE),
+          m_tile_width(0.05),
           m_tile_height(0.05) {    
     }
 

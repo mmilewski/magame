@@ -17,14 +17,21 @@ public:
     explicit Editor(LevelPtr level)
         : m_next_app_state(),
           m_in_game(false),
+          m_game(),
+          m_brush(),
           m_gui(new EditorGui),
           m_is_gui_visible(true),
           m_level(level),
+          m_level_view(),
           m_viewer_offset_x(0),                            // Update zadba o poprawną wartość
           m_pointer_x(0), m_pointer_y(0),
           m_pointer_window_x(0), m_pointer_window_y(0),
-          m_keys_down(SDLK_LAST, false)                    // Wszystkie klawisze puszczone
-        {
+          m_player_data(),
+          m_entities(),
+          m_entities_to_create(),
+          m_keys_down(SDLK_LAST, false),                   // Wszystkie klawisze puszczone
+          m_commands()
+    {
             SetDone(false);
     }
 

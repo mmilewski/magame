@@ -20,7 +20,9 @@ public:
           m_is_field(true),
           m_is_entity(false),
           m_is_special(false),
-          m_field_type(ft)
+          m_field_type(ft),
+          m_entity_type(ET::UNKNOWN),
+          m_special_type(ST::UNKNOWN)
         {
     }
     explicit Brush(SpritePtr sprite, ET::EntityType et)
@@ -28,7 +30,9 @@ public:
           m_is_field(false),
           m_is_entity(true),
           m_is_special(false),
-          m_entity_type(et)
+          m_field_type(FT::None),
+          m_entity_type(et),
+          m_special_type(ST::UNKNOWN)
         {
     }
     explicit Brush(SpritePtr sprite, ST::SpecialType st)
@@ -36,6 +40,8 @@ public:
           m_is_field(false),
           m_is_entity(false),
           m_is_special(true),
+          m_field_type(FT::None),
+          m_entity_type(ET::UNKNOWN),
           m_special_type(st)
         {
     }

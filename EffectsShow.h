@@ -1,6 +1,7 @@
 #ifndef __EFFECTS_SHOW_H__
 #define __EFFECTS_SHOW_H__
 
+namespace demo {
 
 class Show : public AppState, public boost::enable_shared_from_this<Show> {
 private:
@@ -10,7 +11,12 @@ private:
     bool m_updated;
 
 public:
-    Show() : m_filled(false), m_updated(false) {}
+    Show()
+        : m_effects(),
+          m_next(),
+          m_filled(false),
+          m_updated(false) {
+    }
 
     void Init() {
         if (m_filled) {
@@ -97,4 +103,6 @@ public:
     }
 };
 
+
+} // namespace demo
 #endif // __EFFECTS_SHOW_H__

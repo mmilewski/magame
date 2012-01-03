@@ -10,6 +10,15 @@
 
 class Engine {
 public:
+    explicit Engine()
+        : m_entity_factory(),
+          m_sprite_config(),
+          m_renderer(),
+          m_sound(),
+          m_window() {
+
+    }
+
     static Engine& Get() {
         static Engine engine;
         return engine;

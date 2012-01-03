@@ -18,7 +18,8 @@ private:
 
 public:
     explicit MainMenu()
-        : m_selection(Sel::NewGame) {
+        : m_selection(Sel::NewGame),
+          m_next_app_state() {
     }
 
     void Init();
