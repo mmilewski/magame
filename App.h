@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 
-#include "Game.h"
+#include "AppState.h"
 
 class App : boost::noncopyable {
 public:
