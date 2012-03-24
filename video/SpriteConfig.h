@@ -32,7 +32,6 @@ class SpriteConfig {
 public:
     explicit SpriteConfig();
     SpriteConfigData Get(const std::string& name) const;
-    bool Contains(const std::string& name) const;
 
 private:
     std::map<std::string, SpriteConfigData> m_data;

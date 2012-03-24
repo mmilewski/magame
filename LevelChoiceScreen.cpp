@@ -10,6 +10,7 @@
 #include "video/Sprite.h"
 #include "video/SpriteConfig.h"
 #include "video/Text.h"
+#include "Utils.h"
 
 
 LevelChoiceScreen::LevelChoiceScreen(PlayerPtr player) :
@@ -135,23 +136,24 @@ void LevelChoiceScreen::Draw() {
     //         narysuj drogę z j do i
 
     // narysuj drogi
-    for (size_t from_node = 0; from_node < m_connections.size(); ++from_node) {
-        const IntVector roads = m_connections.at(from_node);
-        for (IntVector::const_iterator to_node = roads.begin(); to_node != roads.end(); ++to_node) {
-            if (from_node < (size_t)*to_node) {
-                DrawRoad(from_node, (size_t)*to_node);
-            } else if ((size_t)*to_node < from_node) {
+
+    size_t from_node = 0;
+    BOOST_FOREACH(const IntVector& roads, m_connections) {
+        BOOST_FOREACH(size_t to_node, roads) {
+            if (from_node < to_node) {
+                DrawRoad(from_node, to_node);
+            } else if (to_node < from_node) {
                 // drogi dwukierunkowe rysujemy jednokrotnie
-                const IntVector cs = m_connections.at(*to_node);
-                if (std::find(cs.begin(), cs.end(), from_node) == cs.end()) {
-                    DrawRoad(*to_node, from_node);
+                if (hasnt(m_connections.at(to_node), from_node)) {
+                    DrawRoad(to_node, from_node);
                 }
             }
         }
+        ++from_node;
     }
 
     // narysuj węzły
-    for (size_t node_id = 0; node_id < m_positions.size(); ++node_id) {
+    BOOST_FOREACH(size_t node_id, boost::irange(0u, m_positions.size())) {
         const double x = m_positions[node_id][0] - m_tile_width / 2;
         const double y = m_positions[node_id][1] - m_tile_height / 2;
 
@@ -245,13 +247,11 @@ bool LevelChoiceScreen::GoLeft() {
     // czy postać stoi w węźle
     if (m_current_from_node == m_current_to_node) {
         // czy istnieje droga w lewo
-        IntVector dst_nodes = m_connections.at(m_current_from_node); // połączenia z from_node
-        for (IntVector::const_iterator it = dst_nodes.begin(); it
-                != dst_nodes.end(); ++it) {
-            Point connection_node_pos = m_positions.at(*it);
+        BOOST_FOREACH(size_t to_node, m_connections.at(m_current_from_node)) {  // przejrzyj połączenia z from_node
+            Point connection_node_pos = m_positions.at(to_node);
             if (connection_node_pos[0] - from_node_pos[0] < 0) {
                 // istnieje droga, którą można iść
-                m_current_to_node = *it;
+                m_current_to_node = to_node;
                 return true;
             }
         }
@@ -273,13 +273,11 @@ bool LevelChoiceScreen::GoUpward() {
     // czy postać stoi w węźle
     if (m_current_from_node == m_current_to_node) {
         // czy istnieje droga w lewo
-        IntVector dst_nodes = m_connections.at(m_current_from_node); // połączenia z from_node
-        for (IntVector::const_iterator it = dst_nodes.begin(); it
-                != dst_nodes.end(); ++it) {
-            Point connection_node_pos = m_positions.at(*it);
+        BOOST_FOREACH(size_t to_node, m_connections.at(m_current_from_node)) {  // przejrzyj połączenia z from_node
+            Point connection_node_pos = m_positions.at(to_node);
             if (connection_node_pos[1] - from_node_pos[1] > 0) {
                 // istnieje droga, którą można iść
-                m_current_to_node = *it;
+                m_current_to_node = to_node;
                 return true;
             }
         }
@@ -301,13 +299,11 @@ bool LevelChoiceScreen::GoDown() {
     // czy postać stoi w węźle
     if (m_current_from_node == m_current_to_node) {
         // czy istnieje droga w lewo
-        IntVector dst_nodes = m_connections.at(m_current_from_node); // połączenia z from_node
-        for (IntVector::const_iterator it = dst_nodes.begin(); it
-                != dst_nodes.end(); ++it) {
-            Point connection_node_pos = m_positions.at(*it);
+        BOOST_FOREACH(size_t to_node, m_connections.at(m_current_from_node)) {  // przejrzyj połączenia z from_node
+            Point connection_node_pos = m_positions.at(to_node);
             if (connection_node_pos[1] - from_node_pos[1] < 0) {
                 // istnieje droga, którą można iść
-                m_current_to_node = *it;
+                m_current_to_node = to_node;
                 return true;
             }
         }
@@ -329,13 +325,11 @@ bool LevelChoiceScreen::GoRight() {
     // czy postać stoi w węźle
     if (m_current_from_node == m_current_to_node) {
         // czy istnieje droga w lewo
-        IntVector dst_nodes = m_connections.at(m_current_from_node); // połączenia z from_node
-        for (IntVector::const_iterator it = dst_nodes.begin(); it
-                != dst_nodes.end(); ++it) {
-            Point connection_node_pos = m_positions.at(*it);
+        BOOST_FOREACH(size_t to_node, m_connections.at(m_current_from_node)) {  // przejrzyj połączenia z from_node
+            Point connection_node_pos = m_positions.at(to_node);
             if (connection_node_pos[0] - from_node_pos[0] > 0) {
                 // istnieje droga, którą można iść
-                m_current_to_node = *it;
+                m_current_to_node = to_node;
                 return true;
             }
         }
@@ -351,10 +345,7 @@ bool LevelChoiceScreen::GoRight() {
 }
 
 std::string LevelChoiceScreen::NodeToLevelName(int node) {
-    if (m_node_to_level_name.find(node)!=m_node_to_level_name.end()) {
-        return m_node_to_level_name[node];
-    }
-    return "";
+    return m_node_to_level_name.count(node) ? m_node_to_level_name.at(node) : "";
 }
 
 void LevelChoiceScreen::RunLevelFromNode() {
@@ -365,9 +356,8 @@ void LevelChoiceScreen::RunLevelFromNode() {
     }
 
     const std::string level_name = NodeToLevelName(m_current_to_node);
-    boost::shared_ptr<LevelChoiceScreen> m_level_choice_screen(shared_from_this());
     Game* game_state = new Game(level_name, m_player);
-    game_state->BindLevelChoiceScreen(m_level_choice_screen);
+    game_state->BindLevelChoiceScreen(shared_from_this());
     m_next_app_state.reset(game_state);
 
     SetDone();

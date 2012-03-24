@@ -58,23 +58,23 @@ void Sound::LoadSfx(const std::string& name, const std::string& filename) {
 }
 
 void Sound::PlayMusic(const std::string& name) {
-    if (m_music.find(name) == m_music.end()) {
-        std::cout << "Unknown music '" << name << "'\n";
+    if (m_music.count(name)) {
+       Mix_PlayMusic(m_music.at(name), -1);
     }
     else {
-        Mix_PlayMusic(m_music[name], -1);
+       std::cout << "Unknown music '" << name << "'\n";
     }
 }
 
 void Sound::PlaySfx(const std::string& name) {
-    if (m_sfx.find(name) == m_sfx.end()) {
-        std::cout << "Unknown sfx '" << name << "'\n";
-    }
-    else {
-        if (Mix_PlayChannel(-1, m_sfx[name], 0) == -1) { 
+    if (m_sfx.count(name)) {
+        if (Mix_PlayChannel(-1, m_sfx[name], 0) == -1) {
             std::cout <<"Unable to play sfx: '" << name << "'\n";
         }
-    }    
+    }
+    else {
+        std::cout << "Unknown sfx '" << name << "'\n";
+    }
 }
 
 void Sound::HaltMusic() {

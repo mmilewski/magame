@@ -40,21 +40,21 @@ void EnsureEntityTypeToStringMapping() {
 std::string EntityTypeAsString(ET::EntityType et) {
     EnsureEntityTypeToStringMapping();
 
-    if (et_to_str.find(et) == et_to_str.end()) {
-        std::stringstream ss;
-        ss << "Nie znaleziono ciągu znaków dla " << et;
-        throw std::invalid_argument(ss.str());
+    if (et_to_str.count(et)) {
+       return et_to_str.at(et);
     }
-    return et_to_str.at(et);
+    std::stringstream ss;
+    ss << "Nie znaleziono ciągu znaków dla " << et;
+    throw std::invalid_argument(ss.str());
 }
 
 ET::EntityType StringAsEntityType(std::string str) {
     EnsureEntityTypeToStringMapping();
 
-    if (str_to_et.find(str) == str_to_et.end()) {
-        std::stringstream ss;
-        ss << "Nie znaleziono typu jednostki dla ciągu " << str;
-        throw std::invalid_argument(ss.str());
+    if (str_to_et.count(str)) {
+        return str_to_et.at(str);
     }
-    return str_to_et.at(str);
+    std::stringstream ss;
+    ss << "Nie znaleziono typu jednostki dla ciągu " << str;
+    throw std::invalid_argument(ss.str());
 }

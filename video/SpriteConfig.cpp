@@ -51,15 +51,11 @@ SpriteConfig::SpriteConfig() {
 }
 
 SpriteConfigData SpriteConfig::Get(const std::string& name) const {
-    if (Contains(name)) {
-        return m_data.find(name)->second;
+    if (m_data.count(name)) {
+        return m_data.at(name);
     }
     std::cerr << "Config not found: " << name << std::endl;
     throw("Config not found: " + name);
-}
-
-bool SpriteConfig::Contains(const std::string& name) const {
-    return (m_data.find(name) != m_data.end());
 }
 
 void SpriteConfig::Insert(const std::string& name, const SpriteConfigData& data) {

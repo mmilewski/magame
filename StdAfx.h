@@ -35,7 +35,9 @@
 #include <boost/noncopyable.hpp>
 #include <boost/foreach.hpp>
 
+#include <boost/range/irange.hpp>
 #include <boost/range/algorithm/for_each.hpp>
+#include <boost/range/algorithm/find.hpp>
 #include <boost/range/algorithm/find_if.hpp>
 #include <boost/range/algorithm/remove.hpp>
 #include <boost/range/algorithm/remove_if.hpp>
