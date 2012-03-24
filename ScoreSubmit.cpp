@@ -35,8 +35,8 @@ void ScoreSubmit::Draw() {
         std::pair<double, double> pos = LetterPosition(ch);
         if (ch == m_highlighted_char) {
             Engine::Get().GetRenderer()->DrawQuad(pos.first - 0.005, pos.second - 0.005, 
-                                               pos.first + 0.055, pos.second + 0.055, 
-                                               1,0,0,1);
+                                                  pos.first + 0.055, pos.second + 0.055,
+                                                  1,0,0,1);
         }
         t.DrawLetter(ch, pos.first, pos.second);
     }
@@ -48,8 +48,8 @@ void ScoreSubmit::Draw() {
 
 std::pair<double, double> ScoreSubmit::LetterPosition(char ch) {
     int index = ch - 'a';
-    int col = index % 7;
-    int row = index / 7;
+    int col = index % 7,
+        row = index / 7;
 
     return std::make_pair(0.25 + col * 0.07, 
                           0.45 - row * 0.07);

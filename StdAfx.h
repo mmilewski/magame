@@ -32,10 +32,15 @@
 #include <boost/bind.hpp>
 #include <boost/pointer_cast.hpp>
 #include <boost/noncopyable.hpp>
+#include <boost/foreach.hpp>
+
+#include <boost/range/algorithm/for_each.hpp>
+#include <boost/range/algorithm/find_if.hpp>
 
 #include <string>
 #include <vector> 
 #include <list>
+#include <set>
 #include <map>
 #include <algorithm>
 #include <utility>

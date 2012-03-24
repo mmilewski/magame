@@ -6,7 +6,9 @@ env = Environment()
 env.Append(CPPPATH = ['./', '/opt/boost/include/', '/usr/include/', ])
 env.Append(LIBPATH = [])
 
-env.Append(CPPDEFINES = {'DEBUG_BUILD' : '1'})
+env.Append(CPPDEFINES = {'DEBUG_BUILD':1,
+                         'BOOST_PP_VARIADICS_MSVC':0,
+                        })
 
 env.Append(CPPFLAGS = Split('-std=c++0x -g -ggdb'))
 env.Append(CPPFLAGS = Split('-W -Wall -Wextra -pedantic -Woverloaded-virtual -Wnon-virtual-dtor -Wpointer-arith'))

@@ -54,9 +54,9 @@ void Level::SaveEntitiesToFile(const std::string& filename) {
     }
     outfile.precision(3);
     outfile << m_player_data.name << "\t" << m_player_data.x << "\t" << m_player_data.y << std::endl;
-    for (std::list<LevelEntityData>::const_iterator it=m_entities_to_create.begin();
-         it != m_entities_to_create.end(); ++it) {
-        outfile << (*it).name << "\t" << (*it).x << "\t" << (*it).y << std::endl;
+
+    BOOST_FOREACH(const LevelEntityData& data, m_entities_to_create) {
+        outfile << data.name << "\t" << data.x << "\t" << data.y << std::endl;
     }
     outfile.close();
 }

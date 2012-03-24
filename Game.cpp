@@ -109,8 +109,7 @@ void Game::Init() {
     const LevelEntityData player_data = m_level->GetPlayerData();
     if (!m_player) {
         if (player_data.name == "player") {
-            m_player.reset(new Player(player_data.x, player_data.y, m_level->GetWidth(),
-                                      3, 0));
+            m_player.reset(new Player(player_data.x, player_data.y, m_level->GetWidth(), /*lifes*/3, /*score*/0));
             Engine& engine = Engine::Get();
             m_player->SetSprites(SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_left"))),
                                  SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_right"))),
@@ -344,18 +343,17 @@ void Game::ExecuteCreators() {
     m_player->DropAllCreators();
 
     // pobierz kreatory z jednostek
-    for (std::vector<EntityPtr>::iterator it = m_entities.begin(); it != m_entities.end(); ++it) {
-        EntityPtr e = *it;
-        if (!e->IsDead()) {
-            std::list<CreatorPtr> ent_c = e->GetCreators();
+    BOOST_FOREACH(EntityPtr entity, m_entities) {
+        if (!entity->IsDead()) {
+            std::list<CreatorPtr> ent_c = entity->GetCreators();
             creators.splice(creators.end(), ent_c);
-            e->DropAllCreators();
+            entity->DropAllCreators();
         }
     }
 
     // uruchom wszystkie kreatory
-    for (std::list<CreatorPtr>::iterator it = creators.begin(); it != creators.end(); ++it) {
-        (*it)->Create(*this);
+    BOOST_FOREACH(CreatorPtr cr, creators) {
+        cr->Create(*this);
     }
 }
 
@@ -366,16 +364,15 @@ void Game::SweepAndAddEntities(double /* dt */) {
 
     // dodaj kolejne jednostki z listy do gry
     const double distance_of_creation = Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount();
-    while (m_entities_to_create.empty() == false) {
-        if (m_entities_to_create.front().x - m_player->GetX() < distance_of_creation) {
-            LevelEntityData data = m_entities_to_create.front();
-            m_entities_to_create.pop_front();
-            EntityPtr e = Engine::Get().GetEntityFactory()->CreateEntity(data.name, data.x, data.y);
-            m_entities.push_back(e);
-        } else {
-            break;
-        }
-    }
+    auto isTooFar = [&](const LevelEntityData& data) { return data.x - m_player->GetX() > distance_of_creation; };
+    auto firstEntityTooFar = boost::find_if(m_entities_to_create, isTooFar);
+    std::for_each(m_entities_to_create.begin(),
+                  firstEntityTooFar,
+                  [&](const LevelEntityData& data)->void {
+                      EntityPtr e = Engine::Get().GetEntityFactory()->CreateEntity(data.name, data.x, data.y);
+                      m_entities.push_back(e);
+                  });
+    m_entities_to_create.erase(m_entities_to_create.begin(), firstEntityTooFar);
 }
 
 void Game::BindLevelChoiceScreen(const boost::shared_ptr<LevelChoiceScreen>& screen) {
@@ -424,10 +421,9 @@ bool Game::Update(double dt) {
     }
 
     // uaktualnij stan jednostek
-    for (std::vector<EntityPtr>::iterator it = m_entities.begin(); it != m_entities.end(); ++it) {
-        EntityPtr e = *it;
-        if (e->IsAlive()) {
-            e->Update(dt, m_level);
+    BOOST_FOREACH(auto& entity, m_entities) {
+        if (entity->IsAlive()) {
+            entity->Update(dt, m_level);
         }
     }
 
