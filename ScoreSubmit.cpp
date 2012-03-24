@@ -114,9 +114,9 @@ void ScoreSubmit::StoreInFile() {
     {
         Entry player_entry;
         player_entry.points = m_points;
-        for (size_t i = 0; i < m_player_nickname.size(); ++i) {
-            if (m_player_nickname.at(i) != '_') {
-                player_entry.name += m_player_nickname.at(i);
+        BOOST_FOREACH(char c, m_player_nickname) {
+            if (c != '_') {
+                player_entry.name += c;
             }
         }
         entries.push_back(player_entry);
@@ -125,7 +125,7 @@ void ScoreSubmit::StoreInFile() {
         const unsigned max_records_to_save = 10;
         std::sort(entries.begin(), entries.end(), [](Entry a, Entry b){return a.points > b.points;});
         std::ofstream hofWriter("data/hof.txt");
-        for (size_t i = 0; i < std::min(max_records_to_save, entries.size()); ++i) {
+        BOOST_FOREACH(size_t i, boost::irange(0u, std::min(max_records_to_save, entries.size()))) {
             hofWriter << entries.at(i).name << " " << entries.at(i).points << "\n";
         }
         hofWriter.close();

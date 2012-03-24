@@ -165,8 +165,7 @@ void Game::CheckPlayerEntitiesCollisions(double dt) {
     Aabb player_box_x = m_player->GetNextHorizontalAabb(dt);
     Aabb player_box_y = m_player->GetNextVerticalAabb(dt);
 
-    for (std::vector<EntityPtr>::iterator it = m_entities.begin(); it != m_entities.end(); ++it) {
-        EntityPtr entity = *it;
+    BOOST_FOREACH(EntityPtr entity, m_entities) {
         const ET::EntityType entity_type = entity->GetType();
 
         const int score_for_bonus = 40;   // punkty za wzięcie bonusu
@@ -484,10 +483,9 @@ void Game::Draw() {
             m_player->Draw();
 
             // narysuj pozostałe obiekty
-            for (std::vector<EntityPtr>::const_iterator it = m_entities.begin(); it != m_entities.end(); ++it) {
-                const EntityPtr e = *it;
-                if (e->IsAlive()) {
-                    e->Draw();
+            BOOST_FOREACH(EntityPtr entity, m_entities) {
+                if (entity->IsAlive()) {
+                    entity->Draw();
                 }
             }
         }

@@ -46,9 +46,9 @@ void EditorGui::Draw() {
     Engine::Get().GetRenderer()->DrawQuad(0, 0, 1, 1, 0,0,0,.7);
 
     // widoczne kontrolki
-    for (BrushButtonContrainer::const_iterator i=m_buttons.begin(); i!=m_buttons.end(); ++i) {
-        if ((*i)->IsVisible() && (*i)!=m_hovered_button) {
-            (*i)->Draw();
+    BOOST_FOREACH(const auto& button, m_buttons) {
+        if (button->IsVisible() && button!=m_hovered_button) {
+            button->Draw();
         }
     }
 
@@ -69,9 +69,9 @@ void EditorGui::Update(double dt) {
 bool EditorGui::OnMouseMove(double x, double y) {
     const Aabb cursor_aabb = Aabb(x, y, x+.02, y+0.02);
     m_hovered_button.reset();
-    for (BrushButtonContrainer::const_iterator i=m_buttons.begin(); i!=m_buttons.end(); ++i) {
-        if ((*i)->IsVisible() && (*i)->GetAabb().Collides(cursor_aabb)) {
-            m_hovered_button = *i;
+    BOOST_FOREACH(const auto& button, m_buttons) {
+        if (button->IsVisible() && button->GetAabb().Collides(cursor_aabb)) {
+            m_hovered_button = button;
         }
     }
     return bool(m_hovered_button);
