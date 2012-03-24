@@ -1,5 +1,5 @@
-#ifndef __TEXT_H__
-#define __TEXT_H__
+#ifndef MAGAME_TEXT_H_INCLUDED
+#define MAGAME_TEXT_H_INCLUDED
 #include "StdAfx.h"
 
 class Text {
@@ -33,4 +33,4 @@ private:
     size_t m_layer;
 };
 
-#endif /* __TEXT_H__ */
+#endif /* MAGAME_TEXT_H_INCLUDED */

@@ -1,5 +1,5 @@
-#ifndef __ENTITY_FACTORY_H__
-#define __ENTITY_FACTORY_H__
+#ifndef MAGAME_ENTITY_FACTORY_H_INCLUDED
+#define MAGAME_ENTITY_FACTORY_H_INCLUDED
 #include "StdAfx.h"
 
 class Entity;
@@ -16,4 +16,4 @@ public:
 
 typedef boost::shared_ptr<EntityFactory> EntityFactoryPtr;
 
-#endif
+#endif /* MAGAME_ENTITY_FACTORY_H_INCLUDED */

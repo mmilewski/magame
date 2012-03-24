@@ -1,5 +1,5 @@
-#ifndef __PLAYER_H__
-#define __PLAYER_H__
+#ifndef MAGAME_PLAYER_H_INCLUDED
+#define MAGAME_PLAYER_H_INCLUDED
 #include "StdAfx.h"
 
 #include "Entity.h"
@@ -144,4 +144,4 @@ private:
 
 typedef boost::shared_ptr<Player> PlayerPtr;
 
-#endif
+#endif /* MAGAME_PLAYER_H_INCLUDED */

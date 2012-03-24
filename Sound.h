@@ -1,5 +1,5 @@
-#ifndef __SOUND_H__
-#define __SOUND_H__
+#ifndef MAGAME_SOUND_H_INCLUDED
+#define MAGAME_SOUND_H_INCLUDED
 #include "StdAfx.h"
 
 
@@ -24,4 +24,4 @@ private:
 
 typedef boost::shared_ptr<Sound> SoundPtr;
 
-#endif /* __SOUND_H__ */
+#endif /* MAGAME_SOUND_H_INCLUDED */

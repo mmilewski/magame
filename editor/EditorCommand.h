@@ -1,5 +1,5 @@
-#ifndef __EDITORCOMMAND_H_INCLUDED__
-#define	__EDITORCOMMAND_H_INCLUDED__
+#ifndef MAGAME_EDITORCOMMAND_H_INCLUDED
+#define	MAGAME_EDITORCOMMAND_H_INCLUDED
 
 #include "StdAfx.h"
 #include "entity/Entity.h"

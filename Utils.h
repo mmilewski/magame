@@ -1,5 +1,5 @@
-#ifndef __UTILS_H_INCLUDED__
-#define __UTILS_H_INCLUDED__
+#ifndef MAGAME_UTILS_H_INCLUDED
+#define MAGAME_UTILS_H_INCLUDED
 #include "StdAfx.h"
 
 

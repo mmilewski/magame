@@ -1,5 +1,5 @@
-#ifndef __CREATOR_PRODUCER_H_INCLUDED__
-#define __CREATOR_PRODUCER_H_INCLUDED__
+#ifndef MAGAME_CREATOR_PRODUCER_H_INCLUDED
+#define MAGAME_CREATOR_PRODUCER_H_INCLUDED
 #include "StdAfx.h"
 
 #include "Creator.h"

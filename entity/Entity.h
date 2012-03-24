@@ -1,5 +1,5 @@
-#ifndef __ENTITY_H__
-#define __ENTITY_H__
+#ifndef MAGAME_ENTITY_H_INCLUDED
+#define MAGAME_ENTITY_H_INCLUDED
 #include "StdAfx.h"
 
 #include "math/Aabb.h"
@@ -139,4 +139,4 @@ protected:
 
 typedef boost::shared_ptr<Entity> EntityPtr;
 
-#endif
+#endif /* MAGAME_ENTITY_H_INCLUDED */

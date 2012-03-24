@@ -1,5 +1,5 @@
-#ifndef __MUSH_ENTITY_H__
-#define __MUSH_ENTITY_H__
+#ifndef MAGAME_MUSH_ENTITY_H_INCLUDED
+#define MAGAME_MUSH_ENTITY_H_INCLUDED
 #include "StdAfx.h"
 
 #include "Types.h"
@@ -49,4 +49,4 @@ public:
 };
 typedef boost::shared_ptr<MushEntity> MushEntityPtr;
 
-#endif
+#endif /* MAGAME_MUSH_ENTITY_H_INCLUDED */

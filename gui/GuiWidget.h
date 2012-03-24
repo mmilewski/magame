@@ -1,5 +1,5 @@
-#ifndef __GUIWIDGET_H_INCLUDED__
-#define __GUIWIDGET_H_INCLUDED__
+#ifndef MAGAME_GUIWIDGET_H_INCLUDED
+#define MAGAME_GUIWIDGET_H_INCLUDED
 
 #include "math/BasicMathTypes.h"
 

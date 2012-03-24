@@ -1,5 +1,5 @@
-#ifndef __LEVEL_H__
-#define __LEVEL_H__
+#ifndef MAGAME_LEVEL_H_INCLUDED
+#define MAGAME_LEVEL_H_INCLUDED
 #include "StdAfx.h"
 
 #include "math/Aabb.h"

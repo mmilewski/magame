@@ -1,5 +1,5 @@
-#ifndef __GUI_H_INCLUDED__
-#define __GUI_H_INCLUDED__
+#ifndef MAGAME_GUI_H_INCLUDED
+#define MAGAME_GUI_H_INCLUDED
 
 class Gui;
 typedef boost::shared_ptr<Gui> GuiPtr;

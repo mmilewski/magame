@@ -1,5 +1,5 @@
-#ifndef __MISC_H_INCLUDED__
-#define __MISC_H_INCLUDED__
+#ifndef MAGAME_MISC_H_INCLUDED
+#define MAGAME_MISC_H_INCLUDED
 #include "StdAfx.h"
 
 #include "Entity.h"

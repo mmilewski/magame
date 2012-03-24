@@ -1,5 +1,5 @@
-#ifndef ENGINE_H_
-#define ENGINE_H_
+#ifndef MAGAME_ENGINE_H_INCLUDED
+#define MAGAME_ENGINE_H_INCLUDED
 #include "StdAfx.h"
 
 #include "video/SpriteConfig.h"
@@ -46,4 +46,4 @@ private:
     WindowPtr m_window;
 };
 
-#endif
+#endif /* MAGAME_ENGINE_H_INCLUDED */

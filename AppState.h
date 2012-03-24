@@ -1,5 +1,5 @@
-#ifndef __APP_STATE_H__
-#define __APP_STATE_H__
+#ifndef MAGAME_APP_STATE_H_INCLUDED
+#define MAGAME_APP_STATE_H_INCLUDED
 #include "StdAfx.h"
 
 
@@ -52,4 +52,4 @@ private:
 class AppState;
 typedef boost::shared_ptr<AppState> AppStatePtr;
 
-#endif /* __APP_STATE_H__ */
+#endif /* MAGAME_APP_STATE_H_INCLUDED */

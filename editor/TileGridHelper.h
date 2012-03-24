@@ -1,5 +1,5 @@
-#ifndef TILEGRIDHELPER_H
-#define	TILEGRIDHELPER_H
+#ifndef MAGAME_TILEGRIDHELPER_H_INCLUDED
+#define MAGAME_TILEGRIDHELPER_H_INCLUDED
 
 #include "StdAfx.h"
 #include "math/BasicMathTypes.h"
@@ -26,4 +26,4 @@ private:
     Position m_beg, m_end;
 };
 
-#endif
+#endif /* MAGAME_TILEGRIDHELPER_H_INCLUDED */

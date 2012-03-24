@@ -1,5 +1,5 @@
-#ifndef __EFFECTS_SHOW_H__
-#define __EFFECTS_SHOW_H__
+#ifndef MAGAME_EFFECTS_SHOW_H_INCLUDED
+#define MAGAME_EFFECTS_SHOW_H_INCLUDED
 
 namespace demo {
 
@@ -105,4 +105,4 @@ public:
 
 
 } // namespace demo
-#endif // __EFFECTS_SHOW_H__
+#endif // MAGAME_EFFECTS_SHOW_H_INCLUDED

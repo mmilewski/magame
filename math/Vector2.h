@@ -1,5 +1,5 @@
-#ifndef __VECTOR2_H_INCLUDED__
-#define __VECTOR2_H_INCLUDED__
+#ifndef MAGAME_VECTOR2_H_INCLUDED
+#define MAGAME_VECTOR2_H_INCLUDED
 
 struct Vector2
     : boost::additive<Vector2, boost::multiplicative2<Vector2, double> >
@@ -27,4 +27,4 @@ private:
 
 std::ostream& operator<<(std::ostream& os, const Vector2& v);
 
-#endif // __VECTOR2_H_INCLUDED__
+#endif // MAGAME_VECTOR2_H_INCLUDED

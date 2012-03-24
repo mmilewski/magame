@@ -1,5 +1,5 @@
-#ifndef __TYPES_H__
-#define __TYPES_H__
+#ifndef MAGAME_TYPES_H_INCLUDED
+#define MAGAME_TYPES_H_INCLUDED
 #include "StdAfx.h"
 
 namespace PS {

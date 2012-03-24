@@ -1,5 +1,5 @@
-#ifndef __GAME_H_INCLUDED__
-#define __GAME_H_INCLUDED__
+#ifndef MAGAME_GAME_H_INCLUDED
+#define MAGAME_GAME_H_INCLUDED
 #include "StdAfx.h"
 
 

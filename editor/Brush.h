@@ -1,5 +1,5 @@
-#ifndef __BRUSH_H_INCLUDED__
-#define __BRUSH_H_INCLUDED__
+#ifndef MAGAME_BRUSH_H_INCLUDED
+#define MAGAME_BRUSH_H_INCLUDED
 
 #include "StdAfx.h"
 #include "video/Sprite.h"

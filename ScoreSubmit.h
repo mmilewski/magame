@@ -1,5 +1,5 @@
-#ifndef __SCORE_SUBMIT_H__
-#define __SCORE_SUBMIT_H__
+#ifndef MAGAME_SCORE_SUBMIT_H_INCLUDED
+#define MAGAME_SCORE_SUBMIT_H_INCLUDED
 #include "StdAfx.h"
 
 #include "AppState.h"
@@ -41,4 +41,4 @@ private:
 
 typedef boost::shared_ptr<ScoreSubmit> ScoreSubmitPtr; 
 
-#endif /* __SCORE_SUBMIT_H__ */
+#endif /* MAGAME_SCORE_SUBMIT_H_INCLUDED */

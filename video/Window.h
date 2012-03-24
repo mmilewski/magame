@@ -1,5 +1,5 @@
-#ifndef __WINDOW_H__
-#define __WINDOW_H__
+#ifndef MAGAME_WINDOW_H_INCLUDED
+#define MAGAME_WINDOW_H_INCLUDED
 #include "StdAfx.h"
 
 class Window {
@@ -36,4 +36,4 @@ private:
 
 typedef boost::shared_ptr<Window> WindowPtr;
 
-#endif /* __WINDOW_H__ */
+#endif /* MAGAME_WINDOW_H_INCLUDED */

@@ -1,5 +1,5 @@
-#ifndef __AABB_H__
-#define __AABB_H__
+#ifndef MAGAME_AABB_H_INCLUDED
+#define MAGAME_AABB_H_INCLUDED
 #include "StdAfx.h"
 
 
@@ -48,5 +48,5 @@ private:
 
 //typedef boost::shared_ptr<Aabb> AabbPtr;
 
-#endif
+#endif /* MAGAME_AABB_H_INCLUDED */
 

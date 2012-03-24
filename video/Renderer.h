@@ -1,5 +1,5 @@
-#ifndef RENDERER_H_
-#define RENDERER_H_
+#ifndef MAGAME_RENDERER_H_INCLUDED
+#define MAGAME_RENDERER_H_INCLUDED
 #include "StdAfx.h"
 
 #include "math/BasicMathTypes.h"
@@ -43,4 +43,4 @@ private:
 
 typedef boost::shared_ptr<Renderer> RendererPtr;
 
-#endif /* RENDERER_H_ */
+#endif /* MAGAME_RENDERER_H_INCLUDED */

@@ -1,5 +1,5 @@
-#ifndef __FADE_EFFECT_H_INCLUDED__
-#define __FADE_EFFECT_H_INCLUDED__
+#ifndef MAGAME_FADE_EFFECT_H_INCLUDED
+#define MAGAME_FADE_EFFECT_H_INCLUDED
 #include "AppState.h"
 #include "Types.h"
 

@@ -1,5 +1,5 @@
-#ifndef __EDITOR_H_INCLUDED__
-#define __EDITOR_H_INCLUDED__
+#ifndef MAGAME_EDITOR_H_INCLUDED
+#define MAGAME_EDITOR_H_INCLUDED
 
 #include "AppState.h"
 #include "Game.h"

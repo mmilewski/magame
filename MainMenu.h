@@ -1,5 +1,5 @@
-#ifndef __MAIN_MENU_H__
-#define __MAIN_MENU_H__
+#ifndef MAGAME_MAIN_MENU_H_INCLUDED
+#define MAGAME_MAIN_MENU_H_INCLUDED
 #include "StdAfx.h"
 
 #include "AppState.h"
@@ -36,4 +36,4 @@ private:
     AppStatePtr m_next_app_state;
 };
 
-#endif /* __MAIN_MENU_H__ */
+#endif /* MAGAME_MAIN_MENU_H_INCLUDED */

@@ -1,5 +1,5 @@
-#ifndef SPRITE_H_
-#define SPRITE_H_
+#ifndef MAGAME_SPRITE_H_INCLUDED
+#define MAGAME_SPRITE_H_INCLUDED
 #include "StdAfx.h"
 
 #include "math/BasicMathTypes.h"
@@ -51,4 +51,4 @@ private:
 };
 
 
-#endif /* SPRITE_H_ */
+#endif /* MAGAME_SPRITE_H_INCLUDED */

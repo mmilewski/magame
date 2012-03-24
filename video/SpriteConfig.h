@@ -1,5 +1,5 @@
-#ifndef SPRITECONFIG_H_
-#define SPRITECONFIG_H_
+#ifndef MAGAME_SPRITECONFIG_H_INCLUDED
+#define MAGAME_SPRITECONFIG_H_INCLUDED
 #include "StdAfx.h"
 
 #include "Types.h"
@@ -40,4 +40,4 @@ private:
 
 typedef boost::shared_ptr<SpriteConfig> SpriteConfigPtr;
 
-#endif /* SPRITECONFIG_H_ */
+#endif /* MAGAME_SPRITECONFIG_H_INCLUDED */

@@ -1,5 +1,5 @@
-#ifndef __TWIN_SHOT_UPGRADE_H_INCLUDED__
-#define __TWIN_SHOT_UPGRADE_H_INCLUDED__
+#ifndef MAGAME_TWIN_SHOT_UPGRADE_H_INCLUDED
+#define MAGAME_TWIN_SHOT_UPGRADE_H_INCLUDED
 #include "StdAfx.h"
 
 #include "entity/Entity.h"

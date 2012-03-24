@@ -1,5 +1,5 @@
-#ifndef _CREATOR_H_INCLUDED__
-#define _CREATOR_H_INCLUDED__
+#ifndef MAGAME_CREATOR_H_INCLUDED
+#define MAGAME_CREATOR_H_INCLUDED
 #include "StdAfx.h"
 
 class Game;
@@ -12,4 +12,4 @@ public:
 
 typedef boost::shared_ptr<Creator> CreatorPtr;
 
-#endif
+#endif /* MAGAME_CREATOR_H_INCLUDED */

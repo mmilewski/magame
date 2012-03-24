@@ -1,5 +1,5 @@
-#ifndef __HALL_OF_FAME_H__
-#define __HALL_OF_FAME_H__
+#ifndef MAGAME_HALL_OF_FAME_H_INCLUDED
+#define MAGAME_HALL_OF_FAME_H_INCLUDED
 #include "StdAfx.h"
 
 #include "AppState.h"
@@ -38,4 +38,4 @@ private:
     std::vector<Entry> m_entries;
 };
 
-#endif /* __HALL_OF_FAME_H__ */
+#endif /* MAGAME_HALL_OF_FAME_H_INCLUDED */

@@ -1,5 +1,5 @@
-#ifndef __SPRITE_GRID_H__
-#define __SPRITE_GRID_H__
+#ifndef MAGAME_SPRITE_GRID_H_INCLUDED
+#define MAGAME_SPRITE_GRID_H_INCLUDED
 #include "StdAfx.h"
 
 #include "Sprite.h"
@@ -25,4 +25,4 @@ private:
 };
 
 
-#endif
+#endif /* MAGAME_SPRITE_GRID_H_INCLUDED */

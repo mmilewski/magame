@@ -1,5 +1,5 @@
-#ifndef __PLAYERBULLET_ENTITY_H__
-#define __PLAYERBULLET_ENTITY_H__
+#ifndef MAGAME_PLAYERBULLET_ENTITY_H_INCLUDED
+#define MAGAME_PLAYERBULLET_ENTITY_H_INCLUDED
 #include "StdAfx.h"
 
 #include "Entity.h"
@@ -59,4 +59,4 @@ private:
 };
 typedef boost::shared_ptr<PlayerBulletEntity> PlayerBulletEntityPtr;
 
-#endif
+#endif /* MAGAME_PLAYERBULLET_ENTITY_H_INCLUDED */

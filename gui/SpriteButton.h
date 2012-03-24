@@ -1,5 +1,5 @@
-#ifndef __SPRITEBUTTON_H__INCLUDED__
-#define __SPRITEBUTTON_H__INCLUDED__
+#ifndef MAGAME_SPRITEBUTTON_H__INCLUDED
+#define MAGAME_SPRITEBUTTON_H__INCLUDED
 
 #include "GuiWidget.h"
 #include "video/Sprite.h"

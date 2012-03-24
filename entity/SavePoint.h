@@ -1,5 +1,5 @@
-#ifndef __SAVEPOINT_H_INCLUDED__
-#define	__SAVEPOINT_H_INCLUDED__
+#ifndef MAGAME_SAVEPOINT_H_INCLUDED
+#define	MAGAME_SAVEPOINT_H_INCLUDED
 
 #include "Entity.h"
 
