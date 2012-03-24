@@ -23,34 +23,51 @@ void Game::ProcessEvents(const SDL_Event& event) {
         return;
     }
 
+#define WAS_PRESSED(thekey) event.type == SDL_KEYDOWN && event.key.keysym.sym == thekey
+#define WAS_RELEASED(thekey) event.type == SDL_KEYUP && event.key.keysym.sym == thekey
+
     // przyjrzyj zdarzenia
     if (event.type == SDL_QUIT) {
         SetDone();
-    } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
+        return;
+    } else if (WAS_PRESSED(SDLK_ESCAPE)) {
         m_next_app_state = m_level_choice_screen;
         if (m_next_app_state) {
             m_next_app_state->Init();
         }
         SetDone();
-    } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_d) {
+        return;
+    }
+
+    if (WAS_PRESSED(SDLK_d)) {
         m_player->Run();
-    } else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_d) {
+    }
+    else if (WAS_RELEASED(SDLK_d)) {
         m_player->StopRunning();
-    } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_s) {
+    }
+    else if (WAS_PRESSED(SDLK_s)) {
         if (m_player->CanShoot()) {
             m_player->FireBullet();
         }
-    } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_UP) {
+    }
+
+    if (WAS_PRESSED(SDLK_UP)) {
         m_player->Jump();
-    } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_LEFT) {
+    }
+    else if (WAS_PRESSED(SDLK_LEFT)) {
         m_player->GoLeft();
-    } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RIGHT) {
+    }
+    else if (WAS_PRESSED(SDLK_RIGHT)) {
         m_player->GoRight();
-    } else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_LEFT) {
+    }
+    else if (WAS_RELEASED(SDLK_LEFT)) {
         m_player->StopLeft();
-    } else if (event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_RIGHT) {
+    }
+    else if (WAS_RELEASED(SDLK_RIGHT)) {
         m_player->StopRight();
     }
+#undef WAS_PRESSED
+#undef WAS_RELEASED
 }
 
 void Game::Start() {
