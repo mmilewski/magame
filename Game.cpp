@@ -377,7 +377,7 @@ void Game::ExecuteCreators() {
 void Game::SweepAndAddEntities(double /* dt */) {
     // usuń martwe jednostki
     auto isEntityDead = [](EntityPtr e) { return e->IsDead(); };
-    m_entities.erase(std::remove_if(m_entities.begin(), m_entities.end(), isEntityDead), m_entities.end());
+    m_entities.erase(boost::remove_if(m_entities, isEntityDead), m_entities.end());
 
     // dodaj kolejne jednostki z listy do gry
     m_entities_to_create.sort(LevelEntityData::OrderByX);

@@ -1,18 +1,14 @@
 #include "StdAfx.h"
 
 #include "Utils.h"
+#include <boost/lexical_cast.hpp>
 
 std::string IntToStr(int number) {
-    std::ostringstream ss;
-    ss << number;
-    return ss.str();
+    return boost::lexical_cast<std::string>(number);
 }
 
 int StrToInt(const std::string& number) {
-    std::istringstream ss(number);;
-    int n;
-    ss >> n;
-    return n;
+  return boost::lexical_cast<int>(number);
 }
 
 

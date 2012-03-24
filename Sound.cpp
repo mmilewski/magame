@@ -24,7 +24,7 @@ void Sound::LoadSounds() {
     while (settings) {
         settings >> type >> name;
         std::getline(settings, filename);
-        filename.erase(std::remove(filename.begin(), filename.end(), ' '), filename.end());
+        filename.erase(boost::remove(filename, ' '), filename.end());
         if (type == "music") {
             LoadMusic(name, filename);
         }
