@@ -82,8 +82,9 @@ typedef boost::shared_ptr<AddEntityCommand> AddEntityCommandPtr;
 
 class AddEntityCommand : public EditorCommand {
 public:
-    explicit AddEntityCommand(const LevelEntityData& entity_data)
-      : m_entity_data(entity_data),
+    explicit AddEntityCommand(EntityFactory* entity_factory, const LevelEntityData& entity_data)
+      : m_entity_factory(entity_factory),
+        m_entity_data(entity_data),
         m_entity() {
     }
 
@@ -92,6 +93,7 @@ public:
     virtual bool IsReady() const;
 
 private:
+    EntityFactory* m_entity_factory;
     LevelEntityData m_entity_data;
     EntityPtr m_entity;
 };

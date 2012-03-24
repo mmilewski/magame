@@ -34,10 +34,9 @@ void Editor::Init() {
 
     m_gui->Init();
 
-    EntityFactory efactory;
     BOOST_FOREACH(const LevelEntityData& data, m_level->GetAllEntitiesToCreate()) {
         m_entities_to_create.push_back(data);
-        m_entities.push_back(efactory.CreateEntity(data));
+        m_entities.push_back(m_entity_factory->CreateEntity(data));
     }
     m_player_data = m_level->GetPlayerData();
 }
@@ -220,7 +219,7 @@ void Editor::ActionAtCoords(double x, double y) {
             const std::string name = EntityTypeAsString(entity_type);
             const LevelEntityData entity_data(name, x, y);
             RegisterAndExecuteCommand(
-                AddEntityCommandPtr(new AddEntityCommand(entity_data))
+                AddEntityCommandPtr(new AddEntityCommand(m_entity_factory.get(), entity_data))
             );
         } else if (InPaintingSpecialMode()) {
             const Brush::ST::SpecialType special_type = brush->GetSpecialType();

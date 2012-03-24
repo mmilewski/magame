@@ -20,6 +20,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <cctype>
+#include <memory>  // unique_ptr
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_opengl.h>
@@ -36,6 +37,7 @@
 
 #include <boost/range/algorithm/for_each.hpp>
 #include <boost/range/algorithm/find_if.hpp>
+#include <boost/range/algorithm/remove.hpp>
 
 #include <string>
 #include <vector> 

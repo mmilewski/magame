@@ -363,6 +363,7 @@ void Game::SweepAndAddEntities(double /* dt */) {
     m_entities.erase(std::remove_if(m_entities.begin(), m_entities.end(), isEntityDead), m_entities.end());
 
     // dodaj kolejne jednostki z listy do gry
+    m_entities_to_create.sort(LevelEntityData::OrderByX);
     const double distance_of_creation = Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount();
     auto isTooFar = [&](const LevelEntityData& data) { return data.x - m_player->GetX() > distance_of_creation; };
     auto firstEntityTooFar = boost::find_if(m_entities_to_create, isTooFar);

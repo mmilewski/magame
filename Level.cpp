@@ -19,7 +19,6 @@ Level::Level(LevelPtr level, const std::list<LevelEntityData>& entities_data, co
       m_entities_to_create(entities_data),
       m_player_data(player_data),
       m_loaded(true) {
-    m_entities_to_create.sort(LevelEntityData::OrderByX);
     if (!(m_player_data.name == "player" && m_player_data.x > 0 && m_player_data.y > 0)) {
         m_player_data.name = "player";
         m_player_data.x = 1;
@@ -55,6 +54,7 @@ void Level::SaveEntitiesToFile(const std::string& filename) {
     outfile.precision(3);
     outfile << m_player_data.name << "\t" << m_player_data.x << "\t" << m_player_data.y << std::endl;
 
+    m_entities_to_create.sort(LevelEntityData::OrderByX);
     BOOST_FOREACH(const LevelEntityData& data, m_entities_to_create) {
         outfile << data.name << "\t" << data.x << "\t" << data.y << std::endl;
     }
@@ -118,9 +118,6 @@ void Level::LoadEntitiesFromFile(const std::string& filename) {
 
         // std::cout << "[LoadEntityFromFile] " << data.name << ", " << data.x << ", " << data.y << std::endl;
     }
-
-    // posortuj wczytane rekordy
-    m_entities_to_create.sort(LevelEntityData::OrderByX);
 }
 
 

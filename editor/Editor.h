@@ -16,6 +16,7 @@ class Editor : public AppState, public boost::enable_shared_from_this<Editor> {
 public:
     explicit Editor(LevelPtr level)
         : m_next_app_state(),
+          m_entity_factory(new EntityFactory),
           m_in_game(false),
           m_game(),
           m_brush(),
@@ -120,6 +121,7 @@ private:
 
 private:
     AppStatePtr m_next_app_state;
+    std::unique_ptr<EntityFactory> m_entity_factory;  // fabryka do tworzenia jednostek
     bool m_in_game;                     // czy włączona jest gra?
     GamePtr m_game;                     // instancja gry
 
