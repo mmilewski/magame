@@ -1,3 +1,5 @@
+#include "StdAfx.h"
+
 #include "Misc.h"
 
 void Arrow::Update(double dt, LevelPtr level) {

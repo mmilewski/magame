@@ -1,5 +1,6 @@
 #ifndef MAGAME_VECTOR2_H_INCLUDED
 #define MAGAME_VECTOR2_H_INCLUDED
+#include "StdAfx.h"
 
 struct Vector2
     : boost::additive<Vector2, boost::multiplicative2<Vector2, double> >

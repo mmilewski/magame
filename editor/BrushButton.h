@@ -1,5 +1,6 @@
 #ifndef MAGAME_BRUSHBUTTON_H__INCLUDED
 #define MAGAME_BRUSHBUTTON_H__INCLUDED
+#include "StdAfx.h"
 
 #include "../gui/SpriteButton.h"
 #include "Brush.h"

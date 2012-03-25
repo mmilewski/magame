@@ -34,6 +34,7 @@
 #include <boost/pointer_cast.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/foreach.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include <boost/range/irange.hpp>
 #include <boost/range/algorithm/for_each.hpp>
@@ -43,7 +44,7 @@
 #include <boost/range/algorithm/remove_if.hpp>
 
 #include <string>
-#include <vector> 
+#include <vector>
 #include <list>
 #include <set>
 #include <map>

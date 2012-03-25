@@ -1,4 +1,5 @@
 #include "StdAfx.h"
+
 #include "TransitionEffect.h"
 #include "Engine.h"
 
@@ -89,7 +90,7 @@ void TransitionEffect::Draw() {
         glDisable(GL_LIGHTING);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        
+
         glColor4d(0, 0, 0, m_current_fade_alpha);
         glPushMatrix();
         {

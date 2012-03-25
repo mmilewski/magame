@@ -1,4 +1,5 @@
 #include "StdAfx.h"
+
 #include "Types.h"
 
 std::map<ET::EntityType, std::string> et_to_str;

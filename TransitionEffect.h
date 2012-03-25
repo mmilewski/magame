@@ -1,5 +1,7 @@
 #ifndef MAGAME_FADE_EFFECT_H_INCLUDED
 #define MAGAME_FADE_EFFECT_H_INCLUDED
+#include "StdAfx.h"
+
 #include "AppState.h"
 #include "Types.h"
 
@@ -72,7 +74,7 @@ public:
           m_current_rot_angle(0),
           m_timer(0) {
     }
-    
+
     ~TransitionEffect();
 
     static tefFluent Prepare(TransitionEffectType::Type effect_type);
@@ -97,9 +99,9 @@ public:
         m_delay_after = after;
     }
     void SetEffectType(TransitionEffectType::Type type) { m_effect_type = type; }
-    void SetFadeAlpha(double start, double end) { 
-        m_start_fade_alpha = start; 
-        m_end_fade_alpha = end; 
+    void SetFadeAlpha(double start, double end) {
+        m_start_fade_alpha = start;
+        m_end_fade_alpha = end;
     }
     void SetBladesCount(int count) { m_blades_count = count; }
     void SetRotation(double angle_in_degrees) { m_rot_angle = angle_in_degrees; }

@@ -1,5 +1,6 @@
 #ifndef MAGAME_EDITOR_H_INCLUDED
 #define MAGAME_EDITOR_H_INCLUDED
+#include "StdAfx.h"
 
 #include "AppState.h"
 #include "Game.h"
@@ -65,7 +66,7 @@ private:
 
     // Dodaje polecenie do historii, a następnie je wykonuje
     void RegisterAndExecuteCommand(EditorCommandPtr command);
-    
+
     friend class SetFieldCommand;
     friend class AddEntityCommand;
     friend class PlatformEditorCommand;

@@ -1,7 +1,6 @@
 #include "StdAfx.h"
 
 #include "Utils.h"
-#include <boost/lexical_cast.hpp>
 
 std::string IntToStr(int number) {
     return boost::lexical_cast<std::string>(number);

@@ -1,3 +1,5 @@
+#include "StdAfx.h"
+
 #include "TileGridHelper.h"
 #include "Brush.h"
 

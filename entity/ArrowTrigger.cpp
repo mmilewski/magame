@@ -1,3 +1,5 @@
+#include "StdAfx.h"
+
 #include "Misc.h"
 #include "Game.h"
 
@@ -14,7 +16,7 @@ void ArrowTrigger::Update(double dt, LevelPtr /* level */) {
         TriggerArrow();
         m_seconds_since_last_shot = 0.0;
     }
-    
+
     SetStateFromVelocity( (m_orientation==Left) ? -1 : 1 );
     UpdateSpriteFromState(dt);
 }

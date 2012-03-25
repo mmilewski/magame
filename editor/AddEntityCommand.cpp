@@ -1,3 +1,5 @@
+#include "StdAfx.h"
+
 #include "Editor.h"
 #include "EditorCommand.h"
 #include "entity/EntityFactory.h"

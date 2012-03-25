@@ -1,12 +1,13 @@
 #ifndef MAGAME_SAVEPOINT_H_INCLUDED
 #define	MAGAME_SAVEPOINT_H_INCLUDED
+#include "StdAfx.h"
 
 #include "Entity.h"
 
 class SavePoint : public Entity {
 public:
     explicit SavePoint(double x, double y);
-    
+
     virtual ET::EntityType GetType() const { return ET::SavePoint; }
 
     virtual void Update(double dt, LevelPtr level);

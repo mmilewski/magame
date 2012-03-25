@@ -1,3 +1,5 @@
+#include "StdAfx.h"
+
 #include "TileGridHelper.h"
 
 TileGridHelper::TileGridHelper(const Position& beg, const Position& end)

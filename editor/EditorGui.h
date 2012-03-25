@@ -1,5 +1,6 @@
 #ifndef MAGAME_EDITORGUI_H_INCLUDED
 #define MAGAME_EDITORGUI_H_INCLUDED
+#include "StdAfx.h"
 
 #include "../gui/Gui.h"
 #include "BrushButton.h"

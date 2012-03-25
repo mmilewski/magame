@@ -1,5 +1,6 @@
 #ifndef MAGAME_GUI_H_INCLUDED
 #define MAGAME_GUI_H_INCLUDED
+#include "StdAfx.h"
 
 class Gui;
 typedef boost::shared_ptr<Gui> GuiPtr;

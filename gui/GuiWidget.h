@@ -1,5 +1,6 @@
 #ifndef MAGAME_GUIWIDGET_H_INCLUDED
 #define MAGAME_GUIWIDGET_H_INCLUDED
+#include "StdAfx.h"
 
 #include "math/BasicMathTypes.h"
 
