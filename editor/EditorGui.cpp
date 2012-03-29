@@ -43,7 +43,7 @@ void EditorGui::Init() {
 
 void EditorGui::Draw() {
     // ciemne tło
-    Engine::Get().GetRenderer()->DrawQuad(0, 0, 1, 1, 0,0,0,.7);
+    Engine::Get().GetRenderer()->DrawQuad(0, 0, 1, 1, Rgba(0,0,0,.7));
 
     // widoczne kontrolki
     BOOST_FOREACH(const auto& button, m_buttons) {
@@ -58,7 +58,7 @@ void EditorGui::Draw() {
         const Aabb& box = m_hovered_button->GetAabb();
         Engine::Get().GetRenderer()->DrawQuad(box.GetMinX(), box.GetMinY(),
                                               box.GetMaxX(), box.GetMaxY(),
-                                              1,1,1, .4);
+                                              Rgba(1,1,1, .4));
     }
 }
 

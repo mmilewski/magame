@@ -73,13 +73,13 @@ void TransitionEffect::Draw() {
             m_to_state->SetClearBeforeDraw(false)->SetSwapAfterDraw(false);
             m_to_state->Draw();
         }
-        Engine::Get().GetRenderer()->DrawQuad(0,0,1,1, 0,0,0, m_current_fade_alpha);
+        Engine::Get().GetRenderer()->DrawQuad(0,0,1,1, Rgba(0,0,0,m_current_fade_alpha));
     } else if (m_effect_type==TransitionEffectType::FadeOut) {
         if (m_from_state) {
             m_from_state->SetClearBeforeDraw(false)->SetSwapAfterDraw(false);
             m_from_state->Draw();
         }
-        Engine::Get().GetRenderer()->DrawQuad(0,0,1,1, 0,0,0, m_current_fade_alpha);
+        Engine::Get().GetRenderer()->DrawQuad(0,0,1,1, Rgba(0,0,0,m_current_fade_alpha));
     } else if (m_effect_type==TransitionEffectType::PinWheelOut) {
         if (m_from_state) {
             m_from_state->SetClearBeforeDraw(false)->SetSwapAfterDraw(false);

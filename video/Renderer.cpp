@@ -87,23 +87,23 @@ void Renderer::DrawSprite(double tex_x, double tex_y, double tex_w, double tex_h
     glPopMatrix();
 }
 
-void Renderer::DrawAabb(const Aabb& box, double r, double g, double b, double a) const {
+void Renderer::DrawAabb(const Aabb& box, Rgba color) const {
     const double tw = m_tile_width;
     const double th = m_tile_height;
 
     DrawQuad(box.GetMinX()*tw, box.GetMinY()*tw,
              box.GetMaxX()*th, box.GetMaxY()*th,
-             r, g, b, a);
+             color);
 }
 
 void Renderer::DrawQuad(double min_x, double min_y,
                         double max_x, double max_y,
-                        double r, double g, double b, double a) const {
+                        Rgba color) const {
     glPushAttrib(GL_ALL_ATTRIB_BITS);
     glDisable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glColor4d(r, g, b, a);
+    glColor4d(color.r, color.g, color.b, color.a);
     glBegin(GL_QUADS);
     {
         glVertex2d(min_x, min_y);
@@ -116,11 +116,10 @@ void Renderer::DrawQuad(double min_x, double min_y,
     glPopAttrib();
 }
 
-void Renderer::DrawQuad(Position min_position, Position max_position,
-                        double r, double g, double b, double a) const {
+void Renderer::DrawQuad(Position min_position, Position max_position, Rgba color) const {
     DrawQuad(min_position.X(), min_position.Y(),
              max_position.X(), max_position.Y(),
-             r, g, b, a);
+             color);
 }
 
 void Renderer::SetProjection(size_t width, size_t height) {

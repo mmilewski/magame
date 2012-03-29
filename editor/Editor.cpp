@@ -117,7 +117,7 @@ void Editor::DrawBrushAndGui(double viewer_x) {
                     position = Position(static_cast<int>(m_pointer_x) * tile_width,
                                         static_cast<int>(m_pointer_y) * tile_height);
                 }
-                Engine::Get().GetRenderer()->DrawQuad(position, position+size, 1,1,1,.4); // podświetlenie
+                Engine::Get().GetRenderer()->DrawQuad(position, position+size, Rgba(1,1,1,.4)); // podświetlenie
                 GetBrush()->Draw(position, size);
             }
             glPopMatrix();

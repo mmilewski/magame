@@ -8,6 +8,7 @@
 #include "TransitionEffect.h"
 #include "Level.h"
 #include "editor/Editor.h"
+#include "video/Rgba.h"
 
 void MainMenu::Init() {
 
@@ -27,16 +28,16 @@ void MainMenu::Draw() {
     t.DrawText("menu", 0.3, 0.8);
     
     if (m_selection == Sel::NewGame) {
-        Engine::Get().GetRenderer()->DrawQuad(0.3, 0.59, 0.72, 0.66,  .3, 0.8, 0.2, .5);
+        Engine::Get().GetRenderer()->DrawQuad(0.3, 0.59, 0.72, 0.66,  Rgba(.3, 0.8, 0.2, .5));
     }
     else if (m_selection == Sel::HallOfFame) {
-        Engine::Get().GetRenderer()->DrawQuad(0.2, 0.49, 0.82, 0.56,  .3, 0.8, 0.2, .5);
+        Engine::Get().GetRenderer()->DrawQuad(0.2, 0.49, 0.82, 0.56,  Rgba(.3, 0.8, 0.2, .5));
     }
     else if (m_selection == Sel::Editor) {
-        Engine::Get().GetRenderer()->DrawQuad(0.35, 0.39, 0.67, 0.46,  .3, 0.8, 0.2, .5);
+        Engine::Get().GetRenderer()->DrawQuad(0.35, 0.39, 0.67, 0.46,  Rgba(.3, 0.8, 0.2, .5));
     }
     else if (m_selection == Sel::Quit) {
-        Engine::Get().GetRenderer()->DrawQuad(0.325, 0.29, 0.695, 0.36,  .3, 0.8, 0.2, .5);
+        Engine::Get().GetRenderer()->DrawQuad(0.325, 0.29, 0.695, 0.36,  Rgba(.3, 0.8, 0.2, .5));
     }
 
     t.SetSize(0.05, 0.05);

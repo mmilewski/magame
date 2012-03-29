@@ -36,7 +36,7 @@ void ScoreSubmit::Draw() {
         if (ch == m_highlighted_char) {
             Engine::Get().GetRenderer()->DrawQuad(pos.first - 0.005, pos.second - 0.005, 
                                                   pos.first + 0.055, pos.second + 0.055,
-                                                  1,0,0,1);
+                                                  Rgba(1,0,0));
         }
         t.DrawLetter(ch, pos.first, pos.second);
     }

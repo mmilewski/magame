@@ -1,6 +1,8 @@
 #ifndef MAGAME_EFFECTS_SHOW_H_INCLUDED
 #define MAGAME_EFFECTS_SHOW_H_INCLUDED
 
+#include "video/Rgba.h"
+
 namespace demo {
 
 class Show : public AppState, public boost::enable_shared_from_this<Show> {
@@ -74,10 +76,10 @@ public:
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glLoadIdentity();
         }
-        Engine::Get().GetRenderer()->DrawQuad( 0, 0,  1,  1, 1,1,0,1); // yellow (na caly ekran)
-        Engine::Get().GetRenderer()->DrawQuad(.3,.4, .8, .7, 1,0,0,1); // red
-        Engine::Get().GetRenderer()->DrawQuad(.4,.5, .5, .4, 0,0,1,1); // blue
-        Engine::Get().GetRenderer()->DrawQuad(.6,.5, .7, .4, 0,0,1,1); // blue
+        Engine::Get().GetRenderer()->DrawQuad( 0, 0,  1,  1, Rgba(1,1,0)); // yellow (na caly ekran)
+        Engine::Get().GetRenderer()->DrawQuad(.3,.4, .8, .7, Rgba(1,0,0)); // red
+        Engine::Get().GetRenderer()->DrawQuad(.4,.5, .5, .4, Rgba(0,0,1)); // blue
+        Engine::Get().GetRenderer()->DrawQuad(.6,.5, .7, .4, Rgba(0,0,1)); // blue
         if (IsSwapAfterDraw()) {
             SDL_GL_SwapBuffers();
         }

@@ -33,5 +33,5 @@ void MultiBrush::DrawSketch(Position /* scr_position */, Size /* scr_size */) co
         }
     }
 
-    Engine::Get().GetRenderer()->DrawQuad(begWorld, endWorld, 1,1,0, .7);
+    Engine::Get().GetRenderer()->DrawQuad(begWorld, endWorld, Rgba(1,1,0, .7));
 }

@@ -5,6 +5,7 @@
 #include "math/BasicMathTypes.h"
 #include "math/Aabb.h"
 #include "Types.h"
+#include "Rgba.h"
 
 class Renderer {
 public:
@@ -26,12 +27,12 @@ public:
                     double width, double height, DL::DisplayLayer layer, 
                     double brightness = 1.0);
 
-    void DrawAabb(const Aabb& box, double r=1, double g=1, double b=0, double a=.7) const;
+    void DrawAabb(const Aabb& box, Rgba color=Rgba(1,1,0,.7)) const;
     void DrawQuad(double min_x, double min_y,
                   double max_x, double max_y,
-                  double r, double g, double b, double a) const;
-    void DrawQuad(Position min_position, Position max_position,
-                  double r, double g, double b, double a) const;
+                  Rgba color) const;
+    void DrawQuad(Position min_position, Position max_position, Rgba color) const;
+
     void SetProjection(size_t width, size_t height);
     void ResetProjection();
 
