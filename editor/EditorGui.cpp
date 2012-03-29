@@ -63,7 +63,7 @@ void EditorGui::Draw() {
 }
 
 void EditorGui::Update(double dt) {
-    std::for_each(m_buttons.begin(), m_buttons.end(), boost::bind(&GuiWidget::Update, _1, dt));
+    boost::for_each(m_buttons, boost::bind(&GuiWidget::Update, _1, dt));
 }
 
 bool EditorGui::OnMouseMove(double x, double y) {
