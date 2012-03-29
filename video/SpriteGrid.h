@@ -20,7 +20,8 @@ private:
     void SetSprite(size_t x, size_t y, SpritePtr sprite) { m_grid.at(y).at(x) = sprite; }
 
 private:
-    std::vector< std::vector< SpritePtr > > m_grid;
+    typedef std::vector<SpritePtr> GridRow;
+    std::vector<GridRow> m_grid;
     std::map<FT::FieldType, SpritePtr> m_sprites;
 };
 
