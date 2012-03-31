@@ -20,7 +20,7 @@ private:
 
 private:
     bool m_fullscreen;       // tryb pełnoekranowy
-    SDL_Surface* m_screen;
+    std::unique_ptr<SDL_Surface> m_screen;
 
     AppStatePtr m_app_state;
 };

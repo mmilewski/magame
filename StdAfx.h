@@ -54,5 +54,15 @@
 #include <utility>
 
 
+// deleter for SDL_Surface (used by std::unique_ptr)
+namespace std {
+template<>
+struct default_delete<SDL_Surface> {
+  void operator()(SDL_Surface* surface) const {
+    SDL_FreeSurface(surface);
+  }
+};
+}
+
 #endif  // USE_PRECOMPILED_HEADERS
 #endif  // MAGAME_STDAFX_H_INCLUDED

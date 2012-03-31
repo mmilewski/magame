@@ -11,7 +11,7 @@ void Renderer::LoadTexture(const std::string & filename) {
     std::cout << "Ładowanie obrazka z pliku " + filename + "\n";
 
     // załaduj z pliku
-    SDL_Surface* surface = IMG_Load(filename.c_str());
+    std::unique_ptr<SDL_Surface> surface(IMG_Load(filename.c_str()));
     if (!surface) {
         std::cerr << "Ładowanie pliku " + filename + " FAILED: " + SDL_GetError() + "\n";
         exit(1);
@@ -48,10 +48,6 @@ void Renderer::LoadTexture(const std::string & filename) {
 
     glTexImage2D(GL_TEXTURE_2D, 0, surface->format->BytesPerPixel, width, height,
                  0, format, GL_UNSIGNED_BYTE, surface->pixels);
-    if (surface) {
-        SDL_FreeSurface(surface);
-    }
-
 }
 
 

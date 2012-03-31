@@ -103,7 +103,7 @@ void App::Resize(size_t width, size_t height) {
     const bool is_fullscreen = Engine::Get().GetWindow()->IsFullscreen();
     const int fullscreen_flag = is_fullscreen ? SDL_FULLSCREEN : 0;
 
-    m_screen = SDL_SetVideoMode(width, height, 32, SDL_OPENGL | SDL_RESIZABLE | SDL_HWSURFACE | fullscreen_flag);
+    m_screen.reset(SDL_SetVideoMode(width, height, 32, SDL_OPENGL | SDL_RESIZABLE | SDL_HWSURFACE | fullscreen_flag));
     assert(m_screen && "problem z ustawieniem wideo");
 
     Engine::Get().GetWindow()->SetSize(width, height);
