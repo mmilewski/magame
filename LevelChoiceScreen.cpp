@@ -1,8 +1,5 @@
 #include "StdAfx.h"
 
-#include <boost/assign/std/vector.hpp>     // operator+=()
-#include <boost/assign/list_inserter.hpp>  // insert()
-
 #include "Engine.h"
 #include "LevelChoiceScreen.h"
 #include "MainMenu.h"
@@ -27,8 +24,6 @@ LevelChoiceScreen::LevelChoiceScreen(PlayerPtr player) :
     m_player(player),
     m_next_app_state() {
 
-    //srand(time(0));
-
 //
 //    0 -------- 1
 //               |
@@ -37,28 +32,18 @@ LevelChoiceScreen::LevelChoiceScreen(PlayerPtr player) :
 //               |
 //               |
 //               4
+    m_positions = { Point(.1, .7), Point(.7, .7), Point(.7, .4), Point(.3, .4), Point(.7, .1) };
+    m_face_pos = m_positions.at(0);
 
-//
-//    boost assignment lbrary
-//    http://www.boost.org/doc/libs/release/libs/assign/doc/index.html
-//
-    using namespace boost::assign;
-    m_connections += IntVector(), IntVector(), IntVector(), IntVector(), IntVector();
-    m_connections.at(0) += 1;
-    m_connections.at(1) += 2, 0;
-    m_connections.at(2) += 3, 4, 1;
-    m_connections.at(3) += 2;
-    m_connections.at(4) += 2;
+    m_connections.resize(5, IntVector());
+    m_connections[0] = { 1 };
+    m_connections[1] = { 2, 0 };
+    m_connections[2] = { 3, 4, 1 };
+    m_connections[3] = { 2 };
+    m_connections[4] = { 2 };
 
     // zdefiniuj odwzorowanie (aka mapowanie)  węzeł->nazwa poziomu
-    insert(m_node_to_level_name)(0, "1")(1, "2")(2, "3")(3, "4")(4, "5");
-
-//
-//    http://en.wikipedia.org/wiki/C%2B%2B0x#Initializer_lists
-//    std::vector<int> hello = {1,2,3,4};
-//
-    m_positions += Point(.1, .7), Point(.7, .7), Point(.7, .4), Point(.3, .4), Point(.7, .1);
-    m_face_pos = m_positions.at(0);
+    m_node_to_level_name = { {0, "1"}, {1, "2"}, {2, "3"}, {3, "4"}, {4, "5"} };
 
     // załaduj sprite'y
     const SpriteConfigData horizontal_road_data(DL::Foreground, 1, 1, 0 * 32, 17 * 32, 32, 32, false, false);
