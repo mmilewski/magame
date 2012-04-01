@@ -6,5 +6,6 @@
 
 typedef Vector2 Size;
 typedef Vector2 Position;
+typedef Vector2 Velocity;
 
 #endif // MAGAME_BASIC_MATH_TYPES_H__INCLUDED

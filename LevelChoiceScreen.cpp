@@ -32,7 +32,7 @@ LevelChoiceScreen::LevelChoiceScreen(PlayerPtr player) :
 //               |
 //               |
 //               4
-    m_positions = { Point(.1, .7), Point(.7, .7), Point(.7, .4), Point(.3, .4), Point(.7, .1) };
+    m_positions = { Position(.1, .7), Position(.7, .7), Position(.7, .4), Position(.3, .4), Position(.7, .1) };
     m_face_pos = m_positions.at(0);
 
     m_connections.resize(5, IntVector());
@@ -81,8 +81,8 @@ void LevelChoiceScreen::DrawRoad(size_t from, size_t to) const {
     //      foreach i in [a+1, b-1]:
     //         m_sprite->DrawCurrentFrame(frame_id)
 
-    Point from_node_pos = m_positions.at(from);
-    Point to_node_pos = m_positions.at(to);
+    Position from_node_pos = m_positions.at(from);
+    Position to_node_pos = m_positions.at(to);
     // jeśli droga jest pionowa
     if (from_node_pos[0] - to_node_pos[0]) {
         if (from_node_pos[0] > to_node_pos[0]) {
@@ -182,25 +182,21 @@ int sgn(double x) {
 
 bool LevelChoiceScreen::Update(double dt) {
     // uaktualnij położenie twarzy postaci
-    const double face_velocity_x = .6;   // prędkość twarzy w poziomie i pionie
-    const double face_velocity_y = .5;
-    const Point to_node_pos = m_positions.at(m_current_to_node);
-    const double dist_x = to_node_pos.x - m_face_pos[0];
-    const double dist_y = to_node_pos.y - m_face_pos[1];
-    double vel_x = face_velocity_x * sgn(dist_x);
-    double vel_y = face_velocity_y * sgn(dist_y);
+    const Velocity face_velocity = Vector2(.6, .5);   // prędkość twarzy w poziomie i pionie
+    const Position to_node_pos = m_positions.at(m_current_to_node);
+    const Position dist = to_node_pos - m_face_pos;
+    double vel_x = face_velocity.X() * sgn(dist[0]);
+    double vel_y = face_velocity.Y() * sgn(dist[1]);
 
     // sprawdź czy postać należy zatrzymać (bo jest w węźle)
-    if (fabs(dist_x) < .01 && fabs(dist_y) < .01) {
+    if (fabs(dist.X()) < .01 && fabs(dist.Y()) < .01) {
         m_current_from_node = m_current_to_node;
         vel_x = vel_y = 0;
-        m_face_pos[0] = to_node_pos.x;
-        m_face_pos[1] = to_node_pos.y;
+        m_face_pos = to_node_pos;
     }
 
     // uaktualnij położenie na podstawie prędkości
-    m_face_pos[0] += vel_x * dt;
-    m_face_pos[1] += vel_y * dt;
+    m_face_pos += Position(vel_x * dt, vel_y * dt);
 
     // uaktualnij animacje
     m_horizontal_road_sprite->Update(dt);
@@ -226,14 +222,14 @@ bool LevelChoiceScreen::GoLeft() {
     //    return false
     //
 
-    const Point from_node_pos = m_positions.at(m_current_from_node);
-    const Point to_node_pos = m_positions.at(m_current_to_node);
+    const Position from_node_pos = m_positions.at(m_current_from_node);
+    const Position to_node_pos = m_positions.at(m_current_to_node);
 
     // czy postać stoi w węźle
     if (m_current_from_node == m_current_to_node) {
         // czy istnieje droga w lewo
         BOOST_FOREACH(size_t to_node, m_connections.at(m_current_from_node)) {  // przejrzyj połączenia z from_node
-            Point connection_node_pos = m_positions.at(to_node);
+            Position connection_node_pos = m_positions.at(to_node);
             if (connection_node_pos[0] - from_node_pos[0] < 0) {
                 // istnieje droga, którą można iść
                 m_current_to_node = to_node;
@@ -252,14 +248,14 @@ bool LevelChoiceScreen::GoLeft() {
 }
 
 bool LevelChoiceScreen::GoUpward() {
-    const Point from_node_pos = m_positions.at(m_current_from_node);
-    const Point to_node_pos = m_positions.at(m_current_to_node);
+    const Position from_node_pos = m_positions.at(m_current_from_node);
+    const Position to_node_pos = m_positions.at(m_current_to_node);
 
     // czy postać stoi w węźle
     if (m_current_from_node == m_current_to_node) {
         // czy istnieje droga w lewo
         BOOST_FOREACH(size_t to_node, m_connections.at(m_current_from_node)) {  // przejrzyj połączenia z from_node
-            Point connection_node_pos = m_positions.at(to_node);
+            Position connection_node_pos = m_positions.at(to_node);
             if (connection_node_pos[1] - from_node_pos[1] > 0) {
                 // istnieje droga, którą można iść
                 m_current_to_node = to_node;
@@ -278,14 +274,14 @@ bool LevelChoiceScreen::GoUpward() {
 }
 
 bool LevelChoiceScreen::GoDown() {
-    const Point from_node_pos = m_positions.at(m_current_from_node);
-    const Point to_node_pos = m_positions.at(m_current_to_node);
+    const Position from_node_pos = m_positions.at(m_current_from_node);
+    const Position to_node_pos = m_positions.at(m_current_to_node);
 
     // czy postać stoi w węźle
     if (m_current_from_node == m_current_to_node) {
         // czy istnieje droga w lewo
         BOOST_FOREACH(size_t to_node, m_connections.at(m_current_from_node)) {  // przejrzyj połączenia z from_node
-            Point connection_node_pos = m_positions.at(to_node);
+            Position connection_node_pos = m_positions.at(to_node);
             if (connection_node_pos[1] - from_node_pos[1] < 0) {
                 // istnieje droga, którą można iść
                 m_current_to_node = to_node;
@@ -304,14 +300,14 @@ bool LevelChoiceScreen::GoDown() {
 }
 
 bool LevelChoiceScreen::GoRight() {
-    const Point from_node_pos = m_positions.at(m_current_from_node);
-    const Point to_node_pos = m_positions.at(m_current_to_node);
+    const Position from_node_pos = m_positions.at(m_current_from_node);
+    const Position to_node_pos = m_positions.at(m_current_to_node);
 
     // czy postać stoi w węźle
     if (m_current_from_node == m_current_to_node) {
         // czy istnieje droga w lewo
         BOOST_FOREACH(size_t to_node, m_connections.at(m_current_from_node)) {  // przejrzyj połączenia z from_node
-            Point connection_node_pos = m_positions.at(to_node);
+            Position connection_node_pos = m_positions.at(to_node);
             if (connection_node_pos[0] - from_node_pos[0] > 0) {
                 // istnieje droga, którą można iść
                 m_current_to_node = to_node;
@@ -341,11 +337,15 @@ void LevelChoiceScreen::RunLevelFromNode() {
     }
 
     const std::string level_name = NodeToLevelName(m_current_to_node);
-    Game* game_state = new Game(level_name, m_player);
-    game_state->BindLevelChoiceScreen(shared_from_this());
-    m_next_app_state.reset(game_state);
+    if (level_name.empty()) {
+        std::cerr << "WARNING: this node hasn't any level assigned.\n";
+    } else {
+        Game* game_state = new Game(level_name, m_player);
+        game_state->BindLevelChoiceScreen(shared_from_this());
+        m_next_app_state.reset(game_state);
 
-    SetDone();
+        SetDone();
+    }
 }
 
 void LevelChoiceScreen::ProcessEvents(const SDL_Event & event) {

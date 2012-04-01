@@ -50,21 +50,14 @@ private:
     // rysuje drogę z punktu from do punktu to
     void DrawRoad(size_t from, size_t to) const;
 
-    struct Point {
-        Point(double x, double y) : x(x), y(y) {}
-        double operator[](int idx) const { return (idx==0?x:y); }
-        double& operator[](int idx) { return (idx==0?x:y); }
-        double x, y;
-    };
 
-    typedef std::vector<bool> BoolVector;
     typedef std::vector<int> IntVector;
 
     std::vector<IntVector> m_connections;              // połączenia między węzłami
-    std::vector<Point> m_positions;                    // pozycje punktów
+    std::vector<Position> m_positions;                 // pozycje punktów
     std::map<int, std::string> m_node_to_level_name;   // mapowanie węzeł -> nazwa poziomu
 
-    Point m_face_pos;               // położenie bohatera na ekranie
+    Position m_face_pos;            // położenie bohatera na ekranie
     int m_current_from_node;        // numer węzła początkowego
     int m_current_to_node;          // numer węzła docelowego
 
