@@ -21,7 +21,11 @@ struct Vector2
     void operator*=(double scalar) { x*=scalar; y*=scalar; }
     void operator/=(double scalar) { x/=scalar; y/=scalar; }
     double Length() const { return std::sqrt(x*x+y*y); }
-    Vector2 scale(double sx, double sy) const { return Vector2(x*sx, y*sy); }
+    Vector2 Scale(double sx, double sy) const { return Vector2(x*sx, y*sy); }
+    Vector2 Scale(Vector2 const& scale_xy) const { return Scale(scale_xy.X(), scale_xy.Y()); }
+
+    template<typename UnaryFunction>
+    Vector2 Map(UnaryFunction f) const { return Vector2(f(x), f(y)); }
 private:
     double x, y;
 };

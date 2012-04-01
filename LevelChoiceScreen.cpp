@@ -174,28 +174,29 @@ void LevelChoiceScreen::Draw() {
     }
 }
 
+namespace {
 // zwraca znak x
 int sgn(double x) {
     return x ? (x > 0 ? 1 : -1) : 0;
 }
+}
 
 bool LevelChoiceScreen::Update(double dt) {
     // uaktualnij położenie twarzy postaci
-    const Velocity face_velocity = Vector2(.6, .5);   // prędkość twarzy w poziomie i pionie
+    Velocity face_velocity = Vector2(.6, .5);
     const Position to_node_pos = m_positions.at(m_current_to_node);
-    const Position dist = to_node_pos - m_face_pos;
-    double vel_x = face_velocity.X() * sgn(dist[0]);
-    double vel_y = face_velocity.Y() * sgn(dist[1]);
+    const Vector2 distance = to_node_pos - m_face_pos;
+    face_velocity = face_velocity.Scale(distance.Map(sgn));
 
     // sprawdź czy postać należy zatrzymać (bo jest w węźle)
-    if (fabs(dist.X()) < .01 && fabs(dist.Y()) < .01) {
+    if (fabs(distance.X()) < .01 && fabs(distance.Y()) < .01) {
         m_current_from_node = m_current_to_node;
-        vel_x = vel_y = 0;
+        face_velocity = Velocity::ZERO;
         m_face_pos = to_node_pos;
     }
 
     // uaktualnij położenie na podstawie prędkości
-    m_face_pos += Position(vel_x * dt, vel_y * dt);
+    m_face_pos += face_velocity * dt;
 
     // uaktualnij animacje
     m_horizontal_road_sprite->Update(dt);
