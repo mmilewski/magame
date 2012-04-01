@@ -32,6 +32,7 @@ public:
        Argumenty width oraz height powinny być ściśle większe od 0. Zachowanie dla pozostałych wartości jest nieokreślone.
      */
     void SetRepeat(double width, double height);
+    void SetRepeat(Vector2 width_and_height) { SetRepeat(width_and_height.X(), width_and_height.Y()); }
 
     /* Po wywołaniu tej metody, sprite będzie rozciągany, a nie powtarzany. */
     void ResetRepeat();

@@ -47,8 +47,11 @@ private:
     // Uruchamia konkretny poziom na podstawie węzła, w którym stoi postać. Jeżeli postać nie stoi, to nie robi nic.
     void RunLevelFromNode();
 
-    // rysuje drogę z punktu from do punktu to
-    void DrawRoad(size_t from, size_t to) const;
+    void DrawRoad(size_t src_point_index, size_t tgt_point_index) const;
+    void DrawAllRoads() const;
+    void DrawAllNodes() const;
+    void DrawFace() const;
+    void DrawHud() const;
 
 
     typedef std::vector<int> IntVector;
@@ -67,8 +70,7 @@ private:
     SpritePtr m_entry_disabled_sprite;   // animacja nieaktywnego wejścia
     SpritePtr m_face_sprite;             // animacja sprite'a bohatera
 
-    double m_tile_width;             // szerokość kafla na ekranie
-    double m_tile_height;            // wysokość kafla na ekranie
+    Size m_tile_size;               // rozmiar kafla na ekranie
 
     PlayerPtr m_player;             // wskaźnik na gracza, który przekażemy do instancji gry
     AppStatePtr m_next_app_state;

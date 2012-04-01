@@ -19,8 +19,7 @@ LevelChoiceScreen::LevelChoiceScreen(PlayerPtr player) :
     m_entry_enabled_sprite(),
     m_entry_disabled_sprite(),
     m_face_sprite(),
-    m_tile_width(1.0 / 15),
-    m_tile_height(1.0 / 15),
+    m_tile_size(1.0 / 15, 1.0 / 15),
     m_player(player),
     m_next_app_state() {
 
@@ -70,7 +69,7 @@ void LevelChoiceScreen::Init() {
 void LevelChoiceScreen::Start() {
 }
 
-void LevelChoiceScreen::DrawRoad(size_t from, size_t to) const {
+void LevelChoiceScreen::DrawRoad(size_t src_point_index, size_t tgt_point_index) const {
     //    fun narysuj_drogę( a, b ):
     //      d = długość drogi
     //      v = czy pozioma
@@ -81,36 +80,31 @@ void LevelChoiceScreen::DrawRoad(size_t from, size_t to) const {
     //      foreach i in [a+1, b-1]:
     //         m_sprite->DrawCurrentFrame(frame_id)
 
-    Position from_node_pos = m_positions.at(from);
-    Position to_node_pos = m_positions.at(to);
+    Position from_node_pos = m_positions.at(src_point_index);
+    Position to_node_pos = m_positions.at(tgt_point_index);
     // jeśli droga jest pionowa
     if (from_node_pos[0] - to_node_pos[0]) {
         if (from_node_pos[0] > to_node_pos[0]) {
             std::swap(from_node_pos, to_node_pos);
         }
-        m_vertical_road_sprite->SetRepeat(m_tile_width, m_tile_height);
+        m_vertical_road_sprite->SetRepeat(m_tile_size);
         m_vertical_road_sprite->DrawCurrentFrame(
-                from_node_pos[0],                   from_node_pos[1] - m_tile_height / 2,
-                to_node_pos[0] - from_node_pos[0],  m_tile_height);
+                    Position(from_node_pos[0],             from_node_pos[1] - m_tile_size.Y()/2),
+                    Size((to_node_pos-from_node_pos).X(),  m_tile_size.Y()));
     }
     // jeśli droga jest pozioma
     else if (from_node_pos[1] - to_node_pos[1]) {
         if (from_node_pos[1] > to_node_pos[1]) {
             std::swap(from_node_pos, to_node_pos);
         }
-        m_horizontal_road_sprite->SetRepeat(m_tile_width, m_tile_height);
+        m_horizontal_road_sprite->SetRepeat(m_tile_size);
         m_horizontal_road_sprite->DrawCurrentFrame(
-                from_node_pos[0] - m_tile_width / 2,  from_node_pos[1],
-                m_tile_width,                         to_node_pos[1] - from_node_pos[1]);
+                    Position(from_node_pos[0] - m_tile_size[0]/2,  from_node_pos[1]),
+                    Size(m_tile_size[0],                           (to_node_pos - from_node_pos).Y()));
     }
 }
 
-void LevelChoiceScreen::Draw() {
-    if (IsClearBeforeDraw()) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glLoadIdentity();
-    }
-
+void LevelChoiceScreen::DrawAllRoads() const {
     // DZIAŁANIE
     // dla każdego węzła i
     //   dla jego każdego sąsiada j
@@ -119,8 +113,6 @@ void LevelChoiceScreen::Draw() {
     //     else:
     //       jeżeli nie istnieje droga z i do j:
     //         narysuj drogę z j do i
-
-    // narysuj drogi
 
     size_t from_node = 0;
     BOOST_FOREACH(const IntVector& roads, m_connections) {
@@ -136,25 +128,18 @@ void LevelChoiceScreen::Draw() {
         }
         ++from_node;
     }
+}
 
-    // narysuj węzły
-    BOOST_FOREACH(size_t node_id, boost::irange(0u, m_positions.size())) {
-        const double x = m_positions[node_id][0] - m_tile_width / 2;
-        const double y = m_positions[node_id][1] - m_tile_height / 2;
-
-        bool node_enabled = true; // czy można skorzystać z tego węzła (na razie wszystkie węzły są aktywne
-        if (node_enabled) {
-            m_entry_enabled_sprite->DrawCurrentFrame(x, y, m_tile_width, m_tile_height);
-        } else {
-            m_entry_disabled_sprite->DrawCurrentFrame(x, y, m_tile_width, m_tile_height);
-        }
+void LevelChoiceScreen::DrawAllNodes() const {
+    BOOST_FOREACH(const Position& node_pos, m_positions) {
+        bool node_enabled = true; // czy można skorzystać z tego węzła (na razie wszystkie węzły są aktywne)
+        (node_enabled ? m_entry_enabled_sprite : m_entry_disabled_sprite)
+                ->DrawCurrentFrame(node_pos - m_tile_size/2, m_tile_size);
     }
+}
 
-    // narysuj postać
-    m_face_sprite->DrawCurrentFrame(m_face_pos[0] - m_tile_width / 2,
-                                    m_face_pos[1] - m_tile_height / 2,
-                                    m_tile_width,
-                                    m_tile_height);
+void LevelChoiceScreen::DrawFace() const {
+    m_face_sprite->DrawCurrentFrame(m_face_pos - m_tile_size/2, m_tile_size);
 
     // // Aby zobaczyć jak działa powtarzanie sprite'ów odkomentuj poniższy kawałek kodu
     // // narysuj postać
@@ -163,11 +148,25 @@ void LevelChoiceScreen::Draw() {
     //                                 m_face_pos[1] - m_tile_height / 2,
     //                                 m_tile_width * 3.5,
     //                                 m_tile_height * 2.75);
+}
 
+void LevelChoiceScreen::DrawHud() const {
     // tekst na górze ekranu
     Text t;
     t.SetSize(.05, .06);
     t.DrawText("WYBIERZ POZIOM", .2, .85);
+}
+
+void LevelChoiceScreen::Draw() {
+    if (IsClearBeforeDraw()) {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glLoadIdentity();
+    }
+
+    DrawAllRoads();
+    DrawAllNodes();
+    DrawFace();
+    DrawHud();
 
     //
     if (IsSwapAfterDraw()) {
