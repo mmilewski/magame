@@ -12,7 +12,8 @@ void MultiBrush::DrawSketch(Position /* scr_position */, Size /* scr_size */) co
     tgh.SnapToGrid();
     tgh.SortCoordsOfBox();
 
-    unsigned tiles_hor = tgh.TilesHorizontally(), tiles_ver = tgh.TilesVertically();
+    const unsigned tiles_hor = tgh.TilesHorizontally(),
+                   tiles_ver = tgh.TilesVertically();
 
     if (tiles_hor > 50 || tiles_ver > 50) {
         std::cerr << "[MultiBrush::DrawSketch] Uzyskano niepokojąco duże wartości:"
@@ -21,15 +22,13 @@ void MultiBrush::DrawSketch(Position /* scr_position */, Size /* scr_size */) co
                 << "\n";
     }
 
-    const double tile_width = Engine::Get().GetRenderer()->GetTileWidth();
-    const double tile_height = Engine::Get().GetRenderer()->GetTileHeight();
-    Position begWorld = tgh.Beg().scale(tile_width, tile_height),
-             endWorld = tgh.End().scale(tile_width, tile_height);
-    for (unsigned i = 0; i < tiles_ver; i++) {
-        for (unsigned j = 0; j < tiles_hor; j++) {
-            Sprite::GetByName("PlatformMid")->DrawCurrentFrame(
-                begWorld + Position(j * tile_width, i * tile_height),
-                Size(tile_width, tile_height));
+    const Size tile_size = Engine::Get().GetRenderer()->GetTileSize();
+    Position begWorld = tgh.Beg().Scale(tile_size),
+             endWorld = tgh.End().Scale(tile_size);
+    for (unsigned col = 0; col < tiles_ver; col++) {
+        for (unsigned row = 0; row < tiles_hor; row++) {
+            Sprite::GetByName("PlatformMid")->DrawCurrentFrame(begWorld + Position(row * tile_size[0], col * tile_size[1]),
+                                                               tile_size);
         }
     }
 

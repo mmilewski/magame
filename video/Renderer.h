@@ -17,6 +17,8 @@ public:
 
     double GetTileWidth() const { return m_tile_width; }
     double GetTileHeight() const { return m_tile_height; }
+    Size GetTileSize() const { return Size(GetTileWidth(), GetTileHeight()); }
+
     size_t GetHorizontalTilesOnScreenCount() const { return static_cast<size_t>(1.0 / m_tile_width  + 0.5); }
     size_t GetVerticalTilesOnScreenCount()   const { return static_cast<size_t>(1.0 / m_tile_height + 0.5); }
 
