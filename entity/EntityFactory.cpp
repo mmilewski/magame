@@ -75,14 +75,11 @@ EntityPtr EntityFactory::CreateEntity(ET::EntityType type,
 }
 
 EntityPtr EntityFactory::CreateEntity(const LevelEntityData& entity_data) {
-    try {
-        return CreateEntity(StringAsEntityType(entity_data.name),
-                            entity_data.x, entity_data.y,
-                            entity_data.direction);
-    } catch (std::invalid_argument& ex) {
+    ET::EntityType et = StringAsEntityType(entity_data.name);
+    if (et == ET::UNKNOWN) {
         std::cerr << "fabryka nie umie stworzyć żądanej jednostki na podstawie nazwy: "
-                  << entity_data.name << " : " << ex.what() << std::endl;
+                  << entity_data.name << std::endl;
         return EntityPtr();
     }
-
+    return CreateEntity(et, entity_data.x, entity_data.y, entity_data.direction);
 }

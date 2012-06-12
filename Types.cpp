@@ -50,7 +50,5 @@ ET::EntityType StringAsEntityType(std::string str) {
     if (str_to_et.count(str)) {
         return str_to_et.at(str);
     }
-    std::stringstream ss;
-    ss << "Nie znaleziono typu jednostki dla ciągu " << str;
-    throw std::invalid_argument(ss.str());
+    return ET::UNKNOWN;
 }
