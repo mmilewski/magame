@@ -34,10 +34,10 @@ twinshot_upgrade 4 3
 higherjump_upgrade 8 10
 savepoint 17 10
 
-arrow_trigger_left 46 4
-arrow_trigger_right 10 6
-arrow_trigger_left 8 11
-arrow_trigger_right 13 11
+arrow_trigger 46 4   DIR -1 0
+arrow_trigger 10 6   DIR 1 0
+arrow_trigger 8 11   DIR -1 0
+arrow_trigger 13 11  DIR 1 0
 
 column 10 2
 column 10 1

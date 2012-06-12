@@ -56,7 +56,11 @@ void Level::SaveEntitiesToFile(const std::string& filename) {
 
     m_entities_to_create.sort(LevelEntityData::OrderByX);
     BOOST_FOREACH(const LevelEntityData& data, m_entities_to_create) {
-        outfile << data.name << "\t" << data.x << "\t" << data.y << std::endl;
+        outfile << data.name << "\t" << data.x << "\t" << data.y;
+        if (data.direction.Length()) {
+            outfile << "\tDIR\t" << data.direction.X()  << "\t" << data.direction.Y();
+        }
+        outfile << std::endl;
     }
     outfile.close();
 }
@@ -110,13 +114,22 @@ void Level::LoadEntitiesFromFile(const std::string& filename) {
         iss >> data.name;
         iss >> data.x;
         iss >> data.y;
+        {
+            std::string dirToken;   // zwrot jednostki
+            iss >> dirToken;
+            boost::range::transform(dirToken, dirToken.begin(), ::tolower);
+            if (dirToken == "dir") {
+                iss >> data.direction[0] >> data.direction[1];
+            }
+        }
+
         if (data.name == "player") {
             m_player_data = data;
         } else {
             m_entities_to_create.push_back(data);
         }
 
-        // std::cout << "[LoadEntityFromFile] " << data.name << ", " << data.x << ", " << data.y << std::endl;
+//        std::cout << "[LoadEntityFromFile] " << data.name << ", " << Vector2(data.x,data.y) << ", " << data.direction << std::endl;
     }
 }
 

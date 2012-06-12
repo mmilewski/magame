@@ -30,12 +30,7 @@ void EnsureEntityTypeToStringMapping() {
     Insert(ET::SavePoint, "savepoint");
     Insert(ET::Thorns, "thorns");
     Insert(ET::Column, "column");
-
-// !! NOTE:
-// w pliku poziomu występuj `arrow_trigger_left` oraz `_right`, żeby określić
-// w którą stronę ma być zwrócony wyzwalacz. Przez to musi on posiadać ifa w
-// EntityFactory -- parser pliku poziomu obsługuje tylko pozycję encji.
-//    Insert(ET::ArrowTrigger, "arrow_trigger");
+    Insert(ET::ArrowTrigger, "arrow_trigger");
 }
 
 std::string EntityTypeAsString(ET::EntityType et) {

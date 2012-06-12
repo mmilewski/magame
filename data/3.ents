@@ -2,7 +2,7 @@ player	2.12	9.71
 mush	8.28	6.95
 twinshot_upgrade	14.2	13
 mush	16.8	7
-arrow_trigger_left	20	7.5
+arrow_trigger	20	7.5	DIR -1 0
 column	21.5	6
 column	21.5	5
 column	21.5	4
@@ -38,7 +38,7 @@ thorns	39	9
 orb	39	11
 thorns	40	9
 orb	40	11
-arrow_trigger_right	41	4.1
+arrow_trigger	41	4.1	DIR 1 0
 thorns	42	1
 higherjump_upgrade	43	14
 thorns	43	1

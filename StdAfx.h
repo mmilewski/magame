@@ -43,7 +43,7 @@
 #include <boost/range/algorithm/remove.hpp>
 #include <boost/range/algorithm/remove_if.hpp>
 #include <boost/range/algorithm/sort.hpp>
-
+#include <boost/range/algorithm/transform.hpp>
 
 #include <string>
 #include <vector>

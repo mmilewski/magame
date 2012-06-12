@@ -3,16 +3,20 @@
 #include "StdAfx.h"
 
 #include "math/Aabb.h"
+#include "math/Vector2.h"
 #include "Types.h"
 
 // Dane dotyczące jednostki wczytane np. z pliku. Na ich podstawie
 // zostanie w grze stworzona odpowiednia jednostka
 struct LevelEntityData {
-    LevelEntityData()
-        :  name("[unknown]"), x(-1), y(-1) {   }
+    LevelEntityData() :
+        name("[unknown]"), x(-1), y(-1), direction(Vector2::ZERO) {   }
 
-    LevelEntityData(const std::string& name, double x, double y)
-        :  name(name), x(x), y(y) {   }
+    LevelEntityData(const std::string& name, double x, double y) :
+        name(name), x(x), y(y), direction(Vector2::ZERO) {   }
+
+    LevelEntityData(const std::string& name, double x, double y, Vector2 direction):
+        name(name), x(x), y(y), direction(direction) {   }
 
     bool operator== (const LevelEntityData& other) const {
        return name == other.name
@@ -27,6 +31,7 @@ struct LevelEntityData {
     std::string name;  // nazwa jednostki
     double x;          // położenie na osi odciętych
     double y;          // położenie na osi rzędnych
+    Vector2 direction; // kierunek zwrotu jednostki
 };
 
 

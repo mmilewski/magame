@@ -16,7 +16,9 @@ SpritePtr GetSpriteByName(const std::string& name) {
     return SpritePtr(new Sprite(Engine::Get().GetSpriteConfig()->Get(name)));
 }
 
-EntityPtr EntityFactory::CreateEntity(ET::EntityType type, double x, double y) {
+EntityPtr EntityFactory::CreateEntity(ET::EntityType type,
+                                      double x, double y,
+                                      Vector2 direction) {
     const double eps = 0.0001;
     x += eps;  y += eps;
 
@@ -59,6 +61,11 @@ EntityPtr EntityFactory::CreateEntity(ET::EntityType type, double x, double y) {
         ptr.reset(new Column(x, y));
         SpritePtr sprite = GetSpriteByName("column");
         ptr->SetSprites(sprite, sprite, sprite);
+    } else if (type == ET::ArrowTrigger) {
+        ptr.reset(new ArrowTrigger(x, y, direction.X()<0 ? ArrowTrigger::Left : ArrowTrigger::Right));
+        SpritePtr right = GetSpriteByName("arrow_trigger_right"),
+                  left = GetSpriteByName("arrow_trigger_left");
+        ptr->SetSprites(left, right, SpritePtr());
     }
 
     if (!ptr) {
@@ -67,36 +74,15 @@ EntityPtr EntityFactory::CreateEntity(ET::EntityType type, double x, double y) {
     return ptr;
 }
 
-EntityPtr CreateArrowTrigger(double x, double y, ArrowTrigger::Orientation ori) {
-    EntityPtr ptr;
-    ptr.reset(new ArrowTrigger(x, y, ori));
-    SpritePtr right = GetSpriteByName("arrow_trigger_right"),
-              left = GetSpriteByName("arrow_trigger_left");
-    ptr->SetSprites(left, right, right);
-    return ptr;
-}
-
-EntityPtr EntityFactory::CreateEntity(const std::string& name, 
-                                      double x, double y) {
+EntityPtr EntityFactory::CreateEntity(const LevelEntityData& entity_data) {
     try {
-        // Specjalny przypadek dla wyzwalacza strzałek. Niestety parser pliku
-        // z jednostkami nie pozwala dostarczyć informacji innych niż pozycja
-        // początkowa.
-        if (name == "arrow_trigger_right") {
-            return CreateArrowTrigger(x, y, ArrowTrigger::Right);
-        } else if (name == "arrow_trigger_left") {
-            return CreateArrowTrigger(x, y, ArrowTrigger::Left);
-        }
- 
-        ET::EntityType et = StringAsEntityType(name);
-        return CreateEntity(et, x, y);
+        return CreateEntity(StringAsEntityType(entity_data.name),
+                            entity_data.x, entity_data.y,
+                            entity_data.direction);
     } catch (std::invalid_argument& ex) {
-        std::cerr << "fabryka nie umie stworzyć żądanej jednostki na podstawie nazwy: " << name
-                << " : " << ex.what() << std::endl;
+        std::cerr << "fabryka nie umie stworzyć żądanej jednostki na podstawie nazwy: "
+                  << entity_data.name << " : " << ex.what() << std::endl;
         return EntityPtr();
     }
-}
 
-EntityPtr EntityFactory::CreateEntity(const LevelEntityData& entity_data) {
-    return CreateEntity(entity_data.name, entity_data.x, entity_data.y);
 }

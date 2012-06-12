@@ -9,8 +9,7 @@ typedef boost::shared_ptr<Entity> EntityPtr;
 class EntityFactory {
 public:
     explicit EntityFactory();
-    EntityPtr CreateEntity(ET::EntityType type, double x, double y);
-    EntityPtr CreateEntity(const std::string& name, double x, double y);
+    EntityPtr CreateEntity(ET::EntityType type, double x, double y, Vector2 direction = Vector2::ZERO);
     EntityPtr CreateEntity(const LevelEntityData& entity_data);
 };
 
