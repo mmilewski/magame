@@ -127,10 +127,10 @@ void Game::Init() {
     if (!m_player) {
         if (player_data.name == "player") {
             m_player.reset(new Player(player_data.x, player_data.y, m_level->GetWidth(), /*lifes*/3, /*score*/0));
-            Engine& engine = Engine::Get();
-            m_player->SetSprites(SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_left"))),
-                                 SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_right"))),
-                                 SpritePtr(new Sprite(engine.GetSpriteConfig()->Get("player_stop"))) );
+            SpriteConfigPtr spriteConfig = Engine::Get().GetSpriteConfig();
+            m_player->SetSprites(SpritePtr(new Sprite(spriteConfig->Get("player_left"))),
+                                 SpritePtr(new Sprite(spriteConfig->Get("player_right"))),
+                                 SpritePtr(new Sprite(spriteConfig->Get("player_stop"))) );
         } else {
             std::cerr << "brak informacji o postaci gracza w pliku z poziomem" << std::endl;
         }
@@ -386,7 +386,7 @@ void Game::SweepAndAddEntities(double /* dt */) {
     std::for_each(m_entities_to_create.begin(),
                   firstEntityTooFar,
                   [&](const LevelEntityData& data)->void {
-                      EntityPtr e = Engine::Get().GetEntityFactory()->CreateEntity(data.name, data.x, data.y);
+                      EntityPtr e = Engine::Get().GetEntityFactory()->CreateEntity(data);
                       m_entities.push_back(e);
                   });
     m_entities_to_create.erase(m_entities_to_create.begin(), firstEntityTooFar);
