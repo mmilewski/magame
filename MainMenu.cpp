@@ -27,24 +27,29 @@ void MainMenu::Draw() {
     Text t(0.1, 0.1);
     t.DrawText("menu", 0.3, 0.8);
     
+    const double yStart = 0.6, yDelta = 0.1;
+    auto miny = [&](int which) { return yStart - yDelta * which - .01; };
+    auto maxy = [&](int which) { return yStart - yDelta * which + .06; };
+
+    Rgba selColor = Rgba(.3, 0.8, 0.2, .5);
     if (m_selection == Sel::NewGame) {
-        Engine::Get().GetRenderer()->DrawQuad(0.3, 0.59, 0.72, 0.66,  Rgba(.3, 0.8, 0.2, .5));
+        Engine::Get().GetRenderer()->DrawQuad(0.3, miny(0), 0.72, maxy(0), selColor);
     }
     else if (m_selection == Sel::HallOfFame) {
-        Engine::Get().GetRenderer()->DrawQuad(0.2, 0.49, 0.82, 0.56,  Rgba(.3, 0.8, 0.2, .5));
+        Engine::Get().GetRenderer()->DrawQuad(0.2, miny(1), 0.82, maxy(1), selColor);
     }
     else if (m_selection == Sel::Editor) {
-        Engine::Get().GetRenderer()->DrawQuad(0.35, 0.39, 0.67, 0.46,  Rgba(.3, 0.8, 0.2, .5));
+        Engine::Get().GetRenderer()->DrawQuad(0.35, miny(2), 0.67, maxy(2), selColor);
     }
     else if (m_selection == Sel::Quit) {
-        Engine::Get().GetRenderer()->DrawQuad(0.325, 0.29, 0.695, 0.36,  Rgba(.3, 0.8, 0.2, .5));
+        Engine::Get().GetRenderer()->DrawQuad(0.325, miny(3), 0.695, maxy(3), selColor);
     }
 
     t.SetSize(0.05, 0.05);
-    t.DrawText("nowa gra", 0.31, 0.6);
-    t.DrawText("hall of fame", 0.21, 0.5);
-    t.DrawText("edytor", 0.36, 0.4);
-    t.DrawText("wyjscie", 0.335, 0.3);
+    t.DrawText("nowa gra",     0.31, yStart - yDelta * 0);
+    t.DrawText("hall of fame", 0.21, yStart - yDelta * 1);
+    t.DrawText("edytor",       0.36, yStart - yDelta * 2);
+    t.DrawText("wyjscie",      0.33, yStart - yDelta * 3);
 
     if (IsSwapAfterDraw()) {
         SDL_GL_SwapBuffers();
@@ -91,7 +96,6 @@ void MainMenu::ProcessEvents(const SDL_Event& event) {
                 EditorPtr editorState(new Editor(level));
                 tefPtr fadeout = TransitionEffect::PreparePinWheelOut().states(shared_from_this(),editorState).duration(1.0).blades(2).delay(0,.2).Build();
                 m_next_app_state = fadeout;
-
             }
             else if (m_selection == Sel::Quit) {
                 m_next_app_state.reset();
