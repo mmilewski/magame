@@ -3,12 +3,12 @@
 #include "MainMenu.h"
 #include "Text.h"
 #include "Engine.h"
-//#include "Game.h"
 #include "LevelChoiceScreen.h"
 #include "HallOfFame.h"
 #include "TransitionEffect.h"
 #include "Level.h"
 #include "editor/Editor.h"
+#include "editor/EditorLevelChoice.hpp"
 
 void MainMenu::Init() {
 
@@ -85,13 +85,9 @@ void MainMenu::ProcessEvents(const SDL_Event& event) {
                 m_next_app_state = fadeout;
             }
             else if (m_selection == Sel::Editor) {
-                LevelPtr level(new Level());
-                level->LoadFromFile("data/new.lvl");
-                level->LoadEntitiesFromFile("data/new.ents");
-                EditorPtr editorState(new Editor(level));
-                tefPtr fadeout = TransitionEffect::PreparePinWheelOut().states(shared_from_this(),editorState).duration(1.0).blades(2).delay(0,.2).Build();
+                EditorLevelChoicePtr level_choice(new EditorLevelChoice);
+                tefPtr fadeout = TransitionEffect::PreparePinWheelOut().states(shared_from_this(),level_choice).duration(1.0).blades(2).delay(0,.2).Build();
                 m_next_app_state = fadeout;
-
             }
             else if (m_selection == Sel::Quit) {
                 m_next_app_state.reset();
