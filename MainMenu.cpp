@@ -8,6 +8,7 @@
 #include "TransitionEffect.h"
 #include "Level.h"
 #include "editor/Editor.h"
+#include "editor/EditorLevelChoice.hpp"
 #include "video/Rgba.h"
 
 void MainMenu::Init() {
@@ -90,11 +91,12 @@ void MainMenu::ProcessEvents(const SDL_Event& event) {
                 m_next_app_state = fadeout;
             }
             else if (m_selection == Sel::Editor) {
-                LevelPtr level(new Level());
-                level->LoadFromFile("data/new.lvl");
-                level->LoadEntitiesFromFile("data/new.ents");
-                EditorPtr editorState(new Editor(level));
-                tefPtr fadeout = TransitionEffect::PreparePinWheelOut().states(shared_from_this(),editorState).duration(1.0).blades(2).delay(0,.2).Build();
+                EditorLevelChoicePtr editorLevelChoice(new EditorLevelChoice);
+//                LevelPtr level(new Level());
+//                level->LoadFromFile("data/new.lvl");
+//                level->LoadEntitiesFromFile("data/new.ents");
+//                EditorPtr editorState(new Editor(level));
+                tefPtr fadeout = TransitionEffect::PreparePinWheelOut().states(shared_from_this(),editorLevelChoice).duration(1.0).blades(2).delay(0,.2).Build();
                 m_next_app_state = fadeout;
             }
             else if (m_selection == Sel::Quit) {
