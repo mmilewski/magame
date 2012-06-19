@@ -3,6 +3,7 @@
 #include "StdAfx.h"
 
 #include "AppState.h"
+#include "gui/ScrollBox.hpp"
 
 class EditorLevelChoice;
 typedef boost::shared_ptr<EditorLevelChoice> EditorLevelChoicePtr;
@@ -21,8 +22,12 @@ public:
 
     virtual AppStatePtr NextAppState() const { return m_next_app_state; }
     void SetNextAppState(AppStatePtr state) { m_next_app_state = state; }
+
 private:
+    void EditLevel(std::string level_name);
+
     AppStatePtr m_next_app_state;
+    boost::shared_ptr<gui::ScrollBox> m_level_list;
 };
 
 #endif // MAGAME_EDITOR_LEVEL_CHOICE_HPP_INCLUDED

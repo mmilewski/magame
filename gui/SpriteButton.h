@@ -4,6 +4,7 @@
 
 #include "GuiWidget.h"
 #include "video/Sprite.h"
+#include "video/Renderer.h"
 
 class SpriteButton;
 typedef boost::shared_ptr<SpriteButton> SpriteButtonPtr;

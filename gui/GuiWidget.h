@@ -3,6 +3,7 @@
 #include "StdAfx.h"
 
 #include "math/BasicMathTypes.h"
+#include "math/Aabb.h"
 
 class GuiWidget;
 typedef boost::shared_ptr<GuiWidget> GuiWidgetPtr;
