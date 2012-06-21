@@ -29,6 +29,15 @@ files = Glob("*.cpp")
 for directory in ['editor', 'entity', 'gui', 'math', 'video']:
     files = files + Glob(directory + "/*.cpp")
 
-env.PrecompileHeader('A-make-gch-first', 'StdAfx.h')
-env.Program("game", files)
+import hashlib, pickle
+pch_source_file = 'StdAfx.h'
+pch_digest_file = pch_source_file + '.digest'
+def sha1_file(fname): return hashlib.sha1(open(fname,'rb').read()).hexdigest()
+try:
+  if (pickle.load(open(pch_digest_file, 'r')) != sha1_file(pch_source_file)):
+    env.PrecompileHeader('A-make-gch-first', pch_source_file)
+except: pass
+finally:
+   pickle.dump(sha1_file(pch_source_file), open(pch_digest_file,'w'))
 
+env.Program("game", files)
