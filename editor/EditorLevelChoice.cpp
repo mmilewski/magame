@@ -67,14 +67,14 @@ void EditorLevelChoice::ProcessEvents(SDL_Event const & event)
             m_level_list->SelectPrev();
         } else if (key == SDLK_DOWN) {
             m_level_list->SelectNext();
-        } else if (key == SDLK_RETURN) {
+        } else if (key == SDLK_RETURN && m_level_list->HasSelection()) {
             if (m_level_list->SelectedId() == 0) {
                 /*
                  * TOOD: Before we open the editor, we should ask for level's name.
                  */
                 std::string level_name = "new";
                 EditLevel(level_name);
-           } else {
+            } else {
                 EditLevel(IntToStr(m_level_list->SelectedId()));
             }
         }

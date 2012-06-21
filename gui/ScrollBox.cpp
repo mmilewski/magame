@@ -15,6 +15,9 @@ ScrollBox::ScrollBox(Position position, Size size) :
 
 void ScrollBox::Draw() const
 {
+    if (m_items.empty()) {
+        return;
+    }
     const int display_before = 2, display_after = 2;
     const double itemHeight = 0.07;
     RendererPtr renderer = Engine::Get().GetRenderer();

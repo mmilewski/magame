@@ -17,6 +17,7 @@ public:
     void SelectPrev() { if (m_selected_id) m_selected_id--; }
     void SelectNext() { if (m_selected_id+1 < m_items.size()) m_selected_id++; }
     size_t SelectedId() const { return m_selected_id; }
+    bool HasSelection() const { return !m_items.empty(); }
 
     void SetItems(std::deque<std::string> const& items) { m_items = items; }
 private:
