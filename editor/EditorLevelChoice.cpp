@@ -4,6 +4,7 @@
 #include "Engine.h"
 #include "Level.h"
 #include "editor/Editor.h"
+#include "common/LineByLineReader.hpp"
 
 EditorLevelChoice::EditorLevelChoice()
 {
@@ -11,7 +12,13 @@ EditorLevelChoice::EditorLevelChoice()
 
 void EditorLevelChoice::Init()
 {
-    std::deque<std::string> levels = {"new game", "1", "2", "3", "4", "5"};
+    const std::string levels_list = "data/levels";
+
+    std::deque<std::string> levels;
+    std::ifstream file(levels_list);
+    LineByLineReader reader(file);
+    std::copy(reader.begin(), reader.end(), std::back_inserter(levels));
+    boost::sort(levels);
     m_level_list.reset(new gui::ScrollBox(Position(0.25,0.2), Size(.5, .6)));
     m_level_list->SetItems(levels);
 }

@@ -2,7 +2,7 @@
 
 #include "Engine.h"
 #include "Level.h"
-
+#include "common/LineByLineReader.hpp"
 
 Level::Level()
     : m_name("unknown"),
@@ -101,21 +101,15 @@ void Level::LoadEntitiesFromFile(const std::string& filename) {
         return;
     }
 
-    // wczytaj linia po linii
-    const int buffer_size = 1024;
-    char buffer[buffer_size];
-    while (file) {
-        file.getline(buffer, buffer_size);
-        std::string line(buffer);
-        if (line.length() < 5 || line.at(0) == '#')
-            continue;
-        std::istringstream iss(line);
+    LineByLineReader reader(file);
+    for (auto line_it = reader.begin(); line_it!=reader.end(); ++line_it) {
+        std::istringstream iss(*line_it);
         LevelEntityData data;
         iss >> data.name;
         iss >> data.x;
         iss >> data.y;
         {
-            std::string dirToken;   // zwrot jednostki
+            std::string dirToken;   // DIR - means that direction will be read
             iss >> dirToken;
             boost::range::transform(dirToken, dirToken.begin(), ::tolower);
             if (dirToken == "dir") {
@@ -128,7 +122,6 @@ void Level::LoadEntitiesFromFile(const std::string& filename) {
         } else {
             m_entities_to_create.push_back(data);
         }
-
 //        std::cout << "[LoadEntityFromFile] " << data.name << ", " << Vector2(data.x,data.y) << ", " << data.direction << std::endl;
     }
 }
