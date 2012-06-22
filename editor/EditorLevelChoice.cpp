@@ -1,7 +1,6 @@
 #include "StdAfx.h"
 #include "EditorLevelChoice.hpp"
 #include "MainMenu.h"
-#include "Engine.h"
 #include "Level.h"
 #include "editor/Editor.h"
 #include "common/LineByLineReader.hpp"
@@ -13,14 +12,14 @@ EditorLevelChoice::EditorLevelChoice()
 void EditorLevelChoice::Init()
 {
     const std::string levels_list = "data/levels";
-
-    std::deque<std::string> levels;
+    m_levels.clear();
     std::ifstream file(levels_list);
     LineByLineReader reader(file);
-    std::copy(reader.begin(), reader.end(), std::back_inserter(levels));
-    boost::sort(levels);
+    std::copy(reader.begin(), reader.end(), std::back_inserter(m_levels));
+    boost::sort(m_levels);
+    m_levels.push_front("new game");
     m_level_list.reset(new gui::ScrollBox(Position(0.25,0.2), Size(.5, .6)));
-    m_level_list->SetItems(levels);
+    m_level_list->SetItems(m_levels);
 }
 
 void EditorLevelChoice::Start()
@@ -49,6 +48,7 @@ bool EditorLevelChoice::Update(double dt)
 
 void EditorLevelChoice::EditLevel(std::string level_name)
 {
+    std::cout << "Editing level: " << level_name << std::endl;
     LevelPtr level(new Level);
     level->LoadFromFile("data/" + level_name + ".lvl");
     level->LoadEntitiesFromFile("data/" + level_name + ".ents");
@@ -77,12 +77,12 @@ void EditorLevelChoice::ProcessEvents(SDL_Event const & event)
         } else if (key == SDLK_RETURN && m_level_list->HasSelection()) {
             if (m_level_list->SelectedId() == 0) {
                 /*
-                 * TOOD: Before we open the editor, we should ask for level's name.
+                 * TODO: Before we open the editor, we should ask for level's name.
                  */
                 std::string level_name = "new";
                 EditLevel(level_name);
             } else {
-                EditLevel(IntToStr(m_level_list->SelectedId()));
+                EditLevel(m_levels.at(m_level_list->SelectedId()));
             }
         }
     }

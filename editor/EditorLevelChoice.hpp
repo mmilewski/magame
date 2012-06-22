@@ -28,6 +28,7 @@ private:
 
     AppStatePtr m_next_app_state;
     boost::shared_ptr<gui::ScrollBox> m_level_list;
+    std::deque<std::string> m_levels;
 };
 
 #endif // MAGAME_EDITOR_LEVEL_CHOICE_HPP_INCLUDED
