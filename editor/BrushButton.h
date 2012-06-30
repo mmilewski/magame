@@ -8,7 +8,7 @@
 class BrushButton;
 typedef boost::shared_ptr<BrushButton> BrushButtonPtr;
 
-class BrushButton : public SpriteButton {
+class BrushButton : public gui::SpriteButton {
 public:
     explicit BrushButton(SpritePtr sprite, Position position, Size size, BrushPtr brush)
         : SpriteButton(sprite, position, size),

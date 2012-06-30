@@ -2,17 +2,19 @@
 #define MAGAME_SPRITEBUTTON_H__INCLUDED
 #include "StdAfx.h"
 
-#include "GuiWidget.h"
+#include "Widget.h"
 #include "video/Sprite.h"
 #include "video/Renderer.h"
+
+namespace gui {
 
 class SpriteButton;
 typedef boost::shared_ptr<SpriteButton> SpriteButtonPtr;
 
-class SpriteButton : public GuiWidget {
+class SpriteButton : public Widget {
 public:
     explicit SpriteButton(SpritePtr sprite, Position position, Size size)
-        : GuiWidget(position, size, true),
+        : Widget(position, size, true),
           m_sprite(sprite) {
     }
     virtual ~SpriteButton()   {}
@@ -29,5 +31,8 @@ protected:
 private:
     SpritePtr m_sprite;
 };
+
+
+} // namespace gui
 
 #endif  // MAGAME_SPRITEBUTTON_H__INCLUDED

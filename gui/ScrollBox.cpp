@@ -8,7 +8,7 @@
 namespace gui {
 
 ScrollBox::ScrollBox(Position position, Size size) :
-    GuiWidget(position, size, true/*visible*/),
+    Widget(position, size, true/*visible*/),
     m_selected_id(0)
 {
 }

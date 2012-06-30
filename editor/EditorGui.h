@@ -8,7 +8,7 @@
 class EditorGui;
 typedef boost::shared_ptr<EditorGui> EditorGuiPtr;
 
-class EditorGui : public Gui, public boost::enable_shared_from_this<EditorGui> {
+class EditorGui : public gui::Gui, public boost::enable_shared_from_this<EditorGui> {
 public:
     explicit EditorGui();
     void Start();

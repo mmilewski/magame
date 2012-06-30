@@ -1,12 +1,12 @@
 #ifndef MAGAME_SCROLL_BOX_HPP_INCLUDED
 #define MAGAME_SCROLL_BOX_HPP_INCLUDED
 #include "StdAfx.h"
-#include "gui/GuiWidget.h"
+#include "gui/Widget.h"
 #include "video/Renderer.h"
 
 namespace gui {
 
-class ScrollBox : public GuiWidget
+class ScrollBox : public Widget
 {
 public:
     ScrollBox(Position position, Size size);

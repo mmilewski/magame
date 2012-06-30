@@ -2,6 +2,8 @@
 #define MAGAME_GUI_H_INCLUDED
 #include "StdAfx.h"
 
+namespace gui {
+
 class Gui;
 typedef boost::shared_ptr<Gui> GuiPtr;
 
@@ -19,5 +21,8 @@ public:
     virtual bool OnMouseMove(double /* x */, double /* y */) { return false; }
     virtual bool OnMouseDown(Uint8 /* button */, double /* x */, double /* y */) { return false; }
 };
+
+
+} // namespace gui
 
 #endif
