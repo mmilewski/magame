@@ -6,7 +6,7 @@
 #include "Game.h"
 #include "Level.h"
 #include "video/SpriteGrid.h"
-#include "gui/Gui.h"
+#include "gui/AbstractGui.h"
 #include "editor/EditorGui.h"
 #include "editor/EditorCommand.h"
 

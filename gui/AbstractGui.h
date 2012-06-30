@@ -4,12 +4,12 @@
 
 namespace gui {
 
-class Gui;
-typedef boost::shared_ptr<Gui> GuiPtr;
+class AbstractGui;
+typedef boost::shared_ptr<AbstractGui> AbstractGuiPtr;
 
-class Gui : public boost::enable_shared_from_this<Gui> {
+class AbstractGui : public boost::enable_shared_from_this<AbstractGui> {
 public:
-    virtual ~Gui() {}
+    virtual ~AbstractGui() {}
 
     virtual void Start() = 0;
     virtual void Init() = 0;

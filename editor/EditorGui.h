@@ -2,13 +2,13 @@
 #define MAGAME_EDITORGUI_H_INCLUDED
 #include "StdAfx.h"
 
-#include "../gui/Gui.h"
+#include "../gui/AbstractGui.h"
 #include "BrushButton.h"
 
 class EditorGui;
 typedef boost::shared_ptr<EditorGui> EditorGuiPtr;
 
-class EditorGui : public gui::Gui, public boost::enable_shared_from_this<EditorGui> {
+class EditorGui : public gui::AbstractGui, public boost::enable_shared_from_this<EditorGui> {
 public:
     explicit EditorGui();
     void Start();
