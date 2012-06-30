@@ -2,8 +2,7 @@
 #define MAGAME_GAME_H_INCLUDED
 #include "StdAfx.h"
 
-
-#include "Utils.h"
+#include "common/Utils.h"
 #include "entity/Player.h"
 #include "Level.h"
 #include "video/SpriteGrid.h"
