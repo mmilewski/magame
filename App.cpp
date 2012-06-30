@@ -12,19 +12,8 @@
 
 
 void App::ProcessEvents() {
-    // przyjrzyj zdarzenia
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
-//         if (event.type == SDL_KEYDOWN && event.key.keysym.sym==SDLK_e) {
-//             m_app_state.reset(new demo::Show);
-//             m_app_state->Init();
-//             m_app_state->Start();
-//             return;
-//         } 
-//         else if (event.type == SDL_KEYDOWN && event.key.keysym.sym==SDLK_q) {
-//             exit(0);
-//         }
-//         else
         if (event.type == SDL_VIDEORESIZE) {
             Resize(event.resize.w, event.resize.h);
         } 

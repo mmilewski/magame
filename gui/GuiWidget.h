@@ -21,9 +21,9 @@ public:
     virtual void Update(double dt) = 0;
 
     Position GetPosition()      const { return m_position; }
-    Position GetSizedPosition() const { return Position(GetPosition().X() + GetSize().X(),
-                                                        GetPosition().Y() + GetSize().Y()); }
+    Position GetSizedPosition() const { return GetPosition() + GetSize(); }
     Size     GetSize()          const { return m_size; }
+
     bool     IsVisible()        const { return m_is_visible; }
     GuiWidget* MoveBy(const Vector2& vector)       { m_position += vector; return this; }
     GuiWidget* SetSize(const Vector2& vector)      { m_size = vector;      return this; }

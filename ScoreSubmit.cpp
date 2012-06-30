@@ -63,15 +63,15 @@ void ScoreSubmit::ProcessEvents(const SDL_Event& event) {
     if (event.type == SDL_QUIT) {
         SetDone();
     } else if (event.type == SDL_KEYDOWN) {
-        if (event.key.keysym.sym == SDLK_RETURN && m_player_nickname.at(0) != '_') {
+        SDLKey key = event.key.keysym.sym;
+        if (key == SDLK_RETURN && m_player_nickname.at(0) != '_') {
             StoreInFile();
             SetDone();
         }
-        else if (event.key.keysym.sym >= SDLK_a && event.key.keysym.sym <= SDLK_z && m_next_letter < m_player_nickname.size()) { 
-            char key = event.key.keysym.sym - SDLK_a + 'a';
-            m_player_nickname.at(m_next_letter++) = key;
+        else if (SDLK_a <= key && key <= SDLK_z && m_next_letter < m_player_nickname.size()) {
+            m_player_nickname.at(m_next_letter++) = key - SDLK_a + 'a';
         }
-        else if (event.key.keysym.sym == SDLK_BACKSPACE) {
+        else if (key == SDLK_BACKSPACE) {
             if (m_player_nickname.at(0) != '_') {
                 m_player_nickname.at(--m_next_letter) = '_';
             }
