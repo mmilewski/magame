@@ -3,6 +3,7 @@
 #include "Engine.h"
 #include "Level.h"
 #include "common/LineByLineReader.hpp"
+#include <boost/algorithm/string/case_conv.hpp>
 
 Level::Level()
     : m_name("unknown"),
@@ -111,8 +112,7 @@ void Level::LoadEntitiesFromFile(const std::string& filename) {
         {
             std::string dirToken;   // DIR - means that direction will be read
             iss >> dirToken;
-            boost::range::transform(dirToken, dirToken.begin(), ::tolower);
-            if (dirToken == "dir") {
+            if (boost::to_lower_copy(dirToken) == "dir") {
                 iss >> data.direction[0] >> data.direction[1];
             }
         }
