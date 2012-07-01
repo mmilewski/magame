@@ -19,15 +19,15 @@ public:
         m_layer = layer;
     }
 
-    void DrawDigit(char ch, double pos_x, double pos_y);
-    void DrawLetter(char ch, Position pos);
-    void DrawSpecial(char ch, double pos_x, double pos_y);
-    void DrawText(const std::string& text, double pos_x, double pos_y);
-    void DrawText(std::string const& text, Position pos);
-    void DrawNumber(size_t number, double pos_x, double pos_y, size_t width = 0);
+    void DrawDigit(char ch, double pos_x, double pos_y) const;
+    void DrawLetter(char ch, Position pos) const;
+    void DrawSpecial(char ch, double pos_x, double pos_y) const;
+    void DrawText(const std::string& text, double pos_x, double pos_y) const;
+    void DrawText(std::string const& text, Position pos) const;
+    void DrawNumber(size_t number, double pos_x, double pos_y, size_t width = 0) const;
 
 private:
-    void Draw(double tex_x, double tex_y, double pos_x, double pos_y);
+    void Draw(double tex_x, double tex_y, double pos_x, double pos_y) const;
 
 private:
     double m_width;

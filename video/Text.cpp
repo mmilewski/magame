@@ -4,14 +4,14 @@
 #include "Engine.h"
 #include "Text.h"
 
-void Text::DrawDigit(char ch, double pos_x, double pos_y) {
+void Text::DrawDigit(char ch, double pos_x, double pos_y) const {
     int digit = ch - '0';
     int tex_x = digit * 32;
     int tex_y = 8*32;
     Draw(tex_x, tex_y, pos_x, pos_y);
 }
 
-void Text::DrawLetter(char ch, Position pos) {
+void Text::DrawLetter(char ch, Position pos) const {
     int letter = toupper(ch) - 'A';
     
     int letter_row = letter / 10; // wiersz, w którym jest litera
@@ -23,7 +23,7 @@ void Text::DrawLetter(char ch, Position pos) {
     Draw(tex_x, tex_y, pos.X(), pos.Y());
 }
 
-void Text::DrawSpecial(char ch, double pos_x, double pos_y) {
+void Text::DrawSpecial(char ch, double pos_x, double pos_y) const {
     double tex_x = 0;
     double tex_y = 0;
 
@@ -37,7 +37,7 @@ void Text::DrawSpecial(char ch, double pos_x, double pos_y) {
     Draw(tex_x, tex_y, pos_x, pos_y);
 }
 
-void Text::DrawText(const std::string& text, double pos_x, double pos_y) {
+void Text::DrawText(const std::string& text, double pos_x, double pos_y) const {
     double x = pos_x;
     double y = pos_y;
 
@@ -59,11 +59,11 @@ void Text::DrawText(const std::string& text, double pos_x, double pos_y) {
     }
 }
 
-void Text::DrawText(std::string const& text, Position pos) {
+void Text::DrawText(std::string const& text, Position pos) const {
     DrawText(text, pos.X(), pos.Y());
 }
 
-void Text::DrawNumber(size_t number, double pos_x, double pos_y, size_t width) {
+void Text::DrawNumber(size_t number, double pos_x, double pos_y, size_t width) const {
     std::string number_str = IntToStr(number);
     size_t spaces_count = std::max(0, static_cast<int> (width) - static_cast<int> (number_str.size()));
     for (size_t i = 0; i < spaces_count; ++i) {
@@ -72,7 +72,7 @@ void Text::DrawNumber(size_t number, double pos_x, double pos_y, size_t width) {
     DrawText(number_str, pos_x, pos_y);
 }
 
-void Text::Draw(double tex_x, double tex_y, double pos_x, double pos_y) {
+void Text::Draw(double tex_x, double tex_y, double pos_x, double pos_y) const {
     tex_x = static_cast<int>(tex_x);  // "zaokrąglanie"
     tex_y = static_cast<int>(tex_y);
 
@@ -85,8 +85,8 @@ void Text::Draw(double tex_x, double tex_y, double pos_x, double pos_y) {
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
             Engine::Get().GetRenderer()->DrawSprite(tex_x, tex_y, 32, 32, 
-                                                 pos_x, pos_y, m_width, m_height,
-                                                 DL::DisplayLayer(m_layer));
+                                                    pos_x, pos_y, m_width, m_height,
+                                                    DL::DisplayLayer(m_layer));
         }
         glMatrixMode(GL_PROJECTION);
         glPopMatrix();

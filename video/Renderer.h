@@ -25,9 +25,9 @@ public:
     void SetTileSize(double width, double height);
 
     void LoadTexture(const std::string & filename);
-    void DrawSprite(double tex_x, double tex_y, double tex_w, double tex_h, double pos_x, double pos_y,
-                    double width, double height, DL::DisplayLayer layer, 
-                    double brightness = 1.0);
+    void DrawSprite(double tex_x, double tex_y, double tex_w, double tex_h,
+                    double pos_x, double pos_y, double width, double height,
+                    DL::DisplayLayer layer, double brightness = 1.0);
 
     void DrawAabb(const Aabb& box, Rgba color=Rgba(1,1,0,.7)) const;
     void DrawQuad(double min_x, double min_y,
