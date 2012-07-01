@@ -135,7 +135,7 @@ void Entity::CheckCollisionsWithLevel(double dt, LevelPtr level) {
 }
 
 ES::EntityState Entity::SetStateFromVelocity(double velocity_x) {   
-    if (fabs(velocity_x) < 0.00001) {
+    if (fabs(velocity_x) < 0.0001) {
         m_state = ES::Stand;
     } else if (velocity_x > 0.0) {
         m_state = ES::GoRight;
@@ -207,54 +207,21 @@ void Entity::Update(double dt, LevelPtr level) {
 }
 
 void Entity::Draw() const {
-    const double tile_width = Engine::Get().GetRenderer()->GetTileWidth();
-    const double tile_height = Engine::Get().GetRenderer()->GetTileHeight();
-
     // wylicz pozycję gracza na ekranie
-    const double pos_x = m_x * tile_width;
-    const double pos_y = m_y * tile_height;
+    const Size tile_size = Engine::Get().GetRenderer()->GetTileSize();
+    const Position entity_pos(m_x * tile_size.X(), m_y * tile_size.Y());
 
-//    std::cout << "Entity Draw: " << pos_x << " " << pos_y << std::endl;
-//    const size_t screen_tiles_count = Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount();
-//    const size_t half_screen_tiles_count = screen_tiles_count/2-1;
-//    double pos_x = 0.45;
-//    const double left_edge = m_max_x_pos - half_screen_tiles_count;
-//    if (m_x >= left_edge && m_x < m_max_x_pos) {
-//        // jeżeli gracz jest między ostatnio widocznym fragmentem a
-//        // maksymalną pozycją na której do tej pory był, to porusza
-//        // się swobodnie (nie jest przypięty do środka planszy)
-//        pos_x = (m_x - left_edge) * tile_width;
-//    }
-//
-//    if (m_x > m_level_width - half_screen_tiles_count - 2) {
-//        // jeżeli gracz jest przy prawej krawędzi mapy (mapa nie
-//        // powinna się poruszać)
-//        pos_x = (m_x - screen_tiles_count) * tile_width;
-//    }
-
-
-//    std::cout << "[Entity::Draw] " << pos_x << " " << pos_y << std::endl;
     switch (m_state) {
     case ES::Stand:
-        if (m_stop) m_stop->DrawCurrentFrame(pos_x, pos_y, tile_width, tile_height);
+        if (m_stop) m_stop->DrawCurrentFrame(entity_pos, tile_size);
         break;
     case ES::GoLeft:
-        if (m_left) m_left->DrawCurrentFrame(pos_x, pos_y, tile_width, tile_height);
+        if (m_left) m_left->DrawCurrentFrame(entity_pos, tile_size);
         break;
     case ES::GoRight:
-        if (m_right) m_right->DrawCurrentFrame(pos_x, pos_y, tile_width, tile_height);
+        if (m_right) m_right->DrawCurrentFrame(entity_pos, tile_size);
         break;
     }
-
-//    const size_t v_tiles_count = Engine::Get().GetRenderer()->GetVerticalTilesOnScreenCount();
-//    const size_t curr_y_tile = v_tiles_count - GetAabb().GetMinY();
-//    const size_t curr_x_tile = GetX() + .5;
-//    for (int y = -1; y < 2; ++y) {
-//        Engine::Get().GetRenderer()->DrawAabb(MM_level->GetFieldAabb(curr_x_tile + 1, curr_y_tile + y));
-//        Engine::Get().GetRenderer()->DrawAabb(MM_level->GetFieldAabb(curr_x_tile + y, curr_y_tile + 1));
-//    }
-
-
 
 //    Engine::Get().GetRenderer()->DrawAabb(GetAabb());
 }

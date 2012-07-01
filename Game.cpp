@@ -449,7 +449,7 @@ bool Game::Update(double dt) {
     // zaaktualizuj stan mapy kaflowej (np. animację kafli)
     m_level_view.Update(dt);
 
-    // przesuń mapę
+    // przesuń mapę (???)
     if (m_player->MoveMap()) {
         m_stored_player_pos_x = m_player->GetX();
     }

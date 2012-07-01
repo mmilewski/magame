@@ -83,6 +83,7 @@ public:
     void IncreaseJumpHeightBonus(int by)  { m_jump_height_bonus += by; }
     void DropJumpHeightBonus()            { m_jump_height_bonus = 0; }
 
+    // TODO: name is inappropriate for method's behaviour ?
     bool MoveMap() const {
         const size_t screen_tiles_count = Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount();
         return 
