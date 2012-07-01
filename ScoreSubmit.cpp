@@ -13,7 +13,7 @@ ScoreSubmit::ScoreSubmit(size_t points) :
     SetDone(false);
 }
 
-void ScoreSubmit::Draw() {
+void ScoreSubmit::Draw() const {
     if (IsClearBeforeDraw()) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();

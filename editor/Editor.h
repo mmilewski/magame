@@ -39,7 +39,7 @@ public:
 
     void Start();
     void Init();
-    void Draw();
+    void Draw() const;
     bool Update(double dt);
     void ProcessEvents(const SDL_Event& event);
 
@@ -55,8 +55,8 @@ public:
     }
 
 private:
-    void DrawEntitiesPlayerAndLevel(double viewer_x);
-    void DrawBrushAndGui(double viewer_x);
+    void DrawEntitiesPlayerAndLevel(double viewer_x) const;
+    void DrawBrushAndGui(double viewer_x) const;
 
     // Przekształca współrzędny kursora (przestrzeń okna)
     // na współrzędne świata (przestrzeń świata)
@@ -131,7 +131,7 @@ private:
     bool m_is_gui_visible;              // czy kontrolki są widoczne?
 
     LevelPtr m_level;
-    SpriteGrid m_level_view;
+    mutable SpriteGrid m_level_view;
     double m_viewer_offset_x;           // przesunięcie środka planszy (przestrzeń świata)
 
     double m_pointer_x;                 // położenie kursora (przestrzeń świata)

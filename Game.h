@@ -49,7 +49,7 @@ public:
 
     void Start();
     void Init();
-    void Draw();
+    void Draw() const;
     bool Update(double dt);
     void ProcessEvents(const SDL_Event& event);
 
@@ -92,7 +92,7 @@ private:
     std::list<LevelEntityData> m_entities_to_create;  // opisy jednostek do stworzenia
 
     LevelPtr m_level;
-    SpriteGrid m_level_view;
+    mutable SpriteGrid m_level_view;
     double m_stored_player_pos_x;
 
     std::string m_level_name;

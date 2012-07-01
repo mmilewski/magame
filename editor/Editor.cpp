@@ -41,7 +41,7 @@ void Editor::Init() {
     m_player_data = m_level->GetPlayerData();
 }
 
-void Editor::Draw() {
+void Editor::Draw() const {
     if (IsInGame()) {
         m_game->Draw();
         return;
@@ -69,7 +69,7 @@ void Editor::Draw() {
     }
 }
 
-void Editor::DrawEntitiesPlayerAndLevel(double viewer_x) {
+void Editor::DrawEntitiesPlayerAndLevel(double viewer_x) const {
     const double tile_width  = Engine::Get().GetRenderer()->GetTileWidth();
     const double tile_height = Engine::Get().GetRenderer()->GetTileHeight();
 
@@ -97,7 +97,7 @@ void Editor::DrawEntitiesPlayerAndLevel(double viewer_x) {
     glPopMatrix();
 }
 
-void Editor::DrawBrushAndGui(double viewer_x) {
+void Editor::DrawBrushAndGui(double viewer_x) const {
     const double tile_width  = Engine::Get().GetRenderer()->GetTileWidth();
     const double tile_height = Engine::Get().GetRenderer()->GetTileHeight();
 
@@ -105,7 +105,6 @@ void Editor::DrawBrushAndGui(double viewer_x) {
     {
         // wyłącz test głębokości, żeby pędzel oraz gui były zawsze na wierzchu
         glDisable(GL_DEPTH_TEST);
-        SetBrush(m_gui->GetActiveBrush());
         if (GetBrush()) {
             glPushMatrix();
             {
@@ -164,6 +163,7 @@ bool Editor::Update(double dt) {
 
     // aktualizacja GUI
     m_gui->Update(dt);
+    SetBrush(m_gui->GetActiveBrush());
 
     return !IsDone();
 }

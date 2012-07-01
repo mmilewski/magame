@@ -16,7 +16,7 @@ public:
     virtual void Init() = 0;
     virtual void Start() = 0;
 
-    virtual void Draw() = 0;
+    virtual void Draw() const = 0;
 
     /**
      * @brief Update

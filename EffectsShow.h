@@ -10,7 +10,7 @@ private:
     std::list<TransitionEffectPtr> m_effects;
     AppStatePtr m_next;
     bool m_filled;
-    bool m_updated;
+    mutable bool m_updated;
 
 public:
     Show()
@@ -67,7 +67,7 @@ public:
     void Start() {
     }
 
-    void Draw() {
+    void Draw() const {
         if (m_updated) {
             m_updated = false;
             return;

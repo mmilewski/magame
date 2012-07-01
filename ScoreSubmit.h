@@ -16,7 +16,7 @@ public:
     explicit ScoreSubmit(size_t points);
 
     void ProcessEvents(const SDL_Event& event);
-    void Draw();
+    void Draw() const;
     bool Update(double dt);
 
     void Init();

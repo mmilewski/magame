@@ -19,7 +19,7 @@ public:
     explicit HallOfFame();
     static HallOfFamePtr New();
 
-    void Draw();
+    void Draw() const;
     bool Update(double dt);
     void ProcessEvents(const SDL_Event& event);
 

@@ -83,13 +83,12 @@ public:
     void IncreaseJumpHeightBonus(int by)  { m_jump_height_bonus += by; }
     void DropJumpHeightBonus()            { m_jump_height_bonus = 0; }
 
-    bool MoveMap() {
+    bool MoveMap() const {
         const size_t screen_tiles_count = Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount();
-        const size_t half_screen_tiles_count = screen_tiles_count/2;
         return 
             GetX() >= m_max_x_pos
             && 
-            GetX() < (m_level_width - 1) - half_screen_tiles_count;
+            GetX() < (m_level_width - 1) - screen_tiles_count/2;
     }
 
     void NewLevelReset(LevelPtr level) {

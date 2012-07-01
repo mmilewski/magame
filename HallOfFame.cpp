@@ -15,7 +15,7 @@ HallOfFamePtr HallOfFame::New() {
     return HallOfFamePtr(new HallOfFame);
 }
 
-void HallOfFame::Draw() {
+void HallOfFame::Draw() const {
     if (IsClearBeforeDraw()) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();

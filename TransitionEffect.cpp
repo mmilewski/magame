@@ -58,7 +58,7 @@ void TransitionEffect::Init() {
     // nie potrzebujemy żadnych zasobów
 }
 
-void TransitionEffect::Draw() {
+void TransitionEffect::Draw() const {
     if (IsDone()) {
         return;
     }

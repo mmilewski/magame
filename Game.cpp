@@ -121,7 +121,6 @@ void Game::Init() {
     m_level_view.StoreSprite(FT::NcPlatformTopRight,     Sprite::GetByName("NcPlatformTopRight"));
     m_level_view.StoreSprite(FT::NcPlatformRight,        Sprite::GetByName("NcPlatformRight"));
 
-
     // utwórz postać gracza
     const LevelEntityData player_data = m_level->GetPlayerData();
     if (!m_player) {
@@ -450,18 +449,18 @@ bool Game::Update(double dt) {
     // zaaktualizuj stan mapy kaflowej (np. animację kafli)
     m_level_view.Update(dt);
 
+    // przesuń mapę
+    if (m_player->MoveMap()) {
+        m_stored_player_pos_x = m_player->GetX();
+    }
+
     return !IsDone();
 }
 
-void Game::Draw() {
+void Game::Draw() const {
     if (IsClearBeforeDraw()) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();
-    }
-
-    // narysuj mapę
-    if (m_player->MoveMap()) {
-        m_stored_player_pos_x = m_player->GetX();
     }
 
     glMatrixMode(GL_PROJECTION);

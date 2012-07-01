@@ -20,7 +20,7 @@ public:
     void Init();
     void Start();
 
-    void Draw();
+    void Draw() const;
     bool Update(double dt);
     void ProcessEvents(const SDL_Event& event);
 

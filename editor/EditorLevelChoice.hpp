@@ -16,7 +16,7 @@ public:
     virtual void Init();
     virtual void Start();
 
-    virtual void Draw();
+    virtual void Draw() const;
     virtual bool Update(double dt);
     virtual void ProcessEvents(SDL_Event const& event);
 

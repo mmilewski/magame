@@ -19,7 +19,7 @@ void MainMenu::Start() {
     Engine::Get().GetSound()->PlayMusic("menu");
 }
 
-void MainMenu::Draw() {
+void MainMenu::Draw() const {
     if (IsClearBeforeDraw()) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glLoadIdentity();

@@ -84,7 +84,7 @@ public:
 
     void Start();
     void Init();
-    void Draw();
+    void Draw() const;
     bool Update(double dt);
     void ProcessEvents(const SDL_Event& event);
     AppStatePtr NextAppState() const;
