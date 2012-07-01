@@ -11,7 +11,7 @@ void Text::DrawDigit(char ch, double pos_x, double pos_y) {
     Draw(tex_x, tex_y, pos_x, pos_y);
 }
 
-void Text::DrawLetter(char ch, double pos_x, double pos_y) {
+void Text::DrawLetter(char ch, Position pos) {
     int letter = toupper(ch) - 'A';
     
     int letter_row = letter / 10; // wiersz, w którym jest litera
@@ -20,7 +20,7 @@ void Text::DrawLetter(char ch, double pos_x, double pos_y) {
     int tex_x = letter_col * 32;
     int tex_y = (9+letter_row) * 32;
 
-    Draw(tex_x, tex_y, pos_x, pos_y);
+    Draw(tex_x, tex_y, pos.X(), pos.Y());
 }
 
 void Text::DrawSpecial(char ch, double pos_x, double pos_y) {
@@ -47,7 +47,7 @@ void Text::DrawText(const std::string& text, double pos_x, double pos_y) {
             DrawDigit(ch, x, y);
         }
         else if (isalpha(ch)) {
-            DrawLetter(ch, x, y);
+            DrawLetter(ch, Position(x, y));
         }
         else if (ch == '_') {
             DrawSpecial(ch, x, y);
@@ -57,6 +57,10 @@ void Text::DrawText(const std::string& text, double pos_x, double pos_y) {
         }
         x += m_width;
     }
+}
+
+void Text::DrawText(std::string const& text, Position pos) {
+    DrawText(text, pos.X(), pos.Y());
 }
 
 void Text::DrawNumber(size_t number, double pos_x, double pos_y, size_t width) {

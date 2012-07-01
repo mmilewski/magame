@@ -1,6 +1,7 @@
 #ifndef MAGAME_TEXT_H_INCLUDED
 #define MAGAME_TEXT_H_INCLUDED
 #include "StdAfx.h"
+#include "math/BasicMathTypes.h"
 
 class Text {
 public:
@@ -19,9 +20,10 @@ public:
     }
 
     void DrawDigit(char ch, double pos_x, double pos_y);
-    void DrawLetter(char ch, double pos_x, double pos_y);
+    void DrawLetter(char ch, Position pos);
     void DrawSpecial(char ch, double pos_x, double pos_y);
     void DrawText(const std::string& text, double pos_x, double pos_y);
+    void DrawText(std::string const& text, Position pos);
     void DrawNumber(size_t number, double pos_x, double pos_y, size_t width = 0);
 
 private:

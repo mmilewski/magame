@@ -118,6 +118,10 @@ void Renderer::DrawQuad(Position min_position, Position max_position, Rgba color
              color);
 }
 
+void Renderer::DrawQuadSized(Position min_position, Size size, Rgba color) const {
+    DrawQuad(min_position, min_position + size, color);
+}
+
 void Renderer::SetProjection(size_t width, size_t height) {
     glViewport(0, 0, static_cast<GLsizei> (width), static_cast<GLsizei> (height));
     ResetProjection();

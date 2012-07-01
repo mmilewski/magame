@@ -7,12 +7,10 @@
 #include "common/Utils.h"
 
 
-ScoreSubmit::ScoreSubmit(size_t points) 
-    : m_is_done(false),
-      m_player_nickname("__________"),
-      m_next_letter(0),
-      m_points(points),
-      m_highlighted_char(' ') {
+ScoreSubmit::ScoreSubmit(size_t points) :
+    m_points(points)
+{
+    SetDone(false);
 }
 
 void ScoreSubmit::Draw() {
@@ -28,34 +26,15 @@ void ScoreSubmit::Draw() {
     t.SetSize(0.05, 0.05);
     t.DrawText("wpisz swoje imie", 0.1, 0.7);
     
-    t.DrawText(m_player_nickname, 0.25, 0.6);
-    
-    t.SetSize(0.05, 0.05);
-    for (char ch = 'a'; ch <= 'z'; ++ch) {
-        std::pair<double, double> pos = LetterPosition(ch);
-        if (ch == m_highlighted_char) {
-            Engine::Get().GetRenderer()->DrawQuad(pos.first - 0.005, pos.second - 0.005, 
-                                                  pos.first + 0.055, pos.second + 0.055,
-                                                  Rgba(1,0,0));
-        }
-        t.DrawLetter(ch, pos.first, pos.second);
-    }
+    m_name_input->Draw();
 
     if (IsSwapAfterDraw()) {
         SDL_GL_SwapBuffers();
     }
 }
 
-std::pair<double, double> ScoreSubmit::LetterPosition(char ch) {
-    int index = ch - 'a';
-    int col = index % 7,
-        row = index / 7;
-
-    return std::make_pair(0.25 + col * 0.07, 
-                          0.45 - row * 0.07);
-}
-
-bool ScoreSubmit::Update(double /* dt */) {
+bool ScoreSubmit::Update(double dt) {
+    m_name_input->Update(dt);
     return !IsDone();
 }
 
@@ -64,35 +43,22 @@ void ScoreSubmit::ProcessEvents(const SDL_Event& event) {
         SetDone();
     } else if (event.type == SDL_KEYDOWN) {
         SDLKey key = event.key.keysym.sym;
-        if (key == SDLK_RETURN && m_player_nickname.at(0) != '_') {
+        if (key == SDLK_RETURN && !m_name_input->GetText().empty()) {
             StoreInFile();
             SetDone();
         }
-        else if (SDLK_a <= key && key <= SDLK_z && m_next_letter < m_player_nickname.size()) {
-            m_player_nickname.at(m_next_letter++) = key - SDLK_a + 'a';
+        else if (SDLK_a <= key && key <= SDLK_z) {
+            m_name_input->PushChar(key - SDLK_a + 'a');
         }
         else if (key == SDLK_BACKSPACE) {
-            if (m_player_nickname.at(0) != '_') {
-                m_player_nickname.at(--m_next_letter) = '_';
-            }
+            m_name_input->PopChar();
         }
     }
     else if (event.type == SDL_MOUSEMOTION) {
-        double x = event.motion.x / static_cast<double>(Engine::Get().GetWindow()->GetWidth());
-        double y = 1.0 - event.motion.y / static_cast<double>(Engine::Get().GetWindow()->GetHeight());
-        m_highlighted_char = ' ';
-        for (char ch = 'a'; ch <= 'z'; ++ch) {
-            std::pair<double, double> ch_pos = LetterPosition(ch);
-            if (x >= ch_pos.first && x <= ch_pos.first + 0.07
-                && y <= ch_pos.second + 0.07 && y >= ch_pos.second) {
-                m_highlighted_char = ch;
-            }
-        }
+        m_name_input->OnMouseMove(event.motion.x, event.motion.y);
     }
     else if (event.type == SDL_MOUSEBUTTONDOWN) {
-        if (m_highlighted_char != ' ' && m_next_letter < m_player_nickname.size()) {
-            m_player_nickname.at(m_next_letter++) = m_highlighted_char;
-        }
+        m_name_input->OnMouseDown(event.button.x, event.button.y);
     }
 }
 
@@ -114,11 +80,7 @@ void ScoreSubmit::StoreInFile() {
     {
         Entry player_entry;
         player_entry.points = m_points;
-        BOOST_FOREACH(char c, m_player_nickname) {
-            if (c != '_') {
-                player_entry.name += c;
-            }
-        }
+        player_entry.name = m_name_input->GetText();
         entries.push_back(player_entry);
     }
     {
@@ -134,6 +96,7 @@ void ScoreSubmit::StoreInFile() {
 }
 
 void ScoreSubmit::Init() {
+    m_name_input.reset(new gui::InputBox(Position(0.25, 0.45)));
 }
 
 void ScoreSubmit::Start() {

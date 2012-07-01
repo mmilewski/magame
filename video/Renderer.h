@@ -34,6 +34,7 @@ public:
                   double max_x, double max_y,
                   Rgba color) const;
     void DrawQuad(Position min_position, Position max_position, Rgba color) const;
+    void DrawQuadSized(Position min_position, Size size, Rgba color) const;
 
     void SetProjection(size_t width, size_t height);
     void ResetProjection();
