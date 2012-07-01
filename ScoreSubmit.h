@@ -3,7 +3,7 @@
 #include "StdAfx.h"
 
 #include "AppState.h"
-
+#include "gui/InputBox.hpp"
 
 class ScoreSubmit : public AppState, public boost::enable_shared_from_this<ScoreSubmit> {
 private:
@@ -22,21 +22,13 @@ public:
     void Init();
     void Start();
 
-    bool IsDone() const { return m_is_done; }
-
     AppStatePtr NextAppState() const;
 
 private:
-    std::pair<double, double> LetterPosition(char ch);
     void StoreInFile();
 
-private:
-    bool m_is_done;
-    std::string m_player_nickname;
-    size_t m_next_letter;
+    boost::shared_ptr<InputBox> m_name_input;
     size_t m_points;
-    char m_highlighted_char;
-    
 };
 
 typedef boost::shared_ptr<ScoreSubmit> ScoreSubmitPtr; 
