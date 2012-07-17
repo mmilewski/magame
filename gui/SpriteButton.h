@@ -19,14 +19,10 @@ public:
     }
     virtual ~SpriteButton()   {}
 
-    virtual void Draw() const      { m_sprite->DrawCurrentFrame(GetPosition(), GetSize()); DoDraw(); }
-    virtual void Update(double dt) { m_sprite->Update(dt); DoUpdate(); }
+    virtual void Draw() const      { m_sprite->DrawCurrentFrame(GetPosition(), GetSize()); }
+    virtual void Update(double dt) { m_sprite->Update(dt); }
 
     SpritePtr GetSprite() const    { return m_sprite; }
-
-protected:
-    virtual void DoDraw() const {}
-    virtual void DoUpdate() {}
 
 private:
     SpritePtr m_sprite;

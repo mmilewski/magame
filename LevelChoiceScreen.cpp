@@ -119,11 +119,6 @@ void LevelChoiceScreen::DrawAllRoads() const {
         BOOST_FOREACH(size_t to_node, roads) {
             if (from_node < to_node) {
                 DrawRoad(from_node, to_node);
-            } else if (to_node < from_node) {
-                // drogi dwukierunkowe rysujemy jednokrotnie
-                if (hasnt(m_connections.at(to_node), from_node)) {
-                    DrawRoad(to_node, from_node);
-                }
             }
         }
         ++from_node;
