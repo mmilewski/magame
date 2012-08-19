@@ -1,17 +1,28 @@
 #include "StdAfx.h"
 #include "LineByLineReader.hpp"
 
-LineByLineReader::iterator::iterator(std::istream& input, bool done) :
-    input(input), at_end(done) {
-    if (!done)
-        readline();
+LineByLineReader::LineByLineReader(std::istream& input) :
+    input(input)
+{
 }
 
-void LineByLineReader::iterator::readline() {
+LineByLineReader::iterator::iterator(std::istream& input, bool done) :
+    input(input), at_end(done) {
+    if (!done) {
+        Readline();
+    }
+}
+
+bool LineByLineReader::iterator::IsLineValid(T const& line) const
+{
+    return !(line.empty() || line.at(0) == '#');
+}
+
+void LineByLineReader::iterator::Readline() {
     if (input) {
         do {
             std::getline(input, value);
-        } while(input && (value.empty() || value.at(0) == '#'));
+        } while(input && (!IsLineValid(value)));
     }
     at_end = at_end || !input;
 }

@@ -13,16 +13,18 @@ class LineByLineReader
         typedef size_t difference_type;
         typedef T* pointer;
         typedef T& reference;
+        typedef T const& const_reference;
 
         iterator(std::istream& input, bool at_end);
-        void readline();
+        void Readline();
+        bool IsLineValid(T const& line) const;
 
         bool operator != (iterator const& other) const { return at_end != other.at_end; }
         bool operator == (iterator const& other) const { return !operator!=(other); }
-        value_type const& operator*() const { return value; }
+        const_reference operator*() const { return value; }
         iterator& operator++(int) { return operator++(); }
         iterator& operator++() {
-            readline();
+            Readline();
             return *this;
         }
 
@@ -30,12 +32,9 @@ class LineByLineReader
         value_type value;
         bool at_end;
     };
-public:
-    LineByLineReader(std::istream& input) :
-        input(input)
-    {
-    }
 
+public:
+    LineByLineReader(std::istream& input);
     iterator begin() { return iterator(input, false); }
     iterator end() { return iterator(input, true); }
 };
