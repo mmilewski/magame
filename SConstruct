@@ -16,7 +16,9 @@ env.Append(LIBPATH = [])
 env.Append(CPPDEFINES = {'DEBUG_BUILD':1,
                         })
 
-env.Append(CPPFLAGS = Split('-std=c++0x -g -ggdb'))
+env.Append(CPPFLAGS = Split('-std=c++0x'))
+env.Append(CPPFLAGS = Split('-g -ggdb'))
+#env.Append(CPPFLAGS = Split('-O2'))
 env.Append(CPPFLAGS = Split('-W -Wall -Wextra -pedantic -Woverloaded-virtual -Wnon-virtual-dtor -Wpointer-arith'))
 env.Append(CPPFLAGS = Split('-Wno-long-long -Wcast-align -Wcomment -Winit-self -Wchar-subscripts'))
 
