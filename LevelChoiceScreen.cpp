@@ -126,11 +126,14 @@ void LevelChoiceScreen::DrawAllRoads() const {
 }
 
 void LevelChoiceScreen::DrawAllNodes() const {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     BOOST_FOREACH(const Position& node_pos, m_positions) {
         bool node_enabled = true; // czy można skorzystać z tego węzła (na razie wszystkie węzły są aktywne)
         (node_enabled ? m_entry_enabled_sprite : m_entry_disabled_sprite)
                 ->DrawCurrentFrame(node_pos - m_tile_size/2, m_tile_size);
     }
+    glDisable(GL_BLEND);
 }
 
 void LevelChoiceScreen::DrawFace() const {
