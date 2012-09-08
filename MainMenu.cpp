@@ -20,11 +20,6 @@ void MainMenu::Start() {
 }
 
 void MainMenu::Draw() const {
-    if (IsClearBeforeDraw()) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glLoadIdentity();
-    }
-
     Text t(0.1, 0.1);
     t.DrawText("menu", 0.3, 0.8);
     
@@ -51,10 +46,6 @@ void MainMenu::Draw() const {
     t.DrawText("hall of fame", 0.21, yStart - yDelta * 1);
     t.DrawText("edytor",       0.36, yStart - yDelta * 2);
     t.DrawText("wyjscie",      0.33, yStart - yDelta * 3);
-
-    if (IsSwapAfterDraw()) {
-        SDL_GL_SwapBuffers();
-    }
 }
 
 bool MainMenu::Update(double /* dt */) {

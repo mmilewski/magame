@@ -72,17 +72,11 @@ public:
             m_updated = false;
             return;
         }
-        if (IsClearBeforeDraw()) {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            glLoadIdentity();
-        }
+
         Engine::Get().GetRenderer()->DrawQuad( 0, 0,  1,  1, Rgba(1,1,0)); // yellow (na caly ekran)
         Engine::Get().GetRenderer()->DrawQuad(.3,.4, .8, .7, Rgba(1,0,0)); // red
         Engine::Get().GetRenderer()->DrawQuad(.4,.5, .5, .4, Rgba(0,0,1)); // blue
         Engine::Get().GetRenderer()->DrawQuad(.6,.5, .7, .4, Rgba(0,0,1)); // blue
-        if (IsSwapAfterDraw()) {
-            SDL_GL_SwapBuffers();
-        }
     }
 
     bool Update(double /* dt */) {

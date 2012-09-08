@@ -14,11 +14,6 @@ ScoreSubmit::ScoreSubmit(size_t points) :
 }
 
 void ScoreSubmit::Draw() const {
-    if (IsClearBeforeDraw()) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glLoadIdentity();
-    }
-
     Text t(0.08, 0.08);
     t.DrawText("gratulacje", 0.1, 0.9);
     t.SetSize(0.04, 0.04);
@@ -27,10 +22,6 @@ void ScoreSubmit::Draw() const {
     t.DrawText("wpisz swoje imie", 0.1, 0.7);
     
     m_name_input->Draw();
-
-    if (IsSwapAfterDraw()) {
-        SDL_GL_SwapBuffers();
-    }
 }
 
 bool ScoreSubmit::Update(double dt) {

@@ -458,11 +458,6 @@ bool Game::Update(double dt) {
 }
 
 void Game::Draw() const {
-    if (IsClearBeforeDraw()) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glLoadIdentity();
-    }
-
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     {
@@ -496,10 +491,6 @@ void Game::Draw() const {
 
 //    Aabb player_box = m_player->GetAabb();
 //    Engine::Get().GetRenderer()->DrawAabb(player_box);
-
-    if (IsSwapAfterDraw()) {
-        SDL_GL_SwapBuffers();
-    }
 }
 
 void Game::SaveGame(PlayerPtr /* player */) {

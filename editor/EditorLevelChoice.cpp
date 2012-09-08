@@ -28,16 +28,7 @@ void EditorLevelChoice::Start()
 
 void EditorLevelChoice::Draw() const
 {
-    if (IsClearBeforeDraw()) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glLoadIdentity();
-    }
-
     m_level_list->Draw();
-
-    if (IsSwapAfterDraw()) {
-        SDL_GL_SwapBuffers();
-    }
 }
 
 bool EditorLevelChoice::Update(double dt)

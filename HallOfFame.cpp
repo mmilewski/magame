@@ -16,11 +16,6 @@ HallOfFamePtr HallOfFame::New() {
 }
 
 void HallOfFame::Draw() const {
-    if (IsClearBeforeDraw()) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glLoadIdentity();
-    }
-
     Text t(0.08, 0.08);
     t.DrawText("Hall Of Fame", 0.01, 0.9);
 
@@ -31,10 +26,6 @@ void HallOfFame::Draw() const {
         t.DrawText(entry.name, x, y);
         t.DrawNumber(entry.points, x+0.4, y, 8);
         y -= 0.07;
-    }
-
-    if (IsSwapAfterDraw()) {
-        SDL_GL_SwapBuffers();
     }
 }
 

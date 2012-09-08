@@ -153,20 +153,10 @@ void LevelChoiceScreen::DrawHud() const {
 }
 
 void LevelChoiceScreen::Draw() const {
-    if (IsClearBeforeDraw()) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glLoadIdentity();
-    }
-
     DrawAllRoads();
     DrawAllNodes();
     DrawFace();
     DrawHud();
-
-    //
-    if (IsSwapAfterDraw()) {
-        SDL_GL_SwapBuffers();
-    }
 }
 
 namespace {

@@ -63,26 +63,18 @@ void TransitionEffect::Draw() const {
         return;
     }
 
-    if (IsClearBeforeDraw()) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glLoadIdentity();
-    }
-
     if (m_effect_type==TransitionEffectType::FadeIn) {
         if (m_to_state) {
-            m_to_state->SetClearBeforeDraw(false)->SetSwapAfterDraw(false);
             m_to_state->Draw();
         }
         Engine::Get().GetRenderer()->DrawQuad(0,0,1,1, Rgba(0,0,0,m_current_fade_alpha));
     } else if (m_effect_type==TransitionEffectType::FadeOut) {
         if (m_from_state) {
-            m_from_state->SetClearBeforeDraw(false)->SetSwapAfterDraw(false);
             m_from_state->Draw();
         }
         Engine::Get().GetRenderer()->DrawQuad(0,0,1,1, Rgba(0,0,0,m_current_fade_alpha));
     } else if (m_effect_type==TransitionEffectType::PinWheelOut) {
         if (m_from_state) {
-            m_from_state->SetClearBeforeDraw(false)->SetSwapAfterDraw(false);
             m_from_state->Draw();
         }
         glPushAttrib(GL_ALL_ATTRIB_BITS);
@@ -106,12 +98,7 @@ void TransitionEffect::Draw() const {
         glPopMatrix();
         glPopAttrib();
     } else {
-        assert(false && "Draw: Nieznany typ efektu");
-    }
-
-
-    if (IsSwapAfterDraw()) {
-        SDL_GL_SwapBuffers();
+        assert(false && "TransitionEffect::Draw: Nieznany typ efektu");
     }
 }
 
@@ -157,9 +144,6 @@ void TransitionEffect::ProcessEvents(const SDL_Event& /* event */) {
 
 AppStatePtr TransitionEffect::NextAppState() const {
     if (IsDone()) {
-        if (m_from_state) {
-            m_from_state->SetClearBeforeDraw(true)->SetSwapAfterDraw(true);
-        }
         return m_to_state;
     } else {
         return AppStatePtr();

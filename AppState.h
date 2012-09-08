@@ -6,9 +6,7 @@
 class AppState {
 public:
     explicit AppState() 
-        : m_is_done(false),
-          m_clear_before_draw(true),
-          m_swap_after_draw(true) {
+        : m_is_done(false) {
     }
     
     virtual ~AppState() {}
@@ -36,23 +34,8 @@ public:
         m_is_done = value;
     }
 
-    bool IsClearBeforeDraw() const { return m_clear_before_draw; }
-    bool IsSwapAfterDraw() const { return m_swap_after_draw; }
-
-    AppState* SetClearBeforeDraw(bool clear) {
-        m_clear_before_draw = clear;
-        return this;
-    }
-
-    AppState* SetSwapAfterDraw(bool swap) {
-        m_swap_after_draw = swap;
-        return this;
-    }
-
 private:
     bool m_is_done;                                 // czy stan się zakończył (i należy przejść do następnego)
-    bool m_clear_before_draw;                       // czy przed rysowaniem stanu będzie czyszczenie ekranu
-    bool m_swap_after_draw;                         // czy rysowanie zakończy się podmianą buforów
 };
 
 class AppState;

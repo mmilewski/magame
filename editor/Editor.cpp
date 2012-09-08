@@ -46,10 +46,6 @@ void Editor::Draw() const {
         m_game->Draw();
         return;
     }
-    if (IsClearBeforeDraw()) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glLoadIdentity();
-    }
 
     glPushAttrib(GL_COLOR_BUFFER_BIT);
     {
@@ -63,10 +59,6 @@ void Editor::Draw() const {
         DrawBrushAndGui(viewer_x);
     }
     glPopAttrib();
-
-    if (IsSwapAfterDraw()) {
-        SDL_GL_SwapBuffers();
-    }
 }
 
 void Editor::DrawEntitiesPlayerAndLevel(double viewer_x) const {

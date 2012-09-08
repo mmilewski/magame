@@ -84,7 +84,12 @@ void App::Update(double dt) {
 }
 
 void App::Draw() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+
     m_app_state->Draw();
+
+    SDL_GL_SwapBuffers();
     glFlush();
 }
 
