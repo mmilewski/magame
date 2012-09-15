@@ -17,6 +17,12 @@ public:
     virtual void Start() = 0;
 
     virtual void Draw() = 0;
+
+    /**
+     * @brief Update
+     * @param dt Delta time to update state's logic (in seconds).
+     * @return True iff state is done. Next state will be taken from NextAppState.
+     */
     virtual bool Update(double dt) = 0;
     virtual void ProcessEvents(const SDL_Event& event) = 0;
 

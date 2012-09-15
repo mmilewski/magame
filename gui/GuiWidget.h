@@ -2,6 +2,7 @@
 #define __GUIWIDGET_H_INCLUDED__
 
 #include "../BasicMathTypes.h"
+#include "../Aabb.h"
 
 class GuiWidget;
 typedef boost::shared_ptr<GuiWidget> GuiWidgetPtr;

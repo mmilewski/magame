@@ -1,11 +1,13 @@
 #include "StdAfx.h"
 
-#include "Game.h"
+#include "AppState.h"
 
 class App {
 public:
     explicit App(bool fullscreen_mode) 
-        : m_fullscreen(fullscreen_mode) {
+        : m_fullscreen(fullscreen_mode),
+          m_screen(NULL),
+          m_app_state() {
     }
 
     void Run();

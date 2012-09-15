@@ -152,8 +152,6 @@ void Level::SetField(size_t x, size_t y, FT::FieldType ft) {
 
 
 Aabb Level::GetFieldAabb(size_t x, size_t y) const {
-//    const double tile_width = Engine::Get().GetRenderer()->GetTileWidth();
-//    const double tile_height = Engine::Get().GetRenderer()->GetTileHeight();
     RendererPtr renderer = Engine::Get().GetRenderer();
     const size_t v_tiles_count = renderer->GetVerticalTilesOnScreenCount();
     y = v_tiles_count - y;  // odbij y w pionie (y=0 będzie na dole)
@@ -173,7 +171,6 @@ void Level::EnsureWidth(size_t width) {
     if (GetWidth() >= width) {
         return;
     }
-
     assert(m_height > 0);  // póki co, program może zachowywać się dziwnie 
                            // dla niedodatniej wysokości poziomu.
     // std::cout << "resising from " << m_data.at(0).size() << " to " << width << std::endl;
