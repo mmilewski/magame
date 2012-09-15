@@ -6,6 +6,7 @@
 #include "entity/Entity.h"
 #include "MainMenu.h"
 #include "editor/Editor.h"
+#include "EditorLevelChoice.hpp"
 
 void Editor::Start() {
     m_gui->Start();
@@ -140,7 +141,7 @@ bool Editor::Update(double dt) {
     }
 
     if (m_keys_down[SDLK_ESCAPE]) {
-        m_next_app_state.reset(new MainMenu);
+        m_next_app_state.reset(new EditorLevelChoice);
         SetDone(true);
     } else if (m_keys_down[SDLK_LEFT]) {
         m_viewer_offset_x -= dt * 28.19;
