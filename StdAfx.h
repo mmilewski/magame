@@ -37,6 +37,7 @@
 #include <boost/lexical_cast.hpp>
 
 #include <boost/range/irange.hpp>
+#include <boost/range/algorithm_ext/erase.hpp>
 #include <boost/range/algorithm/for_each.hpp>
 #include <boost/range/algorithm/find.hpp>
 #include <boost/range/algorithm/find_if.hpp>
