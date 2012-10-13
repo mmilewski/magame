@@ -374,21 +374,18 @@ void Game::ExecuteCreators() {
 
 void Game::SweepAndAddEntities(double /* dt */) {
     // usuń martwe jednostki
-    auto isEntityDead = [](EntityPtr e) { return e->IsDead(); };
-    m_entities.erase(boost::remove_if(m_entities, isEntityDead), m_entities.end());
+    boost::remove_erase_if(m_entities, [](EntityPtr& e) {return e->IsDead();});
 
     // dodaj kolejne jednostki z listy do gry
     m_entities_to_create.sort(LevelEntityData::OrderByX);
     const double distance_of_creation = Engine::Get().GetRenderer()->GetHorizontalTilesOnScreenCount();
     auto isTooFar = [&](const LevelEntityData& data) { return data.x - m_player->GetX() > distance_of_creation; };
-    auto firstEntityTooFar = boost::find_if(m_entities_to_create, isTooFar);
-    std::for_each(m_entities_to_create.begin(),
-                  firstEntityTooFar,
-                  [&](const LevelEntityData& data)->void {
-                      EntityPtr e = Engine::Get().GetEntityFactory()->CreateEntity(data);
-                      m_entities.push_back(e);
-                  });
-    m_entities_to_create.erase(m_entities_to_create.begin(), firstEntityTooFar);
+    auto units_to_create = boost::find_if<boost::return_begin_found>(m_entities_to_create, isTooFar);
+    for (LevelEntityData& data : units_to_create) {
+        EntityPtr e = Engine::Get().GetEntityFactory()->CreateEntity(data);
+        m_entities.push_back(e);
+    }
+    boost::erase(m_entities_to_create, units_to_create);
 }
 
 void Game::BindLevelChoiceScreen(const boost::shared_ptr<LevelChoiceScreen>& screen) {
