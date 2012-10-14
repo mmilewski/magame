@@ -46,6 +46,8 @@
 #include <boost/range/algorithm/sort.hpp>
 #include <boost/range/algorithm/transform.hpp>
 
+#include <boost/algorithm/string/erase.hpp>
+
 #include <string>
 #include <vector>
 #include <deque>

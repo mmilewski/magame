@@ -12,7 +12,7 @@ void AddEntityCommand::Execute(Editor* editor) {
 
 void AddEntityCommand::Undo(Editor* editor) {
     editor->m_entities_to_create.remove(m_entity_data);
-    editor->m_entities.erase(boost::remove(editor->m_entities, m_entity), editor->m_entities.end());
+    boost::remove_erase(editor->m_entities, m_entity);
 }
 
 bool AddEntityCommand::IsReady() const {

@@ -2,7 +2,6 @@
 
 #include "Sound.h"
 
-
 Sound::Sound() {
     int audio_rate = 44100;
     Uint16 audio_format = AUDIO_S16SYS;
@@ -24,7 +23,7 @@ void Sound::LoadSounds() {
     while (settings) {
         settings >> type >> name;
         std::getline(settings, filename);
-        filename.erase(boost::remove(filename, ' '), filename.end());
+        boost::erase_all(filename, " ");
         if (type == "music") {
             LoadMusic(name, filename);
         }
