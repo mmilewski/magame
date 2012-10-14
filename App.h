@@ -10,7 +10,8 @@ public:
           m_app_state() {
     }
 
-    void Run();
+    void Init();
+    void MainLoop();
 
 private:
     void Draw();

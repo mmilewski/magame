@@ -23,7 +23,7 @@ void App::ProcessEvents() {
     }
 }
 
-void App::Run() {
+void App::Init() {
     // inicjalizacja okna
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     Resize(Engine::Get().GetWindow()->GetWidth(),
@@ -49,7 +49,9 @@ void App::Run() {
 
     m_app_state->Init();
     m_app_state->Start();
+}
 
+void App::MainLoop() {
     // pętla główna
     size_t last_ticks = SDL_GetTicks();
     while (true) {
