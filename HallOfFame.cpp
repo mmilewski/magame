@@ -22,7 +22,7 @@ void HallOfFame::Draw() const {
     t.SetSize(0.035, 0.035);
     double x = 0.15, y = 0.7;
 
-    BOOST_FOREACH(auto& entry, m_entries) {
+    for(auto& entry : m_entries) {
         t.DrawText(entry.name, x, y);
         t.DrawNumber(entry.points, x+0.4, y, 8);
         y -= 0.07;

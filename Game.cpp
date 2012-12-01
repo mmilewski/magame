@@ -164,7 +164,7 @@ void Game::CheckPlayerEntitiesCollisions(double dt) {
     Aabb player_box_x = m_player->GetNextHorizontalAabb(dt);
     Aabb player_box_y = m_player->GetNextVerticalAabb(dt);
 
-    BOOST_FOREACH(EntityPtr entity, m_entities) {
+    for(EntityPtr entity : m_entities) {
         const ET::EntityType entity_type = entity->GetType();
 
         const int score_for_bonus = 40;   // punkty za wzięcie bonusu
@@ -352,14 +352,14 @@ void Game::CheckEntityEntityCollisions(double dt) {
 void Game::CollectAndRunCreators() {
     std::list<CreatorPtr> creators;
     boost::range::push_back(creators, m_player->GetAndDropCreators());
-    BOOST_FOREACH(EntityPtr entity, m_entities) {
+    for(EntityPtr entity : m_entities) {
         if (!entity->IsDead()) {
             boost::range::push_back(creators, entity->GetAndDropCreators());
         }
     }
 
     // uruchom wszystkie kreatory
-    BOOST_FOREACH(CreatorPtr cr, creators) {
+    for(CreatorPtr cr : creators) {
         cr->Create(*this);
     }
 }
@@ -426,7 +426,7 @@ bool Game::Update(double dt) {
     }
 
     // uaktualnij stan jednostek
-    BOOST_FOREACH(auto& entity, m_entities) {
+    for(auto& entity : m_entities) {
         if (entity->IsAlive()) {
             entity->Update(dt, m_level);
         }
@@ -466,7 +466,7 @@ void Game::Draw() const {
             m_player->Draw();
 
             // narysuj pozostałe obiekty
-            BOOST_FOREACH(EntityPtr entity, m_entities) {
+            for(EntityPtr entity : m_entities) {
                 if (entity->IsAlive()) {
                     entity->Draw();
                 }

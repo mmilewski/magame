@@ -59,8 +59,8 @@ void SpriteGrid::Draw(double dx) const {
 }
 
 void SpriteGrid::Update(double dt) {
-    BOOST_FOREACH(const GridRow& row, m_grid) {
-        BOOST_FOREACH(const SpritePtr& sprite, row) {
+    for(const GridRow& row : m_grid) {
+        for(const SpritePtr& sprite : row) {
             if (sprite) {
                 sprite->Update(dt);
             }

@@ -79,7 +79,7 @@ void ScoreSubmit::StoreInFile() {
         boost::sort(entries, [](Entry a, Entry b){return a.points > b.points;});
         entries.resize(std::min(max_records_to_save, entries.size()));
         std::ofstream hofWriter("data/hof.txt");
-        BOOST_FOREACH(const auto& entry, entries) {
+        for(const auto& entry : entries) {
             hofWriter << entry.name << " " << entry.points << "\n";
         }
         hofWriter.close();

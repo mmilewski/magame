@@ -35,7 +35,7 @@ void Editor::Init() {
 
     m_gui->Init();
 
-    BOOST_FOREACH(const LevelEntityData& data, m_level->GetAllEntitiesToCreate()) {
+    for(const LevelEntityData& data : m_level->GetAllEntitiesToCreate()) {
         m_entities_to_create.push_back(data);
         m_entities.push_back(m_entity_factory->CreateEntity(data));
     }

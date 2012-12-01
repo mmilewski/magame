@@ -56,7 +56,7 @@ void Level::SaveEntitiesToFile(const std::string& filename) {
     outfile << m_player_data.name << "\t" << m_player_data.x << "\t" << m_player_data.y << std::endl;
 
     m_entities_to_create.sort(LevelEntityData::OrderByX);
-    BOOST_FOREACH(const LevelEntityData& data, m_entities_to_create) {
+    for(const LevelEntityData& data : m_entities_to_create) {
         outfile << data.name << "\t" << data.x << "\t" << data.y;
         if (data.direction.Length()) {
             outfile << "\tDIR\t" << data.direction.X()  << "\t" << data.direction.Y();

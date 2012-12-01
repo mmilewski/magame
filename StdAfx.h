@@ -33,7 +33,6 @@
 #include <boost/bind.hpp>
 #include <boost/pointer_cast.hpp>
 #include <boost/noncopyable.hpp>
-#include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 
 #include <boost/range/irange.hpp>

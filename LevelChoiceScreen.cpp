@@ -115,8 +115,8 @@ void LevelChoiceScreen::DrawAllRoads() const {
     //         narysuj drogę z j do i
 
     size_t from_node = 0;
-    BOOST_FOREACH(const IntVector& roads, m_connections) {
-        BOOST_FOREACH(size_t to_node, roads) {
+    for(const IntVector& roads : m_connections) {
+        for(size_t to_node : roads) {
             if (from_node < to_node) {
                 DrawRoad(from_node, to_node);
             }
@@ -128,7 +128,7 @@ void LevelChoiceScreen::DrawAllRoads() const {
 void LevelChoiceScreen::DrawAllNodes() const {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    BOOST_FOREACH(const Position& node_pos, m_positions) {
+    for(const Position& node_pos : m_positions) {
         bool node_enabled = true; // czy można skorzystać z tego węzła (na razie wszystkie węzły są aktywne)
         (node_enabled ? m_entry_enabled_sprite : m_entry_disabled_sprite)
                 ->DrawCurrentFrame(node_pos - m_tile_size/2, m_tile_size);
@@ -216,7 +216,7 @@ bool LevelChoiceScreen::GoLeft() {
     // czy postać stoi w węźle
     if (m_current_from_node == m_current_to_node) {
         // czy istnieje droga w lewo
-        BOOST_FOREACH(size_t to_node, m_connections.at(m_current_from_node)) {  // przejrzyj połączenia z from_node
+        for(size_t to_node : m_connections.at(m_current_from_node)) {  // przejrzyj połączenia z from_node
             Position connection_node_pos = m_positions.at(to_node);
             if (connection_node_pos[0] - from_node_pos[0] < 0) {
                 // istnieje droga, którą można iść
@@ -242,7 +242,7 @@ bool LevelChoiceScreen::GoUpward() {
     // czy postać stoi w węźle
     if (m_current_from_node == m_current_to_node) {
         // czy istnieje droga w lewo
-        BOOST_FOREACH(size_t to_node, m_connections.at(m_current_from_node)) {  // przejrzyj połączenia z from_node
+        for(size_t to_node : m_connections.at(m_current_from_node)) {  // przejrzyj połączenia z from_node
             Position connection_node_pos = m_positions.at(to_node);
             if (connection_node_pos[1] - from_node_pos[1] > 0) {
                 // istnieje droga, którą można iść
@@ -268,7 +268,7 @@ bool LevelChoiceScreen::GoDown() {
     // czy postać stoi w węźle
     if (m_current_from_node == m_current_to_node) {
         // czy istnieje droga w lewo
-        BOOST_FOREACH(size_t to_node, m_connections.at(m_current_from_node)) {  // przejrzyj połączenia z from_node
+        for(size_t to_node : m_connections.at(m_current_from_node)) {  // przejrzyj połączenia z from_node
             Position connection_node_pos = m_positions.at(to_node);
             if (connection_node_pos[1] - from_node_pos[1] < 0) {
                 // istnieje droga, którą można iść
@@ -294,7 +294,7 @@ bool LevelChoiceScreen::GoRight() {
     // czy postać stoi w węźle
     if (m_current_from_node == m_current_to_node) {
         // czy istnieje droga w lewo
-        BOOST_FOREACH(size_t to_node, m_connections.at(m_current_from_node)) {  // przejrzyj połączenia z from_node
+        for(size_t to_node : m_connections.at(m_current_from_node)) {  // przejrzyj połączenia z from_node
             Position connection_node_pos = m_positions.at(to_node);
             if (connection_node_pos[0] - from_node_pos[0] > 0) {
                 // istnieje droga, którą można iść
