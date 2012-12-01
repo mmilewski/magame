@@ -21,6 +21,12 @@ public:
         return m_creators;
     }
 
+    std::list<CreatorPtr> GetAndDropCreators() {
+        std::list<CreatorPtr> cs = GetCreators();
+        DropAllCreators();
+        return cs;
+    }
+
 private:
     std::list<CreatorPtr> m_creators;
 };

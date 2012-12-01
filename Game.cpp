@@ -349,20 +349,12 @@ void Game::CheckEntityEntityCollisions(double dt) {
     }
 }
 
-void Game::ExecuteCreators() {
+void Game::CollectAndRunCreators() {
     std::list<CreatorPtr> creators;
-
-    // pobierz kreatory od gracza
-    std::list<CreatorPtr> plr_c = m_player->GetCreators();
-    creators.splice(creators.end(), plr_c);
-    m_player->DropAllCreators();
-
-    // pobierz kreatory z jednostek
+    boost::range::push_back(creators, m_player->GetAndDropCreators());
     BOOST_FOREACH(EntityPtr entity, m_entities) {
         if (!entity->IsDead()) {
-            std::list<CreatorPtr> ent_c = entity->GetCreators();
-            creators.splice(creators.end(), ent_c);
-            entity->DropAllCreators();
+            boost::range::push_back(creators, entity->GetAndDropCreators());
         }
     }
 
@@ -417,7 +409,7 @@ bool Game::Update(double dt) {
     }
 
     // zbierz nowe obiekty z już istniejących
-    ExecuteCreators();
+    CollectAndRunCreators();
 
     // ustaw domyślny ruch graczowi
     m_player->SetDefaultMovement();

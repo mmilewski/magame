@@ -53,7 +53,7 @@ public:
     bool Update(double dt);
     void ProcessEvents(const SDL_Event& event);
 
-    void ExecuteCreators();
+    void CollectAndRunCreators();
     bool CanAddEntity(EntityPtr entity) const {
         size_t curr_tile_x, curr_tile_y;
         entity->GetCurrentTile(&curr_tile_x, &curr_tile_y);
