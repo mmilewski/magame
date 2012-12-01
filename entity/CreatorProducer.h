@@ -21,10 +21,8 @@ public:
         return m_creators;
     }
 
-    std::list<CreatorPtr> GetAndDropCreators() {
-        std::list<CreatorPtr> cs = GetCreators();
-        DropAllCreators();
-        return cs;
+    void MoveCreatorsTo(std::list<CreatorPtr>& target) {
+        target.splice(target.end(), m_creators);
     }
 
 private:

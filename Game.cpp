@@ -351,10 +351,10 @@ void Game::CheckEntityEntityCollisions(double dt) {
 
 void Game::CollectAndRunCreators() {
     std::list<CreatorPtr> creators;
-    boost::range::push_back(creators, m_player->GetAndDropCreators());
+    m_player->MoveCreatorsTo(creators);
     for(EntityPtr entity : m_entities) {
         if (!entity->IsDead()) {
-            boost::range::push_back(creators, entity->GetAndDropCreators());
+            entity->MoveCreatorsTo(creators);
         }
     }
 
