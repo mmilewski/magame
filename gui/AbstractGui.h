@@ -16,9 +16,13 @@ public:
     virtual void Draw() = 0;
     virtual void Update(double dt) = 0;
 
+    // Zwraca true jesli zdarzenie nacisniecia klawisza zostało obsluzone
     virtual bool OnKeyDown(const SDLKey& /* key */) { return false; }
+    // Zwraca true jesli zdarzenie zwolnienia klawisza zostało obsluzone
     virtual bool OnKeyUp(const SDLKey& /* key */)   { return false; }
+    // Zwraca true jesli zdarzenie przesuniecia kursora myszy zostało obsluzone
     virtual bool OnMouseMove(double /* x */, double /* y */) { return false; }
+    // Zwraca true jesli zdarzenie nacisniecia przycisku myszy zostało obsluzone
     virtual bool OnMouseDown(Uint8 /* button */, double /* x */, double /* y */) { return false; }
 };
 
