@@ -4,21 +4,28 @@ digraph appstates {
   node [shape=box];
 
   mm [label="Main menu"];
-  hof [label="Hall of Fame"];
   exit [label="Exit"];
-  picklevel [label="Choose level\nto play"];
+
+  levelToPlay [label="Choose level\nto play"];
   game [label="Game"];
-  editor [label="Editor"];
+  hof [label="Hall of Fame"];
   submit [label="Score submit"];
+
+  editor [label="Level editor"];
   levelToEdit [label="Choose level\nto edit"]  
+  gamePreview [label="Game preview"]
+
 
   mm -> exit;
   mm -> hof;
-  mm -> picklevel -> game -> submit -> hof;
-  mm -> game;
-  mm -> levelToEdit -> editor;
-  game -> game  [label="lose life"]
-  editor -> game -> editor;
 
-  { rank=same; exit game editor hof }
+  mm -> levelToPlay -> game -> submit -> hof;
+                       game -> hof;
+                       game -> game  [label="lost life"];
+
+  mm -> levelToEdit -> editor -> gamePreview -> editor;
+
+  { rank=same;  game editor }
+  { rank=same;  submit hof }
+//  { rank=same;  mm exit }
 }
