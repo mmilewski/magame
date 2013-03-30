@@ -7,7 +7,6 @@
 #include "video/Sprite.h"
 #include "video/SpriteConfig.h"
 #include "video/Text.h"
-#include "common/Utils.h"
 
 
 LevelChoiceScreen::LevelChoiceScreen(PlayerPtr player) :

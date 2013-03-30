@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 
 #include "Engine.h"
-#include "common/Utils.h"
+#include "common/StringUtils.h"
 #include "entity/PlayerBulletCreator.h"
 #include "entity/Player.h"
 #include "video/Text.h"

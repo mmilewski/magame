@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 
-#include "common/Utils.h"
+#include "common/StringUtils.h"
 #include "Engine.h"
 #include "Text.h"
 

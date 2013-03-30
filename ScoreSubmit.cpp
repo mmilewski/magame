@@ -4,7 +4,7 @@
 #include "video/Text.h"
 #include "Engine.h"
 #include "HallOfFame.h"
-#include "common/Utils.h"
+#include "common/StringUtils.h"
 
 
 ScoreSubmit::ScoreSubmit(size_t points) :
