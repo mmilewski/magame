@@ -53,15 +53,13 @@ typedef boost::shared_ptr<SetFieldCommand> SetFieldCommandPtr;
 class SetFieldCommand : public EditorCommand {
 public:
     explicit SetFieldCommand(const Position& pos, FT::FieldType field)
-      : m_is_ready(false),
-        m_pos(pos),
+      : m_pos(pos),
         m_field(field),
         m_saved_field(FT::None) {
     }
 
     explicit SetFieldCommand(size_t x, size_t y, FT::FieldType field)
-      : m_is_ready(false),
-        m_pos(Position(x, y)),
+      : m_pos(Position(x, y)),
         m_field(field),
         m_saved_field(FT::None) {
     }
@@ -71,7 +69,6 @@ public:
     virtual bool IsReady() const;
 
 private:
-    bool m_is_ready;         // Czy polecenie jest gotowe do wykonania
     Position m_pos;          //
     FT::FieldType m_field, m_saved_field;
 };
