@@ -6,12 +6,8 @@
 #include "Level.h"
 #include "video/SpriteGrid.h"
 #include "entity/Entity.h"
-#include "AppState.h"
-
-#include <LevelChoiceScreen.h>
-
-class Level;
-typedef boost::shared_ptr<Level> LevelPtr;
+#include "appstates/AppState.h"
+#include "appstates/LevelChoiceScreen.h"
 
 class Game : public AppState, public boost::enable_shared_from_this<Game> {
 public:

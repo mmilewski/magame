@@ -7,11 +7,11 @@
 #include "entity/Creator.h"
 #include "entity/SavePoint.h"
 #include "entity/Misc.h"
-#include "TransitionEffect.h"
-#include "HallOfFame.h"
-#include "ScoreSubmit.h"
-#include "LevelChoiceScreen.h"
-#include "Game.h"
+#include "appstates/TransitionEffect.h"
+#include "appstates/HallOfFame.h"
+#include "appstates/ScoreSubmit.h"
+#include "appstates/LevelChoiceScreen.h"
+#include "game/Game.h"
 
 
 Game::~Game() {

@@ -3,7 +3,7 @@
 #include "StdAfx.h"
 
 #include "Sprite.h"
-#include "Level.h"
+#include "game/Level.h"
 
 
 class SpriteGrid {

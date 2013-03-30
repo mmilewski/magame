@@ -2,7 +2,7 @@
 #define MAGAME_EDITORGUI_H_INCLUDED
 #include "StdAfx.h"
 
-#include "../gui/AbstractGui.h"
+#include "gui/AbstractGui.h"
 #include "BrushButton.h"
 
 class EditorGui;

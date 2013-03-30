@@ -2,8 +2,8 @@
 
 #include "Engine.h"
 #include "common/StringUtils.h"
-#include "entity/PlayerBulletCreator.h"
-#include "entity/Player.h"
+#include "game/entity/PlayerBulletCreator.h"
+#include "game/entity/Player.h"
 #include "video/Text.h"
 
 Player::Player(double x, double y, size_t level_width, size_t lifes = DefaultLifesCount, size_t score = 0)

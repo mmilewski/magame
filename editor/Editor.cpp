@@ -2,8 +2,8 @@
 
 #include "Engine.h"
 #include "video/Text.h"
-#include "entity/Entity.h"
-#include "MainMenu.h"
+#include "game/entity/Entity.h"
+#include "appstates/MainMenu.h"
 #include "editor/Editor.h"
 #include "EditorLevelChoice.hpp"
 

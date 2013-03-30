@@ -4,7 +4,7 @@
 
 #include "Creator.h"
 #include "PlayerBulletEntity.h"
-#include "Game.h"
+#include "game/Game.h"
 
 
 class PlayerBulletCreator : public Creator {

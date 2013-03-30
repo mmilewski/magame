@@ -2,7 +2,7 @@
 
 #include "Editor.h"
 #include "EditorCommand.h"
-#include "entity/EntityFactory.h"
+#include "game/entity/EntityFactory.h"
 
 void AddEntityCommand::Execute(Editor* editor) {
     m_entity = m_entity_factory->CreateEntity(m_entity_data);

@@ -2,7 +2,7 @@
 #define MAGAME_EDITOR_LEVEL_CHOICE_HPP_INCLUDED
 #include "StdAfx.h"
 
-#include "AppState.h"
+#include "appstates/AppState.h"
 #include "gui/ScrollBox.hpp"
 
 class EditorLevelChoice;

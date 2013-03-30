@@ -6,8 +6,8 @@
 #include "video/Sprite.h"
 #include "Types.h"
 #include "Engine.h"
-#include "Level.h"
-#include "entity/CreatorProducer.h"
+#include "game/Level.h"
+#include "game/entity/CreatorProducer.h"
 
 
 class Entity : public CreatorProducer {

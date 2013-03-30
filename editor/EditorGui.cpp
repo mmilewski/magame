@@ -1,6 +1,6 @@
-#include "../StdAfx.h"
+#include "StdAfx.h"
 
-#include "../Engine.h"
+#include "Engine.h"
 #include "EditorGui.h"
 
 EditorGui::EditorGui() {

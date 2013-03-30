@@ -1,9 +1,9 @@
 #include "StdAfx.h"
 
 #include "Engine.h"
-#include "LevelChoiceScreen.h"
-#include "MainMenu.h"
-#include "Game.h"
+#include "appstates/LevelChoiceScreen.h"
+#include "appstates/MainMenu.h"
+#include "game/Game.h"
 #include "video/Sprite.h"
 #include "video/SpriteConfig.h"
 #include "video/Text.h"

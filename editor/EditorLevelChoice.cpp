@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "EditorLevelChoice.hpp"
-#include "MainMenu.h"
-#include "Level.h"
+#include "appstates/MainMenu.h"
+#include "game/Level.h"
 #include "editor/Editor.h"
 #include "common/LineByLineReader.hpp"
 

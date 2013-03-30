@@ -2,9 +2,9 @@
 #define MAGAME_EDITOR_H_INCLUDED
 #include "StdAfx.h"
 
-#include "AppState.h"
-#include "Game.h"
-#include "Level.h"
+#include "appstates/AppState.h"
+#include "game/Game.h"
+#include "game/Level.h"
 #include "video/SpriteGrid.h"
 #include "gui/AbstractGui.h"
 #include "editor/EditorGui.h"

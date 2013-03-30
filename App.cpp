@@ -2,14 +2,12 @@
 
 #include "App.h"
 #include "Engine.h"
-#include "MainMenu.h"
-#include "HallOfFame.h"
-#include "LevelChoiceScreen.h"
 #include "editor/Editor.h"
-
-#include "TransitionEffect.h"
-#include "EffectsShow.h"
-
+#include "appstates/MainMenu.h"
+#include "appstates/HallOfFame.h"
+#include "appstates/LevelChoiceScreen.h"
+#include "appstates/TransitionEffect.h"
+#include "appstates/EffectsShow.h"
 
 void App::ProcessEvents() {
     SDL_Event event;

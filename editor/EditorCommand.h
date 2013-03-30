@@ -2,7 +2,7 @@
 #define	MAGAME_EDITORCOMMAND_H_INCLUDED
 
 #include "StdAfx.h"
-#include "entity/Entity.h"
+#include "game/entity/Entity.h"
 
 class Editor;
 

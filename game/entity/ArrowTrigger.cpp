@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 
 #include "Misc.h"
-#include "Game.h"
+#include "game/Game.h"
 
 ArrowTrigger::ArrowTrigger(double x, double y, Orientation orientation)
     : Entity(x, y, 0, 0),

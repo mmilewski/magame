@@ -25,7 +25,7 @@ env.Append(CPPFLAGS = Split('-Wno-long-long -Wcast-align -Wcomment -Winit-self -
 env.Append(LIBS = Split('SDL SDL_mixer SDL_image GL GLU'))
 
 files = Glob("*.cpp")
-for directory in ['common', 'editor', 'entity', 'gui', 'math', 'video']:
+for directory in ['appstates', 'common', 'editor', 'game', 'game/entity', 'gui', 'math', 'video']:
     files = files + Glob(directory + "/*.cpp")
 
 import hashlib, pickle
@@ -41,4 +41,4 @@ except:
 finally:
    pickle.dump(sha1_file(pch_source_file), open(pch_digest_file,'w'))
 
-env.Program("game", files)
+env.Program("run", files)
