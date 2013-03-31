@@ -18,27 +18,41 @@ void EditorGui::Init() {
 #define ADD_MULTIBUTTON(name,pos,size,type) m_buttons.push_back(MULTIBUTTON(name,pos,size,type))
 
     // nazwy sprite'ów zdefiniowane są w SpriteConfig::SpriteConfig
-    ADD_BUTTON("gui_eraser",           Position( 0, .0), default_size*2, Brush::ST::Eraser);
+//    ADD_BUTTON("gui_eraser",           Position( 0, .0), default_size*2, Brush::ST::Eraser);
     ADD_MULTIBUTTON("PlatformMid",     Position(.8, .1), default_size, Brush::ST::Multi);
 
-    ADD_BUTTON("player_stop",          Position(.1, .8), default_size, Brush::ST::Player);
-    ADD_BUTTON("EndOfLevel",           Position(.2, .8), default_size, FT::EndOfLevel);
-    ADD_BUTTON("twinshot_upgrade",     Position(.4, .8), default_size, ET::TwinShot);
-    ADD_BUTTON("mush_stop",            Position(.8, .8), default_size, ET::Mush);
+//    ADD_BUTTON("player_stop",          Position(.1, .8), default_size, Brush::ST::Player);
 
-    ADD_BUTTON("PlatformTopLeft",      Position(.3, .5),  default_size, FT::PlatformTopLeft);
-    ADD_BUTTON("PlatformTop",          Position(.4, .5),  default_size, FT::PlatformTop);
-    ADD_BUTTON("PlatformTopRight",     Position(.5, .5),  default_size, FT::PlatformTopRight);
-    ADD_BUTTON("PlatformLeft",         Position(.3, .4),  default_size, FT::PlatformLeft);
-    ADD_BUTTON("PlatformMid",          Position(.4, .4),  default_size, FT::PlatformMid);
-    ADD_BUTTON("PlatformRight",        Position(.5, .4),  default_size, FT::PlatformRight);
-    ADD_BUTTON("PlatformLeftRight",    Position(.4, .15), default_size, FT::PlatformLeftRight);
-    ADD_BUTTON("PlatformLeftTopRight", Position(.4, .25), default_size, FT::PlatformLeftTopRight);
+
+#define ADD_FIELD_BUTTON(sprite, pos, size, field) m_buttons.push_back(BrushButtonPtr(new \
+    BrushButton(Sprite::GetByName(sprite), pos, size, \
+                BrushPtr(new SetFieldBrush(Sprite::GetByName(sprite), field)))))
+
+#define ADD_ENTITY_BUTTON(sprite, pos, size, field) m_buttons.push_back(BrushButtonPtr(new \
+    BrushButton(Sprite::GetByName(sprite), pos, size, \
+                BrushPtr(new AddEntityBrush(Sprite::GetByName(sprite), field)))))
+
+    ADD_FIELD_BUTTON("EndOfLevel",           Position(.2, .8),  default_size, FT::EndOfLevel);
+    ADD_FIELD_BUTTON("PlatformTopLeft",      Position(.3, .5),  default_size, FT::PlatformTopLeft);
+    ADD_FIELD_BUTTON("PlatformTop",          Position(.4, .5),  default_size, FT::PlatformTop);
+    ADD_FIELD_BUTTON("PlatformTopRight",     Position(.5, .5),  default_size, FT::PlatformTopRight);
+    ADD_FIELD_BUTTON("PlatformLeft",         Position(.3, .4),  default_size, FT::PlatformLeft);
+    ADD_FIELD_BUTTON("PlatformMid",          Position(.4, .4),  default_size, FT::PlatformMid);
+    ADD_FIELD_BUTTON("PlatformRight",        Position(.5, .4),  default_size, FT::PlatformRight);
+    ADD_FIELD_BUTTON("PlatformLeftRight",    Position(.4, .15), default_size, FT::PlatformLeftRight);
+    ADD_FIELD_BUTTON("PlatformLeftTopRight", Position(.4, .25), default_size, FT::PlatformLeftTopRight);
+
+    ADD_ENTITY_BUTTON("twinshot_upgrade",  Position(.4, .8), default_size, ET::TwinShot);
+    ADD_ENTITY_BUTTON("mush_stop",         Position(.8, .8), default_size, ET::Mush);
+
+#undef ADD_FIELD_BUTTON
+#undef ADD_ENTITY_BUTTON
 
 #undef ADD_MULTIBUTTON
 #undef MULTIBUTTON
 #undef ADD_BUTTON
 #undef BUTTON
+
 }
 
 void EditorGui::Draw() {

@@ -93,8 +93,6 @@ private:
 
     // w jakim trybie jest rysowany pędzel -- plansza jest wyróównywana do siatki
     // a encje (np. jednostki) - nie
-    bool InPaintingFieldMode()   const { return m_brush && m_brush->IsField(); }
-    bool InPaintingEntityMode()  const { return m_brush && m_brush->IsEntity(); }
     bool InPaintingSpecialMode() const { return m_brush && m_brush->IsSpecial(); }
     BrushPtr GetBrush()          const { return m_brush; }
 
@@ -106,6 +104,8 @@ private:
     void SwitchToEditor()   { m_in_game = false; m_game.reset(); }
     bool IsInGame() const   { return m_in_game; }
     bool IsInEditor() const { return !m_in_game; }
+
+    EntityFactory* GetEntityFactory() const { return m_entity_factory.get(); }
 
 private:
     // TopDown odbija współrzędną y w pionie. Niektóre elementy kodu umiejscawiają

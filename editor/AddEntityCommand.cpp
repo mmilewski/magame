@@ -5,7 +5,12 @@
 #include "game/entity/EntityFactory.h"
 
 void AddEntityCommand::Execute(Editor* editor) {
-    m_entity = m_entity_factory->CreateEntity(m_entity_data);
+    assert(m_entity_type != ET::UNKNOWN);
+    assert(m_entity_type != ET::COUNT);
+
+    const std::string name = EntityTypeAsString(m_entity_type);
+    m_entity_data = LevelEntityData(name, m_pos);
+    m_entity = editor->GetEntityFactory()->CreateEntity(m_entity_data);
     editor->m_entities_to_create.push_back(m_entity_data);
     editor->m_entities.push_back(m_entity);
 }

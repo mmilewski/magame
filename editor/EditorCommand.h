@@ -52,14 +52,8 @@ typedef boost::shared_ptr<SetFieldCommand> SetFieldCommandPtr;
 
 class SetFieldCommand : public EditorCommand {
 public:
-    explicit SetFieldCommand(const Position& pos, FT::FieldType field)
+    explicit SetFieldCommand(Position pos, FT::FieldType field)
       : m_pos(pos),
-        m_field(field),
-        m_saved_field(FT::None) {
-    }
-
-    explicit SetFieldCommand(size_t x, size_t y, FT::FieldType field)
-      : m_pos(Position(x, y)),
         m_field(field),
         m_saved_field(FT::None) {
     }
@@ -69,7 +63,7 @@ public:
     virtual bool IsReady() const;
 
 private:
-    Position m_pos;          //
+    Position m_pos;
     FT::FieldType m_field, m_saved_field;
 };
 
@@ -79,9 +73,9 @@ typedef boost::shared_ptr<AddEntityCommand> AddEntityCommandPtr;
 
 class AddEntityCommand : public EditorCommand {
 public:
-    explicit AddEntityCommand(EntityFactory* entity_factory, const LevelEntityData& entity_data)
-      : m_entity_factory(entity_factory),
-        m_entity_data(entity_data),
+    explicit AddEntityCommand(Position pos, ET::EntityType type)
+      : m_pos(pos),
+        m_entity_type(type),
         m_entity() {
     }
 
@@ -90,8 +84,9 @@ public:
     virtual bool IsReady() const;
 
 private:
-    EntityFactory* m_entity_factory;
+    Position m_pos;
     LevelEntityData m_entity_data;
+    ET::EntityType m_entity_type;
     EntityPtr m_entity;
 };
 

@@ -104,6 +104,7 @@ void Editor::DrawBrushAndGui(double viewer_x) const {
                 Size size(tile_width, tile_height);
                 Position position(m_pointer_x * tile_width, m_pointer_y * tile_height);
                 // niektóre pola są wyrównywane do siatki, więc trzeba przyciąć współrzędne
+
                 if (ShouldSnapToGrid()) {
                     position = Position(static_cast<int>(m_pointer_x) * tile_width,
                                         static_cast<int>(m_pointer_y) * tile_height);
@@ -121,13 +122,18 @@ void Editor::DrawBrushAndGui(double viewer_x) const {
 }
 
 bool Editor::ShouldSnapToGrid() const {
-    if (InPaintingFieldMode())
-        return true;
-    if (InPaintingSpecialMode()
-        && GetBrush()->IsSpecial()
-        && GetBrush()->GetSpecialType()==Brush::ST::Eraser)
-        return true;
+    if (BrushPtr brush = GetBrush()) {
+        return brush->SnapsToGrid();
+    }
     return false;
+
+//    if (InPaintingFieldMode())
+//        return true;
+//    if (InPaintingSpecialMode()
+//        && GetBrush()->IsSpecial()
+//        && GetBrush()->GetSpecialType()==Brush::ST::Eraser)    // !!!!!
+//        return true;
+//    return false;
 }
 
 bool Editor::Update(double dt) {
@@ -161,66 +167,50 @@ bool Editor::Update(double dt) {
 }
 
 void Editor::ReleaseAtCoords(double x, double y) {
-    BrushPtr brush = m_gui->GetActiveBrush();
-    if (! brush) {
-        return;
-    }
-    if (brush->GetSpecialType() == Brush::ST::Multi) {
-        MultiBrushPtr multibrush = boost::dynamic_pointer_cast<MultiBrush>(brush);
-        multibrush->FinishAt(x, y);
-    }
-
-    EditorCommandPtr command = brush->GetCommand();
-    if (command && command->IsReady()) {
-        command->Execute(this);
-        m_commands.push_back(command);
+    std::cerr << "ReleaseAtCoords " << x << " " << y << "\n";
+    if (BrushPtr brush = GetBrush()) {
+        std::cerr << "    brush is present " << x << " " << y << "\n";
+        brush->FinishAt(x, y);
+        RegisterAndExecuteCommand(brush->GetCommand());
     }
 }
 
 void Editor::MoveToCoords(double x, double y) {
-    BrushPtr brush = m_gui->GetActiveBrush();
-    if (! brush) {
-        return;
-    }
-    if (brush->GetSpecialType() == Brush::ST::Multi) {
-        MultiBrushPtr multibrush = boost::dynamic_pointer_cast<MultiBrush>(brush);
-        multibrush->MoveTo(x, y);
+    if (BrushPtr brush = GetBrush()) {
+        brush->MoveTo(x, y);
     }
 }
 
 void Editor::RegisterAndExecuteCommand(EditorCommandPtr command) {
+    std::cerr << "RegisterAndExecuteCommand "     << "\n";
+    if (command)
+        std::cerr << "    command present "     << "\n";
     if (command && command->IsReady()) {
-        m_commands.push_back(command);
+        std::cerr << "  Command found and ready"     << "\n";
         command->Execute(this);
+        m_commands.push_back(command);
     }
 }
 
 void Editor::ActionAtCoords(double x, double y) {
-    BrushPtr brush = m_gui->GetActiveBrush();
-    if (brush) {
-        if (InPaintingFieldMode()) {
-            RegisterAndExecuteCommand(
-                SetFieldCommandPtr(new SetFieldCommand(static_cast<size_t>(x),
-                                                       static_cast<size_t>(y),
-                                                       brush->GetFieldType()))
-            );
-        } else if (InPaintingEntityMode()) {
-            const ET::EntityType entity_type = brush->GetEntityType();
-            assert(entity_type!=ET::UNKNOWN);
-            assert(entity_type!=ET::COUNT);
-            const std::string name = EntityTypeAsString(entity_type);
-            const LevelEntityData entity_data(name, x, y);
-            RegisterAndExecuteCommand(
-                AddEntityCommandPtr(new AddEntityCommand(m_entity_factory.get(), entity_data))
-            );
-        } else if (InPaintingSpecialMode()) {
+    if (BrushPtr brush = GetBrush()) {
+        brush->StartAt(x, y);
+        //
+        // TODO: we should get brush either from gui or through GetBrush.
+        //   Now the logic here is *accidently* consistent.
+        //
+
+        //     !!!!  moved to ReleaseAt
+        return;
+        //     !!!!
+
+        if (InPaintingSpecialMode()) {
             const Brush::ST::SpecialType special_type = brush->GetSpecialType();
             if (special_type == Brush::ST::Player) {
                 m_player_data = LevelEntityData("player", x, y);
             } else if (special_type == Brush::ST::Eraser) {
                 RegisterAndExecuteCommand(
-                    SetFieldCommandPtr(new SetFieldCommand(static_cast<size_t>(x),
-                                                           static_cast<size_t>(y),
+                    SetFieldCommandPtr(new SetFieldCommand(Position(x,y).CutToInt(),
                                                            FT::None))
                 );
             } else if (special_type == Brush::ST::Multi) {
