@@ -14,12 +14,14 @@ void EditorGui::Init() {
     const Size default_size = Size(.1, .1);
 #define BUTTON(name,pos,size,type) BrushButtonPtr(new BrushButton(Sprite::GetByName(name), pos, size, Brush::New(Sprite::GetByName(name), type)))
 #define ADD_BUTTON(name,pos,size,type) m_buttons.push_back(BUTTON(name,pos,size,type))
-#define MULTIBUTTON(name,pos,size,type) BrushButtonPtr(new BrushButton(Sprite::GetByName(name), pos, size, MultiBrush::New(Sprite::GetByName(name))))
-#define ADD_MULTIBUTTON(name,pos,size,type) m_buttons.push_back(MULTIBUTTON(name,pos,size,type))
 
     // nazwy sprite'ów zdefiniowane są w SpriteConfig::SpriteConfig
 //    ADD_BUTTON("gui_eraser",           Position( 0, .0), default_size*2, Brush::ST::Eraser);
-    ADD_MULTIBUTTON("PlatformMid",     Position(.8, .1), default_size, Brush::ST::Multi);
+
+
+#define ADD_AREA_FIELD_BUTTON(sprite, pos, size) m_buttons.push_back(BrushButtonPtr(new \
+    BrushButton(Sprite::GetByName(sprite), pos, size, \
+                BrushPtr(new AreaFieldBrush(Sprite::GetByName(sprite))))))
 
 #define ADD_SETPLAYER_BUTTON(sprite, pos, size) m_buttons.push_back(BrushButtonPtr(new \
     BrushButton(Sprite::GetByName(sprite), pos, size, \
@@ -32,6 +34,8 @@ void EditorGui::Init() {
 #define ADD_ENTITY_BUTTON(sprite, pos, size, field) m_buttons.push_back(BrushButtonPtr(new \
     BrushButton(Sprite::GetByName(sprite), pos, size, \
                 BrushPtr(new AddEntityBrush(Sprite::GetByName(sprite), field)))))
+
+    ADD_AREA_FIELD_BUTTON("PlatformMid", Position(.8, .1), default_size);
 
     ADD_SETPLAYER_BUTTON("player_stop", Position(.1, .8), default_size);
 
@@ -52,8 +56,6 @@ void EditorGui::Init() {
 #undef ADD_ENTITY_BUTTON
 #undef ADD_SETPLAYER_BUTTON
 
-#undef ADD_MULTIBUTTON
-#undef MULTIBUTTON
 #undef ADD_BUTTON
 #undef BUTTON
 

@@ -6,9 +6,6 @@
 
 class Editor;
 
-class EditorCommand;
-typedef boost::shared_ptr<EditorCommand> EditorCommandPtr;
-
 class EditorCommand {
 public:
     virtual ~EditorCommand() {}
@@ -23,14 +20,12 @@ public:
     virtual bool IsReady() const = 0;
     bool IsNotReady() const { return !IsReady(); }
 };
+typedef boost::shared_ptr<EditorCommand> EditorCommandPtr;
 
 
-class PlatformEditorCommand;
-typedef boost::shared_ptr<PlatformEditorCommand> PlatformEditorCommandPtr;
-
-class PlatformEditorCommand : public EditorCommand {
+class AreaFieldCommand : public EditorCommand {
 public:
-    explicit PlatformEditorCommand(const Position& start, const Position& end)
+    explicit AreaFieldCommand(const Position& start, const Position& end)
       : m_is_ready(false),
         m_beg(start), m_end(end),
         m_saved_fields() {
@@ -59,8 +54,6 @@ private:
     LevelEntityData m_saved_data;
 };
 
-class SetFieldCommand;
-typedef boost::shared_ptr<SetFieldCommand> SetFieldCommandPtr;
 
 class SetFieldCommand : public EditorCommand {
 public:
@@ -79,9 +72,6 @@ private:
     FT::FieldType m_field, m_saved_field;
 };
 
-
-class AddEntityCommand;
-typedef boost::shared_ptr<AddEntityCommand> AddEntityCommandPtr;
 
 class AddEntityCommand : public EditorCommand {
 public:

@@ -70,7 +70,7 @@ private:
     friend class SetFieldCommand;
     friend class AddEntityCommand;
     friend class SetPlayerCommand;
-    friend class PlatformEditorCommand;
+    friend class AreaFieldCommand;
 
     // Czyści pole pod wskazanymi współrzędnymi (przestrzeń świata).
     // y -- bottom-up
@@ -92,13 +92,10 @@ private:
     bool IsGuiVisible() const { return m_is_gui_visible; }
     bool IsGuiHidden()  const { return !IsGuiVisible(); }
 
-    // w jakim trybie jest rysowany pędzel -- plansza jest wyróównywana do siatki
-    // a encje (np. jednostki) - nie
-    bool InPaintingSpecialMode() const { return m_brush && m_brush->IsSpecial(); }
-    BrushPtr GetBrush()          const { return m_brush; }
 
     // czy rysowany obiekt (pod pędzlem) powinien być przyciągane do siatki
     bool ShouldSnapToGrid()      const;
+    BrushPtr GetBrush()          const { return m_brush; }
 
     // metody do przełączania między trybem gry a trybem edytora
     void SwitchToGame()     { m_in_game = true; }

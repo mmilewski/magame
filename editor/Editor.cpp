@@ -195,36 +195,19 @@ void Editor::RegisterAndExecuteCommand(EditorCommandPtr command) {
 void Editor::ActionAtCoords(double x, double y) {
     if (BrushPtr brush = GetBrush()) {
         brush->StartAt(x, y);
-        //
-        // TODO: we should get brush either from gui or through GetBrush.
-        //   Now the logic here is *accidently* consistent.
-        //
 
         //     !!!!  moved to ReleaseAt
         return;
         //     !!!!
 
-        if (InPaintingSpecialMode()) {
-            const Brush::ST::SpecialType special_type = brush->GetSpecialType();
-            if (special_type == Brush::ST::Player) {
-                m_player_data = LevelEntityData("player", x, y);
-            } else if (special_type == Brush::ST::Eraser) {
-                RegisterAndExecuteCommand(
-                    SetFieldCommandPtr(new SetFieldCommand(Position(x,y).CutToInt(),
-                                                           FT::None))
-                );
-            } else if (special_type == Brush::ST::Multi) {
-                MultiBrushPtr mb = boost::dynamic_pointer_cast<MultiBrush>(brush);
-                mb->StartAt(x, y);
-                // Polecenie zostanie dodane po zwolnieniu klawisza (-> ReleaseAt)
-            } else {
-                std::cerr << "Niezdefiniowana akcja w trybie specjalnym\n";
-            }
-        }
-        else {
-            std::cerr << "Nie odnaleziono trybu rysowania" << std::endl;
-            assert(false && "Nie odnaleziono trybu rysowania");
-        }
+//        if (InPaintingSpecialMode()) {
+//            if (special_type == Brush::ST::Eraser) {
+//                RegisterAndExecuteCommand(
+//                    SetFieldCommandPtr(new SetFieldCommand(Position(x,y).CutToInt(),
+//                                                           FT::None))
+//                );
+//            }
+//        }
     }
 }
 

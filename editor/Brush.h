@@ -15,32 +15,12 @@ public:
         : m_sprite(sprite),
           m_start(-1, -1),
           m_end(-1, -1),
-          m_is_active(false) {}
-
-
-    struct ST {
-        enum SpecialType { UNKNOWN, Player, Eraser, Multi };
-    };
-
-    explicit Brush(SpritePtr sprite, ST::SpecialType st)
-        : m_sprite(sprite),
-          m_is_special(true),
-          m_special_type(st),
-
-          m_start(-1, -1),
-          m_end(-1, -1),
-          m_is_active(false)
-        {
+          m_is_active(false) {
     }
 
     virtual ~Brush() {}
 
-    bool IsSpecial() const { return m_is_special; }
-    ST::SpecialType GetSpecialType() const { return IsSpecial() ? m_special_type : ST::UNKNOWN; }
-
-    SpritePtr GetSprite() const { return m_sprite; }
-
-    virtual void Draw(Position scr_position, Size scr_size) const {
+    void Draw(Position scr_position, Size scr_size) const {
         DrawSketch(scr_position, scr_size);
         DrawIcon(scr_position, scr_size);
     }
@@ -49,24 +29,6 @@ public:
 
     virtual bool SnapsToGrid() { return false; }
 
-protected:
-    // Metoda do przesłonięcia w klasach pochodnych.
-    // Rysowanie szkicu/podglądu.
-    virtual void DrawSketch(Position /* scr_position */, Size /* scr_size */) const {
-    }
-
-    // Rysuje mały kafelek obok kursora.
-    void DrawIcon(Position scr_position, Size scr_size) const {
-        GetSprite()->DrawCurrentFrame(scr_position, scr_size);
-    }
-
-private:
-    SpritePtr m_sprite;
-
-    bool m_is_special;
-    ST::SpecialType m_special_type;
-
-public:
     virtual void StartAt(const Position& pos) { m_start = m_end = pos; m_is_active = true; }
     void StartAt(double x, double y)  { StartAt(Position(x, y)); }
 
@@ -86,12 +48,26 @@ public:
     void FinishAt(double x, double y)  { FinishAt(Position(x, y)); }
 
 protected:
+    SpritePtr GetSprite() const { return m_sprite; }
     Position GetStart() const { return m_start; }
     Position GetEnd() const { return m_end; }
+    /** Started drawing but haven't ended */
     bool IsActive() const { return m_is_active; }
+
+    // Metoda do przesłonięcia w klasach pochodnych.
+    // Rysowanie szkicu/podglądu.
+    virtual void DrawSketch(Position /* scr_position */, Size /* scr_size */) const {
+    }
+
+    // Rysuje mały kafelek obok kursora.
+    virtual void DrawIcon(Position scr_position, Size scr_size) const {
+        GetSprite()->DrawCurrentFrame(scr_position, scr_size);
+    }
+
+private:
+    SpritePtr m_sprite;
     Position m_start, m_end;
     bool m_is_active;
-
 };
 
 class SetPlayerBrush : public Brush {
@@ -104,6 +80,7 @@ public:
         return EditorCommandPtr(new SetPlayerCommand(GetEnd()));
     }
 };
+
 
 class AddEntityBrush : public Brush {
 public:
@@ -119,6 +96,7 @@ public:
 private:
     ET::EntityType m_type;
 };
+
 
 class SetFieldBrush : public Brush {
 public:
@@ -138,17 +116,12 @@ private:
 };
 
 
-class MultiBrush;
-typedef boost::shared_ptr<MultiBrush> MultiBrushPtr;
-
-class MultiBrush : public Brush {
+class AreaFieldBrush : public Brush {
 public:
-    explicit MultiBrush(SpritePtr sprite)
-        : Brush(sprite, Brush::ST::Multi) {
+    explicit AreaFieldBrush(SpritePtr sprite)
+        : Brush(sprite) {
         // nop
     }
-
-    static MultiBrushPtr New(SpritePtr sprite) { return MultiBrushPtr(new MultiBrush(sprite)); }
 
     virtual void DrawSketch(Position scr_position, Size scr_size) const;
 
@@ -157,7 +130,7 @@ public:
             std::cerr << "UWAGA: Pobranie akcji z aktywnego pędzla multibrush. "
                       << "Akcja jest gotowa dopiero, gdy pędzel jest nieaktywny";
         }
-        return PlatformEditorCommandPtr(new PlatformEditorCommand(GetStart(), GetEnd()));
+        return EditorCommandPtr(new AreaFieldCommand(GetStart(), GetEnd()));
     }
 
     virtual bool SnapsToGrid() { return true; }
