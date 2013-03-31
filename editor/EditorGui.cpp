@@ -21,8 +21,9 @@ void EditorGui::Init() {
 //    ADD_BUTTON("gui_eraser",           Position( 0, .0), default_size*2, Brush::ST::Eraser);
     ADD_MULTIBUTTON("PlatformMid",     Position(.8, .1), default_size, Brush::ST::Multi);
 
-//    ADD_BUTTON("player_stop",          Position(.1, .8), default_size, Brush::ST::Player);
-
+#define ADD_SETPLAYER_BUTTON(sprite, pos, size) m_buttons.push_back(BrushButtonPtr(new \
+    BrushButton(Sprite::GetByName(sprite), pos, size, \
+                BrushPtr(new SetPlayerBrush(Sprite::GetByName(sprite))))))
 
 #define ADD_FIELD_BUTTON(sprite, pos, size, field) m_buttons.push_back(BrushButtonPtr(new \
     BrushButton(Sprite::GetByName(sprite), pos, size, \
@@ -31,6 +32,8 @@ void EditorGui::Init() {
 #define ADD_ENTITY_BUTTON(sprite, pos, size, field) m_buttons.push_back(BrushButtonPtr(new \
     BrushButton(Sprite::GetByName(sprite), pos, size, \
                 BrushPtr(new AddEntityBrush(Sprite::GetByName(sprite), field)))))
+
+    ADD_SETPLAYER_BUTTON("player_stop", Position(.1, .8), default_size);
 
     ADD_FIELD_BUTTON("EndOfLevel",           Position(.2, .8),  default_size, FT::EndOfLevel);
     ADD_FIELD_BUTTON("PlatformTopLeft",      Position(.3, .5),  default_size, FT::PlatformTopLeft);
@@ -47,6 +50,7 @@ void EditorGui::Init() {
 
 #undef ADD_FIELD_BUTTON
 #undef ADD_ENTITY_BUTTON
+#undef ADD_SETPLAYER_BUTTON
 
 #undef ADD_MULTIBUTTON
 #undef MULTIBUTTON

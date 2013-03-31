@@ -47,6 +47,18 @@ private:
 };
 
 
+class SetPlayerCommand : public EditorCommand {
+public:
+    explicit SetPlayerCommand(Position pos);
+    virtual void Execute(Editor* editor);
+    virtual void Undo(Editor* editor);
+    virtual bool IsReady() const;
+
+private:
+    Position m_new_pos;
+    LevelEntityData m_saved_data;
+};
+
 class SetFieldCommand;
 typedef boost::shared_ptr<SetFieldCommand> SetFieldCommandPtr;
 

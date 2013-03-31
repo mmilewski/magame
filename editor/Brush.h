@@ -94,6 +94,17 @@ protected:
 
 };
 
+class SetPlayerBrush : public Brush {
+public:
+    explicit SetPlayerBrush(SpritePtr sprite)
+        : Brush(sprite) {
+    }
+
+    virtual EditorCommandPtr GetCommand() const {
+        return EditorCommandPtr(new SetPlayerCommand(GetEnd()));
+    }
+};
+
 class AddEntityBrush : public Brush {
 public:
     explicit AddEntityBrush(SpritePtr sprite, ET::EntityType type)

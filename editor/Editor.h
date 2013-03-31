@@ -69,6 +69,7 @@ private:
 
     friend class SetFieldCommand;
     friend class AddEntityCommand;
+    friend class SetPlayerCommand;
     friend class PlatformEditorCommand;
 
     // Czyści pole pod wskazanymi współrzędnymi (przestrzeń świata).
