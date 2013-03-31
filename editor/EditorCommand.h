@@ -6,9 +6,6 @@
 
 class Editor;
 
-class EditorCommand;
-typedef boost::shared_ptr<EditorCommand> EditorCommandPtr;
-
 class EditorCommand {
 public:
     virtual ~EditorCommand() {}
@@ -23,14 +20,12 @@ public:
     virtual bool IsReady() const = 0;
     bool IsNotReady() const { return !IsReady(); }
 };
+typedef boost::shared_ptr<EditorCommand> EditorCommandPtr;
 
 
-class PlatformEditorCommand;
-typedef boost::shared_ptr<PlatformEditorCommand> PlatformEditorCommandPtr;
-
-class PlatformEditorCommand : public EditorCommand {
+class AreaFieldCommand : public EditorCommand {
 public:
-    explicit PlatformEditorCommand(const Position& start, const Position& end)
+    explicit AreaFieldCommand(const Position& start, const Position& end)
       : m_is_ready(false),
         m_beg(start), m_end(end),
         m_saved_fields() {
@@ -47,19 +42,23 @@ private:
 };
 
 
-class SetFieldCommand;
-typedef boost::shared_ptr<SetFieldCommand> SetFieldCommandPtr;
+class SetPlayerCommand : public EditorCommand {
+public:
+    explicit SetPlayerCommand(Position pos);
+    virtual void Execute(Editor* editor);
+    virtual void Undo(Editor* editor);
+    virtual bool IsReady() const;
+
+private:
+    Position m_new_pos;
+    LevelEntityData m_saved_data;
+};
+
 
 class SetFieldCommand : public EditorCommand {
 public:
-    explicit SetFieldCommand(const Position& pos, FT::FieldType field)
+    explicit SetFieldCommand(Position pos, FT::FieldType field)
       : m_pos(pos),
-        m_field(field),
-        m_saved_field(FT::None) {
-    }
-
-    explicit SetFieldCommand(size_t x, size_t y, FT::FieldType field)
-      : m_pos(Position(x, y)),
         m_field(field),
         m_saved_field(FT::None) {
     }
@@ -69,19 +68,16 @@ public:
     virtual bool IsReady() const;
 
 private:
-    Position m_pos;          //
+    Position m_pos;
     FT::FieldType m_field, m_saved_field;
 };
 
 
-class AddEntityCommand;
-typedef boost::shared_ptr<AddEntityCommand> AddEntityCommandPtr;
-
 class AddEntityCommand : public EditorCommand {
 public:
-    explicit AddEntityCommand(EntityFactory* entity_factory, const LevelEntityData& entity_data)
-      : m_entity_factory(entity_factory),
-        m_entity_data(entity_data),
+    explicit AddEntityCommand(Position pos, ET::EntityType type)
+      : m_pos(pos),
+        m_entity_type(type),
         m_entity() {
     }
 
@@ -90,8 +86,9 @@ public:
     virtual bool IsReady() const;
 
 private:
-    EntityFactory* m_entity_factory;
+    Position m_pos;
     LevelEntityData m_entity_data;
+    ET::EntityType m_entity_type;
     EntityPtr m_entity;
 };
 

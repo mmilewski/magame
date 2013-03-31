@@ -5,7 +5,7 @@
 
 #include "TileGridHelper.h"
 
-bool PlatformEditorCommand::IsReady() const {
+bool AreaFieldCommand::IsReady() const {
     if (m_beg.X() < 0 || m_beg.Y() < 0 || m_end.X() < 0 || m_end.Y() < 0) {
         return false;
     }
@@ -19,9 +19,9 @@ bool PlatformEditorCommand::IsReady() const {
     return true;
 }
 
-void PlatformEditorCommand::Execute(Editor* editor) {
-    if (IsReady() == false) {
-        throw std::logic_error("PlatformEditorCommand: Nie można uruchomić "
+void AreaFieldCommand::Execute(Editor* editor) {
+    if (IsNotReady()) {
+        throw std::logic_error("AreaFieldCommand: Nie można uruchomić "
             "polecenia, które nie jest gotowe.");
     }
     TileGridHelper tgh(m_beg, m_end);
@@ -55,9 +55,9 @@ void PlatformEditorCommand::Execute(Editor* editor) {
     editor->SetFieldAt(tgh.Beg() + Position(tiles_hor - 1, tiles_ver - 1), FT::PlatformTopRight);
 }
 
-void PlatformEditorCommand::Undo(Editor* editor) {
+void AreaFieldCommand::Undo(Editor* editor) {
     if (IsNotReady()) {
-        throw std::logic_error("PlatformEditorCommand: Nie można wycofać "
+        throw std::logic_error("AreaFieldCommand: Nie można wycofać "
                 "polecenia, które nie jest gotowe.");
     }
     if (m_saved_fields.empty()) {

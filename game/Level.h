@@ -4,6 +4,7 @@
 
 #include "math/Aabb.h"
 #include "math/Vector2.h"
+#include "math/BasicMathTypes.h"
 #include "Types.h"
 
 // Dane dotyczące jednostki wczytane np. z pliku. Na ich podstawie
@@ -11,6 +12,9 @@
 struct LevelEntityData {
     LevelEntityData() :
         name("[unknown]"), x(-1), y(-1), direction(Vector2::ZERO) {   }
+
+    LevelEntityData(const std::string& name, Position pos) :
+        name(name), x(pos.X()), y(pos.Y()), direction(Vector2::ZERO) {   }
 
     LevelEntityData(const std::string& name, double x, double y) :
         name(name), x(x), y(y), direction(Vector2::ZERO) {   }

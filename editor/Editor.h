@@ -69,7 +69,8 @@ private:
 
     friend class SetFieldCommand;
     friend class AddEntityCommand;
-    friend class PlatformEditorCommand;
+    friend class SetPlayerCommand;
+    friend class AreaFieldCommand;
 
     // Czyści pole pod wskazanymi współrzędnymi (przestrzeń świata).
     // y -- bottom-up
@@ -91,21 +92,18 @@ private:
     bool IsGuiVisible() const { return m_is_gui_visible; }
     bool IsGuiHidden()  const { return !IsGuiVisible(); }
 
-    // w jakim trybie jest rysowany pędzel -- plansza jest wyróównywana do siatki
-    // a encje (np. jednostki) - nie
-    bool InPaintingFieldMode()   const { return m_brush && m_brush->IsField(); }
-    bool InPaintingEntityMode()  const { return m_brush && m_brush->IsEntity(); }
-    bool InPaintingSpecialMode() const { return m_brush && m_brush->IsSpecial(); }
-    BrushPtr GetBrush()          const { return m_brush; }
 
     // czy rysowany obiekt (pod pędzlem) powinien być przyciągane do siatki
     bool ShouldSnapToGrid()      const;
+    BrushPtr GetBrush()          const { return m_brush; }
 
     // metody do przełączania między trybem gry a trybem edytora
     void SwitchToGame()     { m_in_game = true; }
     void SwitchToEditor()   { m_in_game = false; m_game.reset(); }
     bool IsInGame() const   { return m_in_game; }
     bool IsInEditor() const { return !m_in_game; }
+
+    EntityFactory* GetEntityFactory() const { return m_entity_factory.get(); }
 
 private:
     // TopDown odbija współrzędną y w pionie. Niektóre elementy kodu umiejscawiają
@@ -117,8 +115,8 @@ private:
     Editor* SetBrush(BrushPtr brush) { m_brush = brush; return this; }
 
     void ReleaseAtCoords(double x, double y);  // Wsp.świata
-    void MoveToCoords(double x, double y);     // Wsp.świata
-    void ActionAtCoords(double x, double y);   // Wsp.świata
+    void CursorMovedToCoords(double x, double y);     // Wsp.świata
+    void StartAtCoords(double x, double y);   // Wsp.świata
 
 private:
     AppStatePtr m_next_app_state;
