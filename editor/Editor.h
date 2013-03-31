@@ -115,8 +115,8 @@ private:
     Editor* SetBrush(BrushPtr brush) { m_brush = brush; return this; }
 
     void ReleaseAtCoords(double x, double y);  // Wsp.świata
-    void MoveToCoords(double x, double y);     // Wsp.świata
-    void ActionAtCoords(double x, double y);   // Wsp.świata
+    void CursorMovedToCoords(double x, double y);     // Wsp.świata
+    void StartAtCoords(double x, double y);   // Wsp.świata
 
 private:
     AppStatePtr m_next_app_state;

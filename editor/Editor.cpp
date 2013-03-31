@@ -41,6 +41,36 @@ void Editor::Init() {
     m_player_data = m_level->GetPlayerData();
 }
 
+bool Editor::Update(double dt) {
+    if (IsInGame()) {
+        m_game->Update(dt);
+        if (m_game->IsDone()) {
+            SwitchToEditor();
+        }
+        return !IsDone();
+    }
+
+    if (m_keys_down[SDLK_ESCAPE]) {
+        m_next_app_state.reset(new EditorLevelChoice);
+        SetDone(true);
+    } else if (m_keys_down[SDLK_LEFT]) {
+        m_viewer_offset_x -= dt * 28.19;
+    } else if (m_keys_down[SDLK_RIGHT]) {
+        m_viewer_offset_x += dt * 28.24;
+    }
+
+    // upewnij się że edytor nie zagląda poza lewą krawędź planszy. Znajdują się
+    // tam ujemne wartości na osi odciętych, co może powodować błędy w obliczeniach
+    const double tiles_in_row = 1.0/Engine::Get().GetRenderer()->GetTileWidth();
+    m_viewer_offset_x = std::max(m_viewer_offset_x, tiles_in_row/2-1);
+
+    // aktualizacja GUI
+    m_gui->Update(dt);
+    SetBrush(m_gui->GetActiveBrush());
+
+    return !IsDone();
+}
+
 void Editor::Draw() const {
     if (IsInGame()) {
         m_game->Draw();
@@ -126,88 +156,31 @@ bool Editor::ShouldSnapToGrid() const {
         return brush->SnapsToGrid();
     }
     return false;
-
-//    if (InPaintingFieldMode())
-//        return true;
-//    if (InPaintingSpecialMode()
-//        && GetBrush()->IsSpecial()
-//        && GetBrush()->GetSpecialType()==Brush::ST::Eraser)    // !!!!!
-//        return true;
-//    return false;
 }
 
-bool Editor::Update(double dt) {
-    if (IsInGame()) {
-        m_game->Update(dt);
-        if (m_game->IsDone()) {
-            SwitchToEditor();
-        }
-        return !IsDone();
-    }
-
-    if (m_keys_down[SDLK_ESCAPE]) {
-        m_next_app_state.reset(new EditorLevelChoice);
-        SetDone(true);
-    } else if (m_keys_down[SDLK_LEFT]) {
-        m_viewer_offset_x -= dt * 28.19;
-    } else if (m_keys_down[SDLK_RIGHT]) {
-        m_viewer_offset_x += dt * 28.24;
-    }
-
-    // upewnij się że edytor nie zagląda poza lewą krawędź planszy. Znajdują się
-    // tam ujemne wartości na osi odciętych, co może powodować błędy w obliczeniach
-    const double tiles_in_row = 1.0/Engine::Get().GetRenderer()->GetTileWidth();
-    m_viewer_offset_x = std::max(m_viewer_offset_x, tiles_in_row/2-1);
-
-    // aktualizacja GUI
-    m_gui->Update(dt);
-    SetBrush(m_gui->GetActiveBrush());
-
-    return !IsDone();
-}
-
-void Editor::ReleaseAtCoords(double x, double y) {
-    std::cerr << "ReleaseAtCoords " << x << " " << y << "\n";
+void Editor::StartAtCoords(double x, double y) {
     if (BrushPtr brush = GetBrush()) {
-        std::cerr << "    brush is present " << x << " " << y << "\n";
-        brush->FinishAt(x, y);
-        RegisterAndExecuteCommand(brush->GetCommand());
+        brush->StartAt(x, y);
     }
 }
 
-void Editor::MoveToCoords(double x, double y) {
+void Editor::CursorMovedToCoords(double x, double y) {
     if (BrushPtr brush = GetBrush()) {
         brush->MoveTo(x, y);
     }
 }
 
-void Editor::RegisterAndExecuteCommand(EditorCommandPtr command) {
-    std::cerr << "RegisterAndExecuteCommand "     << "\n";
-    if (command)
-        std::cerr << "    command present "     << "\n";
-    if (command && command->IsReady()) {
-        std::cerr << "  Command found and ready"     << "\n";
-        command->Execute(this);
-        m_commands.push_back(command);
+void Editor::ReleaseAtCoords(double x, double y) {
+    if (BrushPtr brush = GetBrush()) {
+        brush->FinishAt(x, y);
+        RegisterAndExecuteCommand(brush->GetCommand());
     }
 }
 
-void Editor::ActionAtCoords(double x, double y) {
-    if (BrushPtr brush = GetBrush()) {
-        brush->StartAt(x, y);
-
-        //     !!!!  moved to ReleaseAt
-        return;
-        //     !!!!
-
-//        if (InPaintingSpecialMode()) {
-//            if (special_type == Brush::ST::Eraser) {
-//                RegisterAndExecuteCommand(
-//                    SetFieldCommandPtr(new SetFieldCommand(Position(x,y).CutToInt(),
-//                                                           FT::None))
-//                );
-//            }
-//        }
+void Editor::RegisterAndExecuteCommand(EditorCommandPtr command) {
+    if (command && command->IsReady()) {
+        command->Execute(this);
+        m_commands.push_back(command);
     }
 }
 
@@ -263,7 +236,7 @@ void Editor::ProcessEvents(const SDL_Event& event) {
         } else {
             m_pointer_x = MapWindowCoordToWorldX(m_pointer_window_x);
             m_pointer_y = MapWindowCoordToWorldY(m_pointer_window_y);
-            MoveToCoords(m_pointer_x, m_pointer_y);
+            CursorMovedToCoords(m_pointer_x, m_pointer_y);
         }
     } else if (event.type == SDL_MOUSEBUTTONDOWN) {
         m_pointer_window_x =       event.motion.x / win_width;
@@ -272,7 +245,7 @@ void Editor::ProcessEvents(const SDL_Event& event) {
         } else {
             m_pointer_x = MapWindowCoordToWorldX(m_pointer_window_x);
             m_pointer_y = MapWindowCoordToWorldY(m_pointer_window_y);
-            ActionAtCoords(m_pointer_x, m_pointer_y);
+            StartAtCoords(m_pointer_x, m_pointer_y);
         }
     } else if (event.type == SDL_MOUSEBUTTONUP) {
         m_pointer_x = MapWindowCoordToWorldX(m_pointer_window_x);

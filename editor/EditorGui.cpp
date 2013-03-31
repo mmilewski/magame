@@ -12,12 +12,10 @@ void EditorGui::Start() {
 void EditorGui::Init() {
     m_buttons.clear();
     const Size default_size = Size(.1, .1);
-#define BUTTON(name,pos,size,type) BrushButtonPtr(new BrushButton(Sprite::GetByName(name), pos, size, Brush::New(Sprite::GetByName(name), type)))
-#define ADD_BUTTON(name,pos,size,type) m_buttons.push_back(BUTTON(name,pos,size,type))
 
-    // nazwy sprite'ów zdefiniowane są w SpriteConfig::SpriteConfig
-//    ADD_BUTTON("gui_eraser",           Position( 0, .0), default_size*2, Brush::ST::Eraser);
-
+#define ADD_ERASER_BUTTON(sprite, pos, size) m_buttons.push_back(BrushButtonPtr(new \
+    BrushButton(Sprite::GetByName(sprite), pos, size, \
+                BrushPtr(new EraserBrush(Sprite::GetByName(sprite))))))
 
 #define ADD_AREA_FIELD_BUTTON(sprite, pos, size) m_buttons.push_back(BrushButtonPtr(new \
     BrushButton(Sprite::GetByName(sprite), pos, size, \
@@ -34,6 +32,8 @@ void EditorGui::Init() {
 #define ADD_ENTITY_BUTTON(sprite, pos, size, field) m_buttons.push_back(BrushButtonPtr(new \
     BrushButton(Sprite::GetByName(sprite), pos, size, \
                 BrushPtr(new AddEntityBrush(Sprite::GetByName(sprite), field)))))
+
+    ADD_ERASER_BUTTON("gui_eraser", Position(0, .0), default_size*1.75);
 
     ADD_AREA_FIELD_BUTTON("PlatformMid", Position(.8, .1), default_size);
 
@@ -55,10 +55,8 @@ void EditorGui::Init() {
 #undef ADD_FIELD_BUTTON
 #undef ADD_ENTITY_BUTTON
 #undef ADD_SETPLAYER_BUTTON
-
-#undef ADD_BUTTON
-#undef BUTTON
-
+#undef ADD_AREA_FIELD_BUTTON
+#undef ADD_ERASER_BUTTON
 }
 
 void EditorGui::Draw() {

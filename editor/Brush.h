@@ -6,9 +6,6 @@
 #include "EditorCommand.h"
 
 
-class Brush;
-typedef boost::shared_ptr<Brush> BrushPtr;
-
 class Brush {
 public:
     Brush(SpritePtr sprite)
@@ -69,6 +66,22 @@ private:
     Position m_start, m_end;
     bool m_is_active;
 };
+typedef boost::shared_ptr<Brush> BrushPtr;
+
+
+class EraserBrush : public Brush {
+public:
+    explicit EraserBrush(SpritePtr sprite)
+        : Brush(sprite) {
+    }
+
+    virtual EditorCommandPtr GetCommand() const {
+        return EditorCommandPtr(new SetFieldCommand(GetEnd().CutToInt(), FT::None));
+    }
+
+    virtual bool SnapsToGrid() { return true; }
+};
+
 
 class SetPlayerBrush : public Brush {
 public:
